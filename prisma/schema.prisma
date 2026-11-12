@@ -1,0 +1,158 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Tenant {
+  id           String   @id @default(uuid())
+  name         String
+  cnpj         String   @unique
+  email        String
+  phone        String?
+  type         String   @default("IMOBILIARIA") // IMOBILIARIA, AUTONOMO
+  plan         String   @default("Profissional") // Básico, Profissional, Enterprise, Master
+  status       String   @default("Ativo") // Ativo, Pendente, Suspenso
+  logoUrl      String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  users        User[]
+  properties   Property[]
+  leads        Lead[]
+  contracts    RentalContract[]
+  transactions FinancialTransaction[]
+}
+
+model User {
+  id           String   @id @default(uuid())
+  tenantId     String?
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         String   @default("CORRETOR") // SUPER_ADMIN, GESTOR, CORRETOR, FINANCEIRO
+  creci        String?
+  phone        String?
+  status       String   @default("Ativo") // Ativo, Inativo
+  lastLogin    DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  tenant       Tenant?  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  properties   Property[]
+  leads        Lead[]
+  transactions FinancialTransaction[]
+}
+
+model Property {
+  id           String   @id @default(uuid())
+  tenantId     String
+  brokerId     String?
+  code         String   // ex: AP0420
+  title        String
+  description  String?
+  type         String   // Venda, Aluguel
+  category     String   // Apartamento, Casa, Cobertura, Comercial, Terreno
+  status       String   @default("Disponível") // Disponível, Reservado, Vendido, Alugado
+  price        Float
+  condoFee     Float?   @default(0)
+  iptu         Float?   @default(0)
+  area         Float
+  bedrooms     Int      @default(0)
+  bathrooms    Int      @default(0)
+  suites       Int      @default(0)
+  parking      Int      @default(0)
+  zipCode      String?
+  address      String?
+  neighborhood String
+  city         String
+  state        String   @default("SP")
+  featured     Boolean  @default(false)
+  imageUrl     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  tenant       Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  broker       User?    @relation(fields: [brokerId], references: [id], onDelete: SetNull)
+  images       PropertyImage[]
+  leads        Lead[]
+  contracts    RentalContract[]
+  transactions FinancialTransaction[]
+}
+
+model PropertyImage {
+  id         String   @id @default(uuid())
+  propertyId String
+  url        String
+  isCover    Boolean  @default(false)
+  order      Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+}
+
+model Lead {
+  id          String   @id @default(uuid())
+  tenantId    String
+  brokerId    String?
+  propertyId  String?
+  name        String
+  email       String?
+  phone       String
+  stage       String   @default("NOVO") // NOVO, CONTATO, VISITA, PROPOSTA, FECHAMENTO
+  origin      String   @default("Site") // ZAP, VivaReal, Instagram, Indicação, Site
+  budget      String?
+  notes       String?
+  hot         Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  broker      User?    @relation(fields: [brokerId], references: [id], onDelete: SetNull)
+  property    Property? @relation(fields: [propertyId], references: [id], onDelete: SetNull)
+}
+
+model RentalContract {
+  id                 String   @id @default(uuid())
+  tenantId           String
+  propertyId         String
+  tenantName         String
+  tenantDocument     String
+  ownerName          String
+  ownerDocument      String
+  rentValue          Float
+  condoValue         Float    @default(0)
+  dueDay             Int      @default(10)
+  status             String   @default("Ativo") // Ativo, Pendente, Atrasado, Finalizado
+  adjustmentIndex    String   @default("IPCA") // IPCA, IGP-M
+  startDate          DateTime
+  endDate            DateTime
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  tenant             Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  property           Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+}
+
+model FinancialTransaction {
+  id          String   @id @default(uuid())
+  tenantId    String
+  brokerId    String?
+  propertyId  String?
+  description String
+  type        String   // RECEITA_COMISSAO, REPASSE_ALUGUEL, TAXA_ADM, DESPESA
+  amount      Float
+  status      String   @default("PAGO") // PAGO, PENDENTE, CANCELADO
+  dueDate     DateTime?
+  paidAt      DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  broker      User?    @relation(fields: [brokerId], references: [id], onDelete: SetNull)
+  property    Property? @relation(fields: [propertyId], references: [id], onDelete: SetNull)
+}
+
