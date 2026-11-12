@@ -11,7 +11,6 @@ export async function GET() {
 
     const user = await prisma.user.findUnique({
       where: { id: session.userId },
-      include: { tenant: true },
       select: {
         id: true,
         name: true,
