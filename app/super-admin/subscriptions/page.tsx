@@ -81,7 +81,7 @@ const initialPlans: Plan[] = [
   },
   {
     id: "plan-pro",
-    name: "Imobiliária Tactus",
+    name: "Plano Imobiliária Pro",
     target: "Imobiliária",
     price: "R$ 249",
     period: "/mês",

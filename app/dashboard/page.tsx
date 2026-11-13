@@ -379,7 +379,7 @@ export default function UserDashboardPage() {
 
                   <div className="flex items-center gap-1.5">
                     <a
-                      href={`https://wa.me/55${lead.phone}?text=Olá%20${encodeURIComponent(lead.name)},%20sou%20Carlos%20da%20Tactus%20Imobiliária.`}
+                      href={`https://wa.me/55${lead.phone}?text=Olá%20${encodeURIComponent(lead.name)},%20sou%20Carlos,%20seu%20corretor%20de%20imóveis.`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="h-8 w-8 rounded-full border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.05] hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-600 flex items-center justify-center transition-colors"

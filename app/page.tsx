@@ -200,7 +200,7 @@ const plans: PlanDetail[] = [
   },
   {
     id: "tactus",
-    name: "Imobiliária Tactus",
+    name: "Plano Imobiliária",
     subtitle: "Pessoa Jurídica (PJ) & Equipes",
     badge: "MAIS ESCOLHIDO",
     popular: true,
@@ -222,7 +222,7 @@ const plans: PlanDetail[] = [
       "Exportação de relatórios gerenciais e VGV consolidado",
       "Suporte Prioritário VIP via WhatsApp"
     ],
-    ctaText: "Assinar Imobiliária Tactus",
+    ctaText: "Assinar Plano Imobiliária",
     theme: "lime"
   },
   {
@@ -773,7 +773,7 @@ export default function CRMLandingPage() {
                     href="#precos"
                     className="w-full h-12 rounded-2xl bg-[#CCFF00] hover:bg-[#bbf000] text-black font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg shadow-[#CCFF00]/25 transition-all"
                   >
-                    <span>Assinar Imobiliária Tactus</span>
+                    <span>Assinar Plano Imobiliária</span>
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                   <Link

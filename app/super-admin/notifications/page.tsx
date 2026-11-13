@@ -49,7 +49,7 @@ const initialNotifications: Notification[] = [
   },
   {
     id: "4",
-    title: "Fatura paga: Tactus Imobiliária - Plano Enterprise",
+    title: "Fatura paga: Imobiliária Alencar - Plano Enterprise",
     description: "Recebimento confirmado via Pix/Boleto: R$ 2.890,00.",
     time: "ontem às 18:30",
     type: "imobiliaria",

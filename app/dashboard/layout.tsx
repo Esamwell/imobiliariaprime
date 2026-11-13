@@ -93,9 +93,9 @@ export default function UserDashboardLayout({
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-bold text-sm tracking-tight text-foreground">Tactus Imobiliária</span>
+                <span className="font-extrabold text-sm tracking-tight text-foreground">Tactus CRM</span>
                 <span className="rounded-full bg-lime-400/20 text-lime-700 dark:text-lime-300 px-1.5 py-0.2 text-[9px] font-extrabold uppercase tracking-wide">
-                  CRM
+                  PRO
                 </span>
               </div>
               <span className="block text-[10px] text-muted-foreground font-medium">Portal do Corretor & Gestor</span>

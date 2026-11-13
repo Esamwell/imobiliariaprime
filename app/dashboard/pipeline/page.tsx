@@ -491,7 +491,7 @@ export default function PipelinePage() {
                 {/* Column Body / Cards */}
                 <div className="p-3 space-y-3 flex-1 min-h-[480px]">
                   {colLeads.map((lead) => {
-                    const waMessage = `Olá ${lead.name}, tudo bem? Sou o corretor da Tactus Imobiliária. Vi seu interesse no imóvel ${
+                    const waMessage = `Olá ${lead.name}, tudo bem? Sou seu corretor de imóveis credenciado. Vi seu interesse no imóvel ${
                       lead.property?.title || "anunciado"
                     } e estou à disposição para conversarmos!`
                     const waUrl = getWhatsAppLink(lead.phone, waMessage)
