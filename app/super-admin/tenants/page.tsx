@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -12,14 +11,31 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Building2, Search, Plus, CheckCircle2, Clock, AlertCircle, Crown, User, ShieldCheck, Sparkles } from "lucide-react"
+import { 
+  Building2, 
+  Search, 
+  Plus, 
+  CheckCircle2, 
+  Clock, 
+  AlertCircle, 
+  Crown, 
+  User, 
+  ShieldCheck, 
+  Sparkles,
+  ArrowUpRight,
+  Filter,
+  MoreVertical,
+  Check,
+  Ban,
+  Building
+} from "lucide-react"
 
 interface Account {
   id: string
   name: string
   accountType: "IMOBILIARIA" | "AUTONOMO"
   document: string // CNPJ ou CPF/CRECI
-  plan: string // Master, Enterprise, Profissional, Básico, Autônomo Pro
+  plan: string // Master VIP, Enterprise, Profissional, Básico, Autônomo Pro
   brokersCount: number
   propertiesCount: number
   status: "Ativo" | "Pendente" | "Suspenso"
@@ -94,41 +110,51 @@ export default function TenantsPage() {
   })
 
   return (
-    <div className="flex-1 space-y-6 p-6">
+    <div className="flex-1 space-y-6 p-4 sm:p-6 max-w-7xl mx-auto">
+      {/* Header Bar */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Imobiliárias & Corretores Autônomos</h1>
-          <p className="text-sm text-muted-foreground">
-            Gestão de todas as contas clientes: imobiliárias estruturadas (PJ) e profissionais autônomos (PF/CRECI).
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+              Imobiliárias & Autônomos
+            </h1>
+            <span className="rounded-full bg-purple-500/10 text-purple-700 dark:text-purple-300 px-2.5 py-0.5 text-[10px] font-black uppercase">
+              Base de Clientes
+            </span>
+          </div>
+          <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
+            Gestão consolidada de imobiliárias parceiras (PJ) e corretores autônomos credenciados (PF/CRECI).
           </p>
         </div>
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="flex items-center gap-2">
+            <button className="inline-flex items-center gap-2 rounded-full bg-foreground text-background hover:bg-foreground/90 px-5 py-2.5 text-xs font-bold shadow-md transition-all hover:scale-102">
               <Plus className="h-4 w-4" />
-              Cadastrar Nova Conta
-            </Button>
+              <span>Cadastrar Nova Conta</span>
+            </button>
           </DialogTrigger>
-          <DialogContent className="max-w-md">
+          <DialogContent className="max-w-md rounded-[28px] border border-black/[0.08] dark:border-white/[0.12] bg-background/95 backdrop-blur-2xl p-6 shadow-2xl">
             <DialogHeader>
-              <DialogTitle>Nova Conta de Cliente</DialogTitle>
-              <DialogDescription>
-                Adicione uma Imobiliária (PJ) ou Corretor Autônomo (PF) e defina o plano.
+              <DialogTitle className="text-lg font-black text-foreground">Nova Conta de Cliente</DialogTitle>
+              <DialogDescription className="text-xs text-muted-foreground">
+                Cadastre uma Imobiliária (PJ) ou Corretor Autônomo (PF) e defina o plano de acesso.
               </DialogDescription>
             </DialogHeader>
 
             <form onSubmit={handleCreateAccount} className="space-y-3.5 pt-2">
               <div className="space-y-1">
-                <label className="text-xs font-semibold">Tipo de Contratação</label>
+                <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+                  Tipo de Contratação
+                </label>
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
                     onClick={() => setAccountType("IMOBILIARIA")}
-                    className={`flex items-center justify-center gap-2 p-2.5 rounded-lg border text-xs font-semibold transition-all ${
+                    className={`flex items-center justify-center gap-2 p-2.5 rounded-2xl border text-xs font-bold transition-all ${
                       accountType === "IMOBILIARIA"
-                        ? "border-primary bg-primary/10 text-primary"
-                        : "border-input hover:bg-muted text-muted-foreground"
+                        ? "border-foreground bg-foreground text-background shadow-sm"
+                        : "border-black/[0.08] dark:border-white/[0.10] bg-muted/30 text-muted-foreground hover:text-foreground"
                     }`}
                   >
                     <Building2 className="h-4 w-4" /> Imobiliária (PJ)
@@ -136,10 +162,10 @@ export default function TenantsPage() {
                   <button
                     type="button"
                     onClick={() => setAccountType("AUTONOMO")}
-                    className={`flex items-center justify-center gap-2 p-2.5 rounded-lg border text-xs font-semibold transition-all ${
+                    className={`flex items-center justify-center gap-2 p-2.5 rounded-2xl border text-xs font-bold transition-all ${
                       accountType === "AUTONOMO"
-                        ? "border-purple-600 bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-300"
-                        : "border-input hover:bg-muted text-muted-foreground"
+                        ? "border-foreground bg-foreground text-background shadow-sm"
+                        : "border-black/[0.08] dark:border-white/[0.10] bg-muted/30 text-muted-foreground hover:text-foreground"
                     }`}
                   >
                     <User className="h-4 w-4" /> Corretor Autônomo
@@ -148,7 +174,7 @@ export default function TenantsPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold">
+                <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
                   {accountType === "IMOBILIARIA" ? "Razão Social / Nome Fantasia" : "Nome Completo do Corretor"}
                 </label>
                 <input
@@ -157,12 +183,12 @@ export default function TenantsPage() {
                   placeholder={accountType === "IMOBILIARIA" ? "Ex: Prime Imóveis Ltda" : "Ex: Mariana Silveira (CRECI 45.120)"}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] bg-muted/20 px-3.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold">
+                <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
                   {accountType === "IMOBILIARIA" ? "CNPJ da Empresa" : "CPF ou CRECI Individual"}
                 </label>
                 <input
@@ -171,24 +197,26 @@ export default function TenantsPage() {
                   placeholder={accountType === "IMOBILIARIA" ? "00.000.000/0001-00" : "000.000.000-00 ou CRECI 12345"}
                   value={document}
                   onChange={(e) => setDocument(e.target.value)}
-                  className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] bg-muted/20 px-3.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold">E-mail de Contato / Acesso</label>
+                <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+                  E-mail de Contato / Acesso
+                </label>
                 <input
                   type="email"
                   required
                   placeholder="usuario@dominio.com.br"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] bg-muted/20 px-3.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold flex items-center justify-between">
+                <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider flex items-center justify-between">
                   <span>Plano Atribuído</span>
                   {plan.includes("Master") && (
                     <span className="text-[10px] text-amber-500 font-bold flex items-center gap-1">
@@ -199,207 +227,288 @@ export default function TenantsPage() {
                 <select
                   value={plan}
                   onChange={(e) => setPlan(e.target.value)}
-                  className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] bg-muted/20 px-3.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
                 >
-                  <option value="Master VIP">👑 Master VIP (Exclusivo Super Admin - Ilimitado)</option>
-                  <option value="Autônomo Pro">Autônomo Pro (R$ 190/mês)</option>
-                  <option value="Básico">Imobiliária Básico (R$ 490/mês)</option>
-                  <option value="Profissional">Imobiliária Profissional (R$ 1.250/mês)</option>
-                  <option value="Enterprise">Enterprise (R$ 2.890/mês)</option>
+                  <option value="Master VIP">👑 Master VIP (Super Admin - Ilimitado)</option>
+                  <option value="Autônomo Pro">Autônomo Pro (R$ 89/mês)</option>
+                  <option value="Profissional">Imobiliária Prime (R$ 249/mês)</option>
+                  <option value="Enterprise">Enterprise (R$ 589/mês)</option>
                 </select>
               </div>
 
-              <DialogFooter className="pt-3">
-                <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
+              <DialogFooter className="pt-3 gap-2">
+                <Button 
+                  type="button" 
+                  variant="ghost" 
+                  onClick={() => setIsDialogOpen(false)}
+                  className="rounded-full text-xs"
+                >
                   Cancelar
                 </Button>
-                <Button type="submit">Cadastrar e Ativar</Button>
+                <Button 
+                  type="submit"
+                  className="rounded-full text-xs font-bold"
+                >
+                  Cadastrar e Ativar
+                </Button>
               </DialogFooter>
             </form>
           </DialogContent>
         </Dialog>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-4">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Total de Contas</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{accounts.length}</div>
-            <p className="text-xs text-muted-foreground mt-1">Imobiliárias e Autônomos</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Contas no Plano Master VIP</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-amber-500 flex items-center gap-1.5">
-              <Crown className="h-5 w-5" />
+      {/* KPI Cards in Apple Prime Glass */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+        <div className="glass-card glass-card-hover rounded-3xl p-4 sm:p-5 flex flex-col justify-between border border-black/[0.06] dark:border-white/[0.08]">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+              Total de Contas
+            </span>
+            <div className="h-8 w-8 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+              <Building2 className="h-4 w-4" />
+            </div>
+          </div>
+          <div className="mt-3">
+            <div className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
+              {accounts.length}
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-0.5">Imobiliárias & Autônomos</p>
+          </div>
+        </div>
+
+        <div className="glass-card glass-card-hover rounded-3xl p-4 sm:p-5 flex flex-col justify-between border border-black/[0.06] dark:border-white/[0.08]">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+              Plano Master VIP
+            </span>
+            <div className="h-8 w-8 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+              <Crown className="h-4 w-4" />
+            </div>
+          </div>
+          <div className="mt-3">
+            <div className="text-2xl sm:text-3xl font-black tracking-tight text-amber-500">
               {accounts.filter((t) => t.plan.includes("Master")).length}
             </div>
-            <p className="text-xs text-muted-foreground mt-1">Concessões exclusivas</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Imobiliárias (PJ)</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-blue-600">
+            <p className="text-[11px] text-muted-foreground mt-0.5">Concessões sem restrições</p>
+          </div>
+        </div>
+
+        <div className="glass-card glass-card-hover rounded-3xl p-4 sm:p-5 flex flex-col justify-between border border-black/[0.06] dark:border-white/[0.08]">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+              Imobiliárias (PJ)
+            </span>
+            <div className="h-8 w-8 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+              <Building className="h-4 w-4" />
+            </div>
+          </div>
+          <div className="mt-3">
+            <div className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
               {accounts.filter((t) => t.accountType === "IMOBILIARIA").length}
             </div>
-            <p className="text-xs text-muted-foreground mt-1">Com equipes de corretores</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Corretores Autônomos</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-purple-600">
+            <p className="text-[11px] text-muted-foreground mt-0.5">Com equipes de corretores</p>
+          </div>
+        </div>
+
+        <div className="glass-card glass-card-hover rounded-3xl p-4 sm:p-5 flex flex-col justify-between border border-black/[0.06] dark:border-white/[0.08]">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+              Autônomos (PF)
+            </span>
+            <div className="h-8 w-8 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center">
+              <User className="h-4 w-4" />
+            </div>
+          </div>
+          <div className="mt-3">
+            <div className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
               {accounts.filter((t) => t.accountType === "AUTONOMO").length}
             </div>
-            <p className="text-xs text-muted-foreground mt-1">Operando de forma solo</p>
-          </CardContent>
-        </Card>
+            <p className="text-[11px] text-muted-foreground mt-0.5">Operando de forma solo</p>
+          </div>
+        </div>
       </div>
 
-      <Card>
-        <CardHeader>
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <CardTitle>Base de Contas Cadastradas</CardTitle>
-            <div className="flex flex-wrap items-center gap-2">
-              <div className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <input
-                  type="text"
-                  placeholder="Buscar por nome ou documento..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="h-9 w-56 rounded-md border border-input bg-background pl-8 pr-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                />
-              </div>
-
-              <select
-                value={typeFilter}
-                onChange={(e) => setTypeFilter(e.target.value)}
-                className="h-9 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-              >
-                <option value="todos">Todos os tipos</option>
-                <option value="IMOBILIARIA">Apenas Imobiliárias</option>
-                <option value="AUTONOMO">Apenas Autônomos</option>
-              </select>
-
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="h-9 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-              >
-                <option value="todos">Todos os status</option>
-                <option value="ativo">Ativo</option>
-                <option value="pendente">Pendente</option>
-                <option value="suspenso">Suspenso</option>
-              </select>
-            </div>
+      {/* Main Table Card in Apple Prime Glass */}
+      <div className="glass-card rounded-3xl border border-black/[0.06] dark:border-white/[0.08] shadow-sm overflow-hidden">
+        {/* Filter and Search Bar */}
+        <div className="p-5 sm:p-6 border-b border-black/[0.06] dark:border-white/[0.08] flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h3 className="text-base font-extrabold text-foreground">Base de Contas Cadastradas</h3>
+            <p className="text-xs text-muted-foreground">Listagem de clientes ativos e autorizados no ecossistema</p>
           </div>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead className="border-b bg-muted/50 text-xs font-semibold text-muted-foreground uppercase">
-                <tr>
-                  <th className="py-3 px-4">Conta / Profissional</th>
-                  <th className="py-3 px-4">Tipo</th>
-                  <th className="py-3 px-4">Documento</th>
-                  <th className="py-3 px-4">Plano</th>
-                  <th className="py-3 px-4">Corretores</th>
-                  <th className="py-3 px-4">Imóveis</th>
-                  <th className="py-3 px-4">Status</th>
-                  <th className="py-3 px-4 text-right">Ação</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y">
-                {filtered.map((account) => (
-                  <tr key={account.id} className="hover:bg-muted/30 transition-colors">
-                    <td className="py-3 px-4 font-medium flex items-center gap-2">
-                      <div className={`h-8 w-8 rounded-lg flex items-center justify-center ${
-                        account.accountType === "AUTONOMO"
-                          ? "bg-purple-100 dark:bg-purple-950/60 text-purple-600 dark:text-purple-300"
-                          : "bg-primary/10 text-primary"
-                      }`}>
-                        {account.accountType === "AUTONOMO" ? (
-                          <User className="h-4 w-4" />
-                        ) : (
-                          <Building2 className="h-4 w-4" />
-                        )}
+
+          <div className="flex flex-wrap items-center gap-2">
+            {/* Search Pill */}
+            <div className="relative">
+              <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Buscar por nome ou documento..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="h-9 w-60 rounded-full border border-black/[0.08] dark:border-white/[0.10] bg-muted/30 pl-8 pr-3 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
+              />
+            </div>
+
+            {/* Type Selector Pill */}
+            <select
+              value={typeFilter}
+              onChange={(e) => setTypeFilter(e.target.value)}
+              className="h-9 rounded-full border border-black/[0.08] dark:border-white/[0.10] bg-muted/30 px-3 text-xs font-semibold text-foreground focus:outline-none"
+            >
+              <option value="todos">Todos os tipos</option>
+              <option value="IMOBILIARIA">Imobiliárias (PJ)</option>
+              <option value="AUTONOMO">Autônomos (PF)</option>
+            </select>
+
+            {/* Status Selector Pill */}
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="h-9 rounded-full border border-black/[0.08] dark:border-white/[0.10] bg-muted/30 px-3 text-xs font-semibold text-foreground focus:outline-none"
+            >
+              <option value="todos">Todos os status</option>
+              <option value="ativo">Ativos</option>
+              <option value="pendente">Pendentes</option>
+              <option value="suspenso">Suspensos</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Table Content */}
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs">
+            <thead className="border-b border-black/[0.06] dark:border-white/[0.08] bg-muted/20 text-[10px] font-black uppercase tracking-wider text-muted-foreground">
+              <tr>
+                <th className="py-3 px-5">Conta / Cliente</th>
+                <th className="py-3 px-4">Tipo</th>
+                <th className="py-3 px-4">Documento</th>
+                <th className="py-3 px-4">Plano</th>
+                <th className="py-3 px-4 text-center">Corretores</th>
+                <th className="py-3 px-4 text-center">Imóveis</th>
+                <th className="py-3 px-4">Status</th>
+                <th className="py-3 px-5 text-right">Ação</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-black/[0.04] dark:divide-white/[0.04]">
+              {filtered.map((acc) => {
+                const isMaster = acc.plan.includes("Master")
+                const isSuspended = acc.status === "Suspenso"
+                const isPending = acc.status === "Pendente"
+
+                return (
+                  <tr key={acc.id} className="hover:bg-muted/30 transition-colors">
+                    <td className="py-3.5 px-5 font-bold text-foreground">
+                      <div className="flex items-center gap-2.5">
+                        <div
+                          className={`h-8 w-8 rounded-xl flex items-center justify-center shrink-0 font-bold text-xs ${
+                            acc.accountType === "IMOBILIARIA"
+                              ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                              : "bg-purple-500/10 text-purple-600 dark:text-purple-400"
+                          }`}
+                        >
+                          {acc.accountType === "IMOBILIARIA" ? (
+                            <Building2 className="h-4 w-4" />
+                          ) : (
+                            <User className="h-4 w-4" />
+                          )}
+                        </div>
+                        <div>
+                          <span className="block">{acc.name}</span>
+                          <span className="text-[10px] text-muted-foreground font-normal">
+                            Desde {acc.joinedAt}
+                          </span>
+                        </div>
                       </div>
-                      <div>
-                        <span>{account.name}</span>
-                      </div>
                     </td>
-                    <td className="py-3 px-4">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                        account.accountType === "AUTONOMO"
-                          ? "bg-purple-100 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300"
-                          : "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300"
-                      }`}>
-                        {account.accountType === "AUTONOMO" ? "Autônomo" : "Imobiliária"}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 text-muted-foreground font-mono text-xs">{account.document}</td>
-                    <td className="py-3 px-4">
-                      {account.plan.includes("Master") ? (
-                        <span className="rounded-full bg-amber-500/15 border border-amber-500/40 px-2.5 py-0.5 text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1 w-fit shadow-sm">
-                          <Crown className="h-3 w-3" /> Master VIP
-                        </span>
-                      ) : (
-                        <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
-                          {account.plan}
-                        </span>
-                      )}
-                    </td>
-                    <td className="py-3 px-4">{account.brokersCount}</td>
-                    <td className="py-3 px-4">{account.propertiesCount}</td>
-                    <td className="py-3 px-4">
-                      {account.status === "Ativo" && (
-                        <span className="flex items-center gap-1 text-emerald-600 text-xs font-medium">
-                          <CheckCircle2 className="h-3.5 w-3.5" /> Ativo
-                        </span>
-                      )}
-                      {account.status === "Pendente" && (
-                        <span className="flex items-center gap-1 text-amber-500 text-xs font-medium">
-                          <Clock className="h-3.5 w-3.5" /> Pendente
-                        </span>
-                      )}
-                      {account.status === "Suspenso" && (
-                        <span className="flex items-center gap-1 text-red-500 text-xs font-medium">
-                          <AlertCircle className="h-3.5 w-3.5" /> Suspenso
-                        </span>
-                      )}
-                    </td>
-                    <td className="py-3 px-4 text-right">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => toggleStatus(account.id)}
-                        className={`h-7 text-xs ${
-                          account.status === "Ativo"
-                            ? "text-red-500 hover:text-red-600 hover:bg-red-50"
-                            : "text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50"
+
+                    <td className="py-3.5 px-4">
+                      <span
+                        className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
+                          acc.accountType === "IMOBILIARIA"
+                            ? "bg-blue-500/10 text-blue-700 dark:text-blue-300"
+                            : "bg-purple-500/10 text-purple-700 dark:text-purple-300"
                         }`}
                       >
-                        {account.status === "Ativo" ? "Bloquear" : "Ativar"}
-                      </Button>
+                        {acc.accountType === "IMOBILIARIA" ? "PJ • Imobiliária" : "PF • Autônomo"}
+                      </span>
+                    </td>
+
+                    <td className="py-3.5 px-4 font-mono text-[11px] text-muted-foreground">
+                      {acc.document}
+                    </td>
+
+                    <td className="py-3.5 px-4">
+                      {isMaster ? (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/20 px-2.5 py-0.5 text-[10px] font-black uppercase">
+                          <Crown className="h-3 w-3" />
+                          {acc.plan}
+                        </span>
+                      ) : (
+                        <span className="font-semibold text-foreground">
+                          {acc.plan}
+                        </span>
+                      )}
+                    </td>
+
+                    <td className="py-3.5 px-4 text-center font-bold text-foreground">
+                      {acc.brokersCount}
+                    </td>
+
+                    <td className="py-3.5 px-4 text-center font-bold text-foreground">
+                      {acc.propertiesCount}
+                    </td>
+
+                    <td className="py-3.5 px-4">
+                      <span
+                        className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
+                          isSuspended
+                            ? "bg-rose-500/10 text-rose-600 dark:text-rose-400"
+                            : isPending
+                            ? "bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                            : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                        }`}
+                      >
+                        <span
+                          className={`h-1.5 w-1.5 rounded-full ${
+                            isSuspended
+                              ? "bg-rose-500"
+                              : isPending
+                              ? "bg-amber-500"
+                              : "bg-emerald-500"
+                          }`}
+                        />
+                        {acc.status}
+                      </span>
+                    </td>
+
+                    <td className="py-3.5 px-5 text-right">
+                      <button
+                        onClick={() => toggleStatus(acc.id)}
+                        className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bold transition-all ${
+                          isSuspended
+                            ? "bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20"
+                            : "bg-muted hover:bg-rose-500/10 hover:text-rose-600 text-muted-foreground"
+                        }`}
+                      >
+                        {isSuspended ? (
+                          <>
+                            <Check className="h-3 w-3" /> Reativar
+                          </>
+                        ) : (
+                          <>
+                            <Ban className="h-3 w-3" /> Suspender
+                          </>
+                        )}
+                      </button>
                     </td>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardContent>
-      </Card>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   )
 }

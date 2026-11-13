@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -12,7 +11,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Check, CreditCard, DollarSign, TrendingUp, Zap, Crown, Lock, User, Building2, Sparkles } from "lucide-react"
+import { 
+  Check, 
+  CreditCard, 
+  DollarSign, 
+  TrendingUp, 
+  Zap, 
+  Crown, 
+  Lock, 
+  User, 
+  Building2, 
+  Sparkles,
+  Plus,
+  ArrowUpRight,
+  Filter,
+  CheckCircle2
+} from "lucide-react"
 
 interface Plan {
   id: string
@@ -32,15 +46,17 @@ const initialPlans: Plan[] = [
     id: "plan-autonomo",
     name: "Autônomo Pro",
     target: "Corretor Autônomo",
-    price: "R$ 190",
+    price: "R$ 89",
     period: "/mês",
-    description: "Projetado sob medida para o corretor que opera de forma independente.",
+    description: "Projetado sob medida para o corretor autônomo individual.",
     features: [
       "1 Corretor Autônomo (CPF / CRECI)",
-      "Até 60 imóveis ativos no portfólio",
+      "Até 50 imóveis ativos no portfólio",
+      "Vitrine Pública Exclusiva (/v/seu-nome)",
       "Funil de Vendas Kanban individual",
       "Disparo no WhatsApp com 1 clique",
-      "Busca automática de CEP (ViaCEP)",
+      "Preenchimento automático por CEP (ViaCEP)",
+      "App Mobile PWA com notificações push",
       "Suporte via WhatsApp",
     ],
     activeCount: 42,
@@ -50,13 +66,13 @@ const initialPlans: Plan[] = [
     id: "plan-basico",
     name: "Imobiliária Básico",
     target: "Imobiliária",
-    price: "R$ 490",
+    price: "R$ 149",
     period: "/mês",
     description: "Para pequenas imobiliárias locais iniciando a digitalização.",
     features: [
-      "Até 5 corretores cadastrados",
-      "Até 150 imóveis cadastrados",
-      "Gestão de aluguéis e boletos",
+      "Até 3 corretores cadastrados",
+      "Até 100 imóveis cadastrados",
+      "Gestão básica de aluguéis e boletos",
       "Pipeline de vendas compartilhado",
       "Suporte por e-mail e chat",
     ],
@@ -65,35 +81,36 @@ const initialPlans: Plan[] = [
   },
   {
     id: "plan-pro",
-    name: "Imobiliária Profissional",
+    name: "Imobiliária Prime",
     target: "Imobiliária",
-    price: "R$ 1.250",
+    price: "R$ 249",
     period: "/mês",
     description: "Para imobiliárias consolidadas que buscam automações e escala.",
     features: [
-      "Até 25 corretores na equipe",
-      "Até 600 imóveis cadastrados",
-      "Módulo financeiro e comissões",
-      "Controle de reajustes (IGP-M/IPCA)",
-      "Gestão multi-usuários e permissões",
-      "Suporte prioritário",
+      "Até 10 corretores na equipe",
+      "Imóveis e Carteira ILIMITADOS",
+      "Vitrine Geral + Vitrines dos Corretores",
+      "Gestão de Aluguéis e reajuste IGP-M/IPCA",
+      "Divisão automatizada de comissões",
+      "Simulador de financiamento bancário",
+      "Suporte Prioritário VIP",
     ],
     activeCount: 112,
     highlight: true,
   },
   {
     id: "plan-enterprise",
-    name: "Enterprise",
+    name: "Master Enterprise",
     target: "Imobiliária",
-    price: "R$ 2.890",
+    price: "R$ 589",
     period: "/mês",
     description: "Para redes de imobiliárias, franquias e incorporadoras.",
     features: [
-      "Corretores ilimitados",
-      "Imóveis ilimitados",
-      "Multi-filiais e multi-contas",
-      "API aberta e webhooks",
-      "Exportação para portais (ZAP, VivaReal)",
+      "Corretores e Filiais ILIMITADOS",
+      "Imóveis e Armazenamento ILIMITADOS",
+      "Múltiplas Vitrines e Domínio Próprio",
+      "Assinatura Eletrônica de Contratos",
+      "Integração com Portais (ZAP, VivaReal, OLX)",
       "Gerente de contas dedicado",
     ],
     activeCount: 30,
@@ -101,18 +118,18 @@ const initialPlans: Plan[] = [
   },
   {
     id: "plan-master",
-    name: "Master VIP",
+    name: "Master VIP Super Admin",
     target: "Super Admin VIP",
     price: "Concessão Direta",
     period: "(Cortesia / Parceria)",
-    description: "Plano exclusivo controlado pelo Super Admin. Não é exibido publicamente para contratação.",
+    description: "Plano exclusivo controlado pelo Super Admin. Concessão irrestrita sem cobrança automática.",
     features: [
       "🔒 Oculto na vitrine de contratação",
       "Atribuição exclusiva pelo Super Admin",
       "Funções idênticas ao Enterprise (Ilimitado)",
       "Corretores e Imóveis ILIMITADOS",
       "Aplicável tanto a Imobiliárias quanto a Corretores",
-      "Isenção de mensalidade ou valor sob medida",
+      "Isenção total de mensalidade",
     ],
     activeCount: 8,
     highlight: false,
@@ -123,7 +140,6 @@ const initialPlans: Plan[] = [
 export default function SubscriptionsPage() {
   const [plans, setPlans] = useState<Plan[]>(initialPlans)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [editingPlan, setEditingPlan] = useState<Plan | null>(null)
   const [categoryFilter, setCategoryFilter] = useState("todos")
 
   // Form State
@@ -142,7 +158,7 @@ export default function SubscriptionsPage() {
       target,
       price: price.startsWith("R$") ? price : `R$ ${price}`,
       period: "/mês",
-      description: description || "Plano personalizado",
+      description: description || "Plano comercial personalizado",
       features: ["Acesso completo ao CRM", "Suporte prioritário"],
       activeCount: 0,
       highlight: false,
@@ -155,16 +171,6 @@ export default function SubscriptionsPage() {
     setDescription("")
   }
 
-  const handleSaveEdit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!editingPlan) return
-
-    setPlans((prev) =>
-      prev.map((p) => (p.id === editingPlan.id ? editingPlan : p))
-    )
-    setEditingPlan(null)
-  }
-
   const filteredPlans = plans.filter((p) => {
     if (categoryFilter === "todos") return true
     if (categoryFilter === "autonomo") return p.target === "Corretor Autônomo"
@@ -174,284 +180,335 @@ export default function SubscriptionsPage() {
   })
 
   return (
-    <div className="flex-1 space-y-6 p-6">
+    <div className="flex-1 space-y-6 p-4 sm:p-6 max-w-7xl mx-auto">
+      {/* Header Bar */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Planos & Assinaturas</h1>
-          <p className="text-sm text-muted-foreground">
-            Gerenciamento de planos comerciais para Imobiliárias, Corretores Autônomos e concessão do Plano Master VIP.
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+              Planos & Assinaturas
+            </h1>
+            <span className="rounded-full bg-purple-500/10 text-purple-700 dark:text-purple-300 px-2.5 py-0.5 text-[10px] font-black uppercase">
+              Monetização
+            </span>
+          </div>
+          <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
+            Gerenciamento de planos comerciais para Imobiliárias (PJ), Autônomos (PF) e concessão do Plano Master VIP.
           </p>
         </div>
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="flex items-center gap-2">
-              <Zap className="h-4 w-4" />
-              Criar Novo Plano
-            </Button>
+            <button className="inline-flex items-center gap-2 rounded-full bg-foreground text-background hover:bg-foreground/90 px-5 py-2.5 text-xs font-bold shadow-md transition-all hover:scale-102">
+              <Plus className="h-4 w-4" />
+              <span>Criar Novo Plano</span>
+            </button>
           </DialogTrigger>
-          <DialogContent className="max-w-md">
+          <DialogContent className="max-w-md rounded-[28px] border border-black/[0.08] dark:border-white/[0.12] bg-background/95 backdrop-blur-2xl p-6 shadow-2xl">
             <DialogHeader>
-              <DialogTitle>Criar Novo Plano Comercial</DialogTitle>
-              <DialogDescription>
-                Defina os parâmetros para autônomos ou imobiliárias.
+              <DialogTitle className="text-lg font-black text-foreground">Criar Novo Plano Comercial</DialogTitle>
+              <DialogDescription className="text-xs text-muted-foreground">
+                Defina as regras de precificação e limites para o plano.
               </DialogDescription>
             </DialogHeader>
 
-            <form onSubmit={handleCreatePlan} className="space-y-3 pt-2">
+            <form onSubmit={handleCreatePlan} className="space-y-3.5 pt-2">
               <div className="space-y-1">
-                <label className="text-xs font-semibold">Nome do Plano</label>
+                <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+                  Nome do Plano
+                </label>
                 <input
                   type="text"
                   required
-                  placeholder="Ex: Start Autônomo"
+                  placeholder="Ex: Plano Expansão Regional"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] bg-muted/20 px-3.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold">Público-Alvo</label>
-                  <select
-                    value={target}
-                    onChange={(e) => setTarget(e.target.value as any)}
-                    className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              <div className="space-y-1">
+                <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+                  Público Alvo
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setTarget("Corretor Autônomo")}
+                    className={`p-2.5 rounded-2xl border text-xs font-bold transition-all ${
+                      target === "Corretor Autônomo"
+                        ? "border-foreground bg-foreground text-background"
+                        : "border-black/[0.08] dark:border-white/[0.10] bg-muted/30 text-muted-foreground"
+                    }`}
                   >
-                    <option value="Corretor Autônomo">Corretor Autônomo</option>
-                    <option value="Imobiliária">Imobiliária</option>
-                  </select>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold">Valor Mensal (R$)</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Ex: 290"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
-                    className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                  />
+                    Corretor Autônomo (PF)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setTarget("Imobiliária")}
+                    className={`p-2.5 rounded-2xl border text-xs font-bold transition-all ${
+                      target === "Imobiliária"
+                        ? "border-foreground bg-foreground text-background"
+                        : "border-black/[0.08] dark:border-white/[0.10] bg-muted/30 text-muted-foreground"
+                    }`}
+                  >
+                    Imobiliária (PJ)
+                  </button>
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold">Descrição</label>
+                <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+                  Valor Mensal (R$)
+                </label>
                 <input
                   type="text"
-                  placeholder="Perfil indicado para este plano..."
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  required
+                  placeholder="Ex: 349"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] bg-muted/20 px-3.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
                 />
               </div>
 
-              <DialogFooter className="pt-3">
-                <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
+              <div className="space-y-1">
+                <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+                  Descrição Breve
+                </label>
+                <textarea
+                  rows={2}
+                  placeholder="Descreva a finalidade deste plano..."
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="w-full rounded-2xl border border-black/[0.08] dark:border-white/[0.10] bg-muted/20 p-3 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
+                />
+              </div>
+
+              <DialogFooter className="pt-3 gap-2">
+                <Button 
+                  type="button" 
+                  variant="ghost" 
+                  onClick={() => setIsDialogOpen(false)}
+                  className="rounded-full text-xs"
+                >
                   Cancelar
                 </Button>
-                <Button type="submit">Salvar Plano</Button>
+                <Button 
+                  type="submit"
+                  className="rounded-full text-xs font-bold"
+                >
+                  Criar Plano
+                </Button>
               </DialogFooter>
             </form>
           </DialogContent>
         </Dialog>
       </div>
 
-      {/* KPI Cards */}
-      <div className="grid gap-4 md:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">MRR (Faturamento Recorrente)</CardTitle>
-            <DollarSign className="h-4 w-4 text-emerald-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">R$ 292.480</div>
-            <p className="text-xs text-emerald-600 flex items-center gap-1 mt-1">
-              <TrendingUp className="h-3 w-3" /> +9.2% este mês
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Imobiliárias Ativas</CardTitle>
-            <Building2 className="h-4 w-4 text-blue-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">210</div>
-            <p className="text-xs text-muted-foreground mt-1">Contas corporativas</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Corretores Autônomos</CardTitle>
-            <User className="h-4 w-4 text-purple-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-purple-600">42</div>
-            <p className="text-xs text-muted-foreground mt-1">Profissionais independentes</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Contas Plano Master</CardTitle>
-            <Crown className="h-4 w-4 text-amber-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-amber-500">8</div>
-            <p className="text-xs text-muted-foreground mt-1">VIPs concedidos manualmente</p>
-          </CardContent>
-        </Card>
+      {/* KPI Cards in Apple Prime Glass */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+        <div className="glass-card glass-card-hover rounded-3xl p-4 sm:p-5 flex flex-col justify-between border border-black/[0.06] dark:border-white/[0.08]">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+              Receita Mensal MRR
+            </span>
+            <div className="h-8 w-8 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+              <DollarSign className="h-4 w-4" />
+            </div>
+          </div>
+          <div className="mt-3">
+            <div className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
+              R$ 284.500
+            </div>
+            <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-bold mt-0.5">+8.1% vs mês anterior</p>
+          </div>
+        </div>
+
+        <div className="glass-card glass-card-hover rounded-3xl p-4 sm:p-5 flex flex-col justify-between border border-black/[0.06] dark:border-white/[0.08]">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+              Assinaturas Pagas
+            </span>
+            <div className="h-8 w-8 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+              <CreditCard className="h-4 w-4" />
+            </div>
+          </div>
+          <div className="mt-3">
+            <div className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
+              {plans.reduce((acc, p) => acc + (p.isMaster ? 0 : p.activeCount), 0)}
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-0.5">Em cobrança recorrente</p>
+          </div>
+        </div>
+
+        <div className="glass-card glass-card-hover rounded-3xl p-4 sm:p-5 flex flex-col justify-between border border-black/[0.06] dark:border-white/[0.08]">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+              Ticket Médio
+            </span>
+            <div className="h-8 w-8 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center">
+              <TrendingUp className="h-4 w-4" />
+            </div>
+          </div>
+          <div className="mt-3">
+            <div className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
+              R$ 1.350
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-0.5">Por conta ativa/mês</p>
+          </div>
+        </div>
+
+        <div className="glass-card glass-card-hover rounded-3xl p-4 sm:p-5 flex flex-col justify-between border border-black/[0.06] dark:border-white/[0.08]">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+              Master VIP Atribuídos
+            </span>
+            <div className="h-8 w-8 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+              <Crown className="h-4 w-4" />
+            </div>
+          </div>
+          <div className="mt-3">
+            <div className="text-2xl sm:text-3xl font-black tracking-tight text-amber-500">
+              8 Contas
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-0.5">Concessão do Super Admin</p>
+          </div>
+        </div>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-2 border-b pb-2">
-        <Button
-          variant={categoryFilter === "todos" ? "default" : "outline"}
-          size="sm"
+      <div className="flex items-center gap-2">
+        <button
           onClick={() => setCategoryFilter("todos")}
-          className="text-xs h-8"
+          className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
+            categoryFilter === "todos"
+              ? "bg-foreground text-background shadow-sm"
+              : "border border-black/[0.08] dark:border-white/[0.10] bg-muted/30 text-muted-foreground hover:text-foreground"
+          }`}
         >
           Todos os Planos ({plans.length})
-        </Button>
-        <Button
-          variant={categoryFilter === "autonomo" ? "default" : "outline"}
-          size="sm"
+        </button>
+        <button
           onClick={() => setCategoryFilter("autonomo")}
-          className="text-xs h-8"
+          className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
+            categoryFilter === "autonomo"
+              ? "bg-foreground text-background shadow-sm"
+              : "border border-black/[0.08] dark:border-white/[0.10] bg-muted/30 text-muted-foreground hover:text-foreground"
+          }`}
         >
-          Corretores Autônomos
-        </Button>
-        <Button
-          variant={categoryFilter === "imobiliaria" ? "default" : "outline"}
-          size="sm"
+          Autônomos (PF)
+        </button>
+        <button
           onClick={() => setCategoryFilter("imobiliaria")}
-          className="text-xs h-8"
+          className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${
+            categoryFilter === "imobiliaria"
+              ? "bg-foreground text-background shadow-sm"
+              : "border border-black/[0.08] dark:border-white/[0.10] bg-muted/30 text-muted-foreground hover:text-foreground"
+          }`}
         >
           Imobiliárias (PJ)
-        </Button>
-        <Button
-          variant={categoryFilter === "master" ? "default" : "outline"}
-          size="sm"
+        </button>
+        <button
           onClick={() => setCategoryFilter("master")}
-          className="text-xs h-8 border-amber-500/50 text-amber-600 dark:text-amber-400"
+          className={`px-4 py-2 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 ${
+            categoryFilter === "master"
+              ? "bg-amber-500 text-black shadow-sm font-extrabold"
+              : "border border-black/[0.08] dark:border-white/[0.10] bg-muted/30 text-muted-foreground hover:text-foreground"
+          }`}
         >
-          <Crown className="h-3.5 w-3.5 mr-1" /> Master VIP (Exclusivo Super Admin)
-        </Button>
+          <Crown className="h-3.5 w-3.5" />
+          <span>Exclusivo Master VIP</span>
+        </button>
       </div>
 
-      {/* Plans Grid */}
+      {/* Plan Cards in Apple Prime Glass */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {filteredPlans.map((plan) => (
-          <Card
-            key={plan.id}
-            className={`relative flex flex-col transition-all ${
-              plan.isMaster
-                ? "border-2 border-amber-500/80 bg-gradient-to-b from-amber-500/5 via-card to-card shadow-lg shadow-amber-500/10"
-                : plan.highlight
-                ? "border-primary shadow-md"
-                : ""
-            }`}
-          >
-            {plan.isMaster && (
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-amber-500 text-slate-950 px-3 py-1 text-xs font-bold flex items-center gap-1 shadow">
-                <Crown className="h-3.5 w-3.5" /> Exclusivo Super Admin (Oculto)
-              </span>
-            )}
-            {plan.highlight && !plan.isMaster && (
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
-                Mais Popular
-              </span>
-            )}
-            <CardHeader className="pt-6">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-xl flex items-center gap-2">
-                  {plan.name}
-                  {plan.isMaster && <Sparkles className="h-4 w-4 text-amber-500" />}
-                </CardTitle>
-                <span className="rounded bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-                  {plan.target}
-                </span>
-              </div>
-              <CardDescription className="text-xs mt-1">{plan.description}</CardDescription>
-              <div className="mt-4 flex items-baseline">
-                <span className={`text-3xl font-extrabold tracking-tight ${plan.isMaster ? "text-amber-500" : ""}`}>
-                  {plan.price}
-                </span>
-                <span className="ml-1 text-xs text-muted-foreground">{plan.period}</span>
-              </div>
-              <p className="text-xs font-medium text-primary mt-1">
-                {plan.activeCount} contas utilizando este plano
-              </p>
-            </CardHeader>
-            <CardContent className="flex flex-1 flex-col justify-between space-y-6">
-              <ul className="space-y-2.5 text-xs">
-                {plan.features.map((feat, idx) => (
-                  <li key={idx} className="flex items-center gap-2">
-                    {plan.isMaster ? (
-                      <Crown className="h-3.5 w-3.5 text-amber-500 shrink-0" />
-                    ) : (
-                      <Check className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
-                    )}
-                    <span className={plan.isMaster ? "font-medium" : ""}>{feat}</span>
-                  </li>
-                ))}
-              </ul>
-              <Button
-                variant={plan.isMaster ? "default" : plan.highlight ? "default" : "outline"}
-                className={`w-full ${
-                  plan.isMaster
-                    ? "bg-amber-500 text-slate-950 hover:bg-amber-400 font-bold"
-                    : ""
-                }`}
-                onClick={() => setEditingPlan(plan)}
-              >
-                {plan.isMaster ? "Configurar Benefícios Master" : "Editar Plano"}
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+        {filteredPlans.map((p) => {
+          const isMaster = p.isMaster
+          const isHighlight = p.highlight
 
-      {/* Edit Plan Dialog */}
-      {editingPlan && (
-        <Dialog open={Boolean(editingPlan)} onOpenChange={() => setEditingPlan(null)}>
-          <DialogContent className="max-w-md">
-            <DialogHeader>
-              <DialogTitle>Editar {editingPlan.name}</DialogTitle>
-              <DialogDescription>Ajuste os parâmetros deste plano.</DialogDescription>
-            </DialogHeader>
-            <form onSubmit={handleSaveEdit} className="space-y-3 pt-2">
-              <div className="space-y-1">
-                <label className="text-xs font-semibold">Valor / Condição</label>
-                <input
-                  type="text"
-                  required
-                  value={editingPlan.price}
-                  onChange={(e) => setEditingPlan({ ...editingPlan, price: e.target.value })}
-                  className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm"
-                />
+          return (
+            <div
+              key={p.id}
+              className={`rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 relative ${
+                isMaster
+                  ? "border border-amber-500/30 bg-gradient-to-b from-amber-500/[0.08] via-background to-background backdrop-blur-xl shadow-lg"
+                  : isHighlight
+                  ? "border-2 border-lime-400/80 bg-lime-400/[0.04] backdrop-blur-xl shadow-xl shadow-lime-400/10"
+                  : "glass-card border border-black/[0.06] dark:border-white/[0.08]"
+              }`}
+            >
+              {isMaster && (
+                <div className="absolute -top-3 right-6">
+                  <span className="rounded-full bg-amber-500 text-black px-3 py-0.5 text-[10px] font-black uppercase tracking-wider shadow-sm flex items-center gap-1">
+                    <Crown className="h-3 w-3" /> Exclusivo Super Admin
+                  </span>
+                </div>
+              )}
+
+              {isHighlight && (
+                <div className="absolute -top-3 right-6">
+                  <span className="rounded-full bg-lime-400 text-black px-3 py-0.5 text-[10px] font-black uppercase tracking-wider shadow-sm">
+                    Mais Popular (PJ)
+                  </span>
+                </div>
+              )}
+
+              <div className="space-y-4">
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                    {p.target}
+                  </span>
+                  <h3 className="text-xl font-black text-foreground mt-0.5 flex items-center gap-2">
+                    {p.name}
+                  </h3>
+                  <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                    {p.description}
+                  </p>
+                </div>
+
+                <div className="pt-2 pb-1 border-b border-black/[0.06] dark:border-white/[0.08]">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-3xl font-black tracking-tight text-foreground">
+                      {p.price}
+                    </span>
+                    <span className="text-xs text-muted-foreground font-semibold">
+                      {p.period}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5 mt-2 text-xs font-bold text-foreground">
+                    <div className="h-2 w-2 rounded-full bg-emerald-500" />
+                    <span>{p.activeCount} assinaturas ativas</span>
+                  </div>
+                </div>
+
+                <div className="space-y-2 pt-1">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-muted-foreground block">
+                    Benefícios Inclusos:
+                  </span>
+                  <ul className="space-y-1.5 text-xs text-muted-foreground">
+                    {p.features.map((feat, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <Check className="h-3.5 w-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                        <span className="leading-tight text-foreground/90">{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-              <div className="space-y-1">
-                <label className="text-xs font-semibold">Descrição</label>
-                <input
-                  type="text"
-                  value={editingPlan.description}
-                  onChange={(e) => setEditingPlan({ ...editingPlan, description: e.target.value })}
-                  className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm"
-                />
+
+              <div className="pt-6 border-t border-black/[0.06] dark:border-white/[0.08] mt-6 flex items-center gap-2">
+                <button
+                  onClick={() => alert(`Plano ${p.name} selecionado para edição de parâmetros.`)}
+                  className="flex-1 py-2.5 px-4 rounded-full border border-black/[0.08] dark:border-white/[0.10] bg-muted/40 hover:bg-muted/70 text-xs font-bold text-foreground transition-all"
+                >
+                  Editar Parâmetros
+                </button>
               </div>
-              <DialogFooter className="pt-3">
-                <Button type="button" variant="outline" onClick={() => setEditingPlan(null)}>
-                  Cancelar
-                </Button>
-                <Button type="submit">Salvar Alterações</Button>
-              </DialogFooter>
-            </form>
-          </DialogContent>
-        </Dialog>
-      )}
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }

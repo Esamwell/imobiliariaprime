@@ -1,9 +1,21 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { BarChart3, Download, FileSpreadsheet, FileText, Filter, Check } from "lucide-react"
+import { 
+  BarChart3, 
+  Download, 
+  FileSpreadsheet, 
+  FileText, 
+  Filter, 
+  Check, 
+  DollarSign, 
+  TrendingUp, 
+  ShieldCheck, 
+  Building2,
+  Layers,
+  ArrowUpRight
+} from "lucide-react"
 
 export default function ReportsPage() {
   const [downloading, setDownloading] = useState<string | null>(null)
@@ -31,132 +43,174 @@ export default function ReportsPage() {
   }
 
   return (
-    <div className="flex-1 space-y-6 p-6">
+    <div className="flex-1 space-y-6 p-4 sm:p-6 max-w-7xl mx-auto">
+      {/* Header Bar */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Relatórios & Analytics</h1>
-          <p className="text-sm text-muted-foreground">Exporte métricas de desempenho, crescimento do ecossistema e relatórios contábeis.</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button
-            onClick={() => downloadCsv("relatorio_geral_sistema")}
-            className="flex items-center gap-2"
-          >
-            <Download className="h-4 w-4" />
-            Exportar Geral (CSV)
-          </Button>
-        </div>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-4">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Faturamento Anual Previsto</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-emerald-600">R$ 3.414.000</div>
-            <p className="text-xs text-muted-foreground mt-1">ARR projetado</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Total de Negociações</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">8.420</div>
-            <p className="text-xs text-muted-foreground mt-1">Negócios fechados no sistema</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Volume Transacionado</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-blue-600">R$ 142.8 Mi</div>
-            <p className="text-xs text-muted-foreground mt-1">VGV gerado pelos clientes</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Uptime da Plataforma</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-emerald-600">99.98%</div>
-            <p className="text-xs text-muted-foreground mt-1">Últimos 90 dias</p>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Relatórios Disponíveis para Download</CardTitle>
-          <CardDescription>Gere documentos analíticos para auditoria, contabilidade ou gestão estratégica.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="divide-y">
-            {[
-              {
-                id: "dre",
-                title: "Demonstrativo de Receitas e Faturamento (DRE)",
-                desc: "Detalhamento de assinaturas pagas, inadimplência e projeções financeiras.",
-                type: "Financeiro",
-                format: "CSV / Planilha",
-              },
-              {
-                id: "crescimento",
-                title: "Relatório de Crescimento e Retenção (Cohort & Churn)",
-                desc: "Análise de ciclo de vida das imobiliárias, adesão de novos corretores e taxa de churn.",
-                type: "Métricas",
-                format: "CSV / Planilha",
-              },
-              {
-                id: "imoveis",
-                title: "Inventário Global de Imóveis e Carteira",
-                desc: "Consolidação de imóveis ativos, alugados e vendidos na plataforma.",
-                type: "Operacional",
-                format: "CSV / Planilha",
-              },
-              {
-                id: "auditoria",
-                title: "Log de Atividades e Auditoria de Segurança",
-                desc: "Histórico completo de acessos, alterações de permissões e tentativas de login.",
-                type: "Segurança",
-                format: "CSV / Log",
-              },
-            ].map((rep) => (
-              <div key={rep.id} className="flex flex-col sm:flex-row sm:items-center justify-between py-4 gap-4">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <FileText className="h-4 w-4 text-primary" />
-                    <h3 className="font-medium text-sm">{rep.title}</h3>
-                    <span className="rounded bg-muted px-2 py-0.5 text-xs text-muted-foreground">{rep.type}</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">{rep.desc}</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => downloadCsv(rep.title)}
-                    className="flex items-center gap-1.5 text-xs"
-                  >
-                    {downloading === rep.title ? (
-                      <>
-                        <Check className="h-3.5 w-3.5 text-emerald-600" /> Baixado!
-                      </>
-                    ) : (
-                      <>
-                        <FileSpreadsheet className="h-3.5 w-3.5 text-emerald-600" />
-                        Baixar {rep.format}
-                      </>
-                    )}
-                  </Button>
-                </div>
-              </div>
-            ))}
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+              Relatórios & Analytics
+            </h1>
+            <span className="rounded-full bg-purple-500/10 text-purple-700 dark:text-purple-300 px-2.5 py-0.5 text-[10px] font-black uppercase">
+              Inteligência
+            </span>
           </div>
-        </CardContent>
-      </Card>
+          <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
+            Exporte métricas de faturamento consolidado, crescimento do ecossistema e relatórios contábeis em CSV.
+          </p>
+        </div>
+
+        <button
+          onClick={() => downloadCsv("relatorio_geral_sistema")}
+          className="inline-flex items-center gap-2 rounded-full bg-foreground text-background hover:bg-foreground/90 px-5 py-2.5 text-xs font-bold shadow-md transition-all hover:scale-102"
+        >
+          <Download className="h-4 w-4" />
+          <span>Exportar Geral (CSV)</span>
+        </button>
+      </div>
+
+      {/* KPI Cards in Apple Prime Glass */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+        <div className="glass-card glass-card-hover rounded-3xl p-4 sm:p-5 flex flex-col justify-between border border-black/[0.06] dark:border-white/[0.08]">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+              ARR Projetado
+            </span>
+            <div className="h-8 w-8 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+              <DollarSign className="h-4 w-4" />
+            </div>
+          </div>
+          <div className="mt-3">
+            <div className="text-2xl sm:text-3xl font-black tracking-tight text-emerald-600 dark:text-emerald-400">
+              R$ 3.414.000
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-0.5">Faturamento anual previsto</p>
+          </div>
+        </div>
+
+        <div className="glass-card glass-card-hover rounded-3xl p-4 sm:p-5 flex flex-col justify-between border border-black/[0.06] dark:border-white/[0.08]">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+              Deals Fechados
+            </span>
+            <div className="h-8 w-8 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+              <TrendingUp className="h-4 w-4" />
+            </div>
+          </div>
+          <div className="mt-3">
+            <div className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
+              8.420
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-0.5">Negócios no sistema</p>
+          </div>
+        </div>
+
+        <div className="glass-card glass-card-hover rounded-3xl p-4 sm:p-5 flex flex-col justify-between border border-black/[0.06] dark:border-white/[0.08]">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+              VGV Transacionado
+            </span>
+            <div className="h-8 w-8 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center">
+              <Building2 className="h-4 w-4" />
+            </div>
+          </div>
+          <div className="mt-3">
+            <div className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
+              R$ 142.8 Mi
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-0.5">Volume dos clientes</p>
+          </div>
+        </div>
+
+        <div className="glass-card glass-card-hover rounded-3xl p-4 sm:p-5 flex flex-col justify-between border border-black/[0.06] dark:border-white/[0.08]">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+              Uptime do Cluster
+            </span>
+            <div className="h-8 w-8 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+              <ShieldCheck className="h-4 w-4" />
+            </div>
+          </div>
+          <div className="mt-3">
+            <div className="text-2xl sm:text-3xl font-black tracking-tight text-emerald-600 dark:text-emerald-400">
+              99.98%
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-0.5">Últimos 90 dias</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Reports List Card in Apple Prime Glass */}
+      <div className="glass-card rounded-3xl border border-black/[0.06] dark:border-white/[0.08] shadow-sm overflow-hidden p-6">
+        <div className="mb-4">
+          <h3 className="text-base font-extrabold text-foreground">Relatórios Disponíveis para Download</h3>
+          <p className="text-xs text-muted-foreground">Gere documentos analíticos para auditoria, contabilidade ou gestão estratégica</p>
+        </div>
+
+        <div className="divide-y divide-black/[0.04] dark:divide-white/[0.04]">
+          {[
+            {
+              id: "dre",
+              title: "Demonstrativo de Receitas e Faturamento (DRE)",
+              desc: "Detalhamento de assinaturas pagas, inadimplência e projeções financeiras.",
+              type: "Financeiro",
+              format: "CSV / Planilha",
+            },
+            {
+              id: "crescimento",
+              title: "Relatório de Crescimento e Retenção (Cohort & Churn)",
+              desc: "Análise de ciclo de vida das imobiliárias, adesão de novos corretores e taxa de churn.",
+              type: "Métricas",
+              format: "CSV / Planilha",
+            },
+            {
+              id: "imoveis",
+              title: "Inventário Global de Imóveis e Carteira",
+              desc: "Consolidação de imóveis ativos, alugados e vendidos em todo o país.",
+              type: "Operacional",
+              format: "CSV / Planilha",
+            },
+            {
+              id: "auditoria",
+              title: "Log de Atividades e Auditoria de Segurança",
+              desc: "Histórico completo de acessos, alterações de permissões e tentativas de login.",
+              type: "Segurança",
+              format: "CSV / Log",
+            },
+          ].map((rep) => (
+            <div key={rep.id} className="flex flex-col sm:flex-row sm:items-center justify-between py-4 gap-3">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <FileText className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                  <h4 className="font-bold text-xs text-foreground">{rep.title}</h4>
+                  <span className="rounded-full bg-muted/60 px-2 py-0.5 text-[10px] font-bold text-muted-foreground">
+                    {rep.type}
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground">{rep.desc}</p>
+              </div>
+
+              <div>
+                <button
+                  onClick={() => downloadCsv(rep.title)}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-black/[0.08] dark:border-white/[0.10] bg-muted/30 hover:bg-muted/60 text-xs font-bold text-foreground transition-all"
+                >
+                  {downloading === rep.title ? (
+                    <>
+                      <Check className="h-3.5 w-3.5 text-emerald-500" /> Baixado!
+                    </>
+                  ) : (
+                    <>
+                      <FileSpreadsheet className="h-3.5 w-3.5 text-emerald-500" />
+                      Baixar {rep.format}
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }

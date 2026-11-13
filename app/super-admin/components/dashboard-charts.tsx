@@ -82,12 +82,12 @@ export function TenantGrowthChart() {
   if (!mounted) return <div className="h-80 w-full bg-muted/30 animate-pulse rounded-lg" />
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Crescimento de Usuários</CardTitle>
-        <CardDescription>Novos cadastros por mês no último ano</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <div className="glass-card rounded-3xl border border-black/[0.06] dark:border-white/[0.08] p-6 shadow-sm">
+      <div className="mb-4">
+        <h3 className="text-base font-extrabold text-foreground">Crescimento de Usuários</h3>
+        <p className="text-xs text-muted-foreground mt-0.5">Novos cadastros por mês no último ano</p>
+      </div>
+      <div>
         <div className="h-80">
           {mounted && (
             <Chart
@@ -99,8 +99,8 @@ export function TenantGrowthChart() {
             />
           )}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }
 
@@ -197,12 +197,12 @@ export function RevenueTrendsChart() {
   if (!mounted) return <div className="h-80 w-full bg-muted/30 animate-pulse rounded-lg" />
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Tendências de Receita</CardTitle>
-        <CardDescription>Receita por tipo de assinatura no último ano</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <div className="glass-card rounded-3xl border border-black/[0.06] dark:border-white/[0.08] p-6 shadow-sm">
+      <div className="mb-4">
+        <h3 className="text-base font-extrabold text-foreground">Tendências de Receita</h3>
+        <p className="text-xs text-muted-foreground mt-0.5">Receita por tipo de assinatura no último ano</p>
+      </div>
+      <div>
         <div className="h-80">
           {mounted && (
             <Chart
@@ -214,7 +214,7 @@ export function RevenueTrendsChart() {
             />
           )}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }

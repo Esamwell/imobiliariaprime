@@ -11,7 +11,9 @@ import {
   Home, 
   LucideIcon, 
   Settings, 
-  Users 
+  Users,
+  ShieldCheck,
+  Crown
 } from "lucide-react"
 
 interface NavItem {
@@ -68,61 +70,56 @@ export function Sidebar({ open }: SidebarProps) {
   return (
     <aside
       className={cn(
-        "flex h-full shrink-0 flex-col border-r bg-background transition-all duration-300 overflow-y-auto",
-        open ? "w-64" : "w-[70px]"
+        "flex h-full shrink-0 flex-col border-r border-border/50 bg-background/80 backdrop-blur-xl transition-all duration-300 overflow-y-auto",
+        open ? "w-64" : "w-[72px]"
       )}
     >
-      <div className="flex h-14 items-center border-b px-3">
-        <Link
-          href="/super-admin"
-          className={cn(
-            "flex items-center gap-2 font-semibold",
-            !open && "justify-center"
-          )}
-        >
-          {open ? (
-            <span className="text-lg">CRM Imobiliário</span>
-          ) : (
-            <span className="text-xl">CRM</span>
-          )}
-        </Link>
-      </div>
-      <div className="flex-1 overflow-auto py-4">
-        <nav className="grid items-start px-2 text-sm">
-          {navItems.map((item, index) => (
-            <Link
-              key={index}
-              href={item.href}
-              className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-foreground",
-                pathname === item.href &&
-                  "bg-accent text-accent-foreground hover:bg-accent hover:text-accent-foreground",
-                !open && "justify-center"
-              )}
-            >
-              <item.icon className="h-5 w-5" />
-              {open && <span>{item.title}</span>}
-            </Link>
-          ))}
+      <div className="flex-1 py-4">
+        <nav className="grid gap-1.5 px-3">
+          {navItems.map((item, index) => {
+            const isActive = pathname === item.href
+            return (
+              <Link
+                key={index}
+                href={item.href}
+                className={cn(
+                  "flex items-center gap-3 rounded-2xl px-3.5 py-2.5 text-xs font-semibold transition-all duration-200",
+                  isActive
+                    ? "bg-foreground text-background shadow-sm shadow-foreground/10"
+                    : "text-muted-foreground hover:bg-muted/60 hover:text-foreground",
+                  !open && "justify-center px-0"
+                )}
+                title={!open ? item.title : undefined}
+              >
+                <item.icon className="h-4 w-4 shrink-0" />
+                {open && <span>{item.title}</span>}
+              </Link>
+            )
+          })}
         </nav>
       </div>
-      <div className="mt-auto border-t p-3">
-        <div
-          className={cn(
-            "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground",
-            !open && "justify-center"
-          )}
-        >
-          <div className="h-7 w-7 rounded-full bg-primary/20" />
-          {open && (
-            <div>
-              <p className="text-xs font-medium leading-none">Super Admin</p>
-              <p className="text-xs leading-none text-muted-foreground">
-                admin@sistema.com
+
+      {/* Super Admin Master Access Badge */}
+      <div className="p-3 shrink-0">
+        {open ? (
+          <div className="rounded-2xl bg-gradient-to-br from-purple-500/15 via-card/80 to-transparent border border-purple-500/30 p-3.5 backdrop-blur-md shadow-sm space-y-1.5">
+            <div className="flex items-center justify-between">
+              <p className="font-bold text-xs text-purple-700 dark:text-purple-300 flex items-center gap-1.5">
+                <ShieldCheck className="h-3.5 w-3.5" /> Controle Total
               </p>
+              <span className="text-[9px] bg-purple-500/20 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-full font-black uppercase tracking-wider">
+                Root
+              </span>
             </div>
-          )}
-        </div>
+            <p className="text-muted-foreground text-[10px] leading-tight">
+              Acesso irrestrito a bancos de dados, tenants e planos.
+            </p>
+          </div>
+        ) : (
+          <div className="flex justify-center p-2 rounded-2xl bg-purple-500/10 border border-purple-500/30" title="Controle Total Root">
+            <Crown className="h-4 w-4 text-purple-500" />
+          </div>
+        )}
       </div>
     </aside>
   )
