@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Header } from "./components/header"
 import { Sidebar } from "./components/sidebar"
 
@@ -10,6 +10,22 @@ export default function SuperAdminLayout({
   children: React.ReactNode
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(true)
+
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((res) => {
+        if (!res.ok) throw new Error("Não autenticado")
+        return res.json()
+      })
+      .then((data) => {
+        if (data.user && data.user.role !== "SUPER_ADMIN") {
+          window.location.href = "/dashboard"
+        }
+      })
+      .catch(() => {
+        // Modo demo tolerante
+      })
+  }, [])
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-background">

@@ -4,6 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { TactusLogo } from "@/components/tactus-logo"
+import { CinematicHero } from "@/components/ui/cinematic-landing-hero"
 import { 
   Building, 
   Share2, 
@@ -293,9 +294,12 @@ export default function CRMLandingPage() {
         </div>
       </header>
 
-      {/* 2. Hero Section: Conectando Compradores, Proprietários e Corretores */}
+      {/* 2. Cinematic 3D Apple Landing Hero (21st.dev Component) */}
+      <CinematicHero />
+
+      {/* 3. Hero Section: Conectando Compradores, Proprietários e Corretores */}
       <main className="flex-1 relative z-10">
-        <section className="relative pt-16 sm:pt-24 pb-12 sm:pb-20 px-4 sm:px-6 lg:px-8 text-center">
+        <section className="relative pt-12 sm:pt-20 pb-12 sm:pb-20 px-4 sm:px-6 lg:px-8 text-center">
           
           <div className="max-w-4xl mx-auto space-y-6">
             
