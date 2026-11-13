@@ -36,6 +36,8 @@ model User {
   role         String   @default("CORRETOR") // SUPER_ADMIN, GESTOR, CORRETOR, FINANCEIRO
   creci        String?
   phone        String?
+  avatarUrl    String?
+  bio          String?
   status       String   @default("Ativo") // Ativo, Inativo
   lastLogin    DateTime?
   createdAt    DateTime @default(now())
