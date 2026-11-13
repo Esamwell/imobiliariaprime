@@ -57,15 +57,6 @@ export function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
       <div className="w-full">
         <div className="flex items-center justify-end gap-3">
           <Link
-            href="/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-3 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <Globe className="h-4 w-4 text-primary" />
-            <span className="hidden md:inline">Ver</span> Portal de Imóveis
-          </Link>
-          <Link
             href="/dashboard"
             className="inline-flex items-center gap-1.5 rounded-lg border border-blue-300 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 px-3 py-1.5 text-xs font-semibold text-blue-700 dark:text-blue-300 hover:bg-blue-100 transition-colors"
           >

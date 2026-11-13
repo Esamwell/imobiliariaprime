@@ -269,3 +269,4 @@ export async function GET(
     return NextResponse.json({ success: true, property: FALLBACK_PROPERTIES["AP0420"] })
   }
 }
+

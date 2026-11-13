@@ -33,7 +33,12 @@ import {
   Printer,
   DollarSign,
   Calculator,
-  ImageIcon
+  ImageIcon,
+  Copy,
+  MessageSquare,
+  CheckCircle2,
+  Settings,
+  Globe
 } from "lucide-react"
 import { fetchAddressByCep } from "@/lib/viacep"
 import { getWhatsAppLink } from "@/lib/whatsapp"
@@ -82,6 +87,54 @@ export default function PropertiesPage() {
   const [isCreateOpen, setIsCreateOpen] = useState(false)
   const [editingProperty, setEditingProperty] = useState<Property | null>(null)
   const [detailsProperty, setDetailsProperty] = useState<Property | null>(null)
+
+  // Showcase State (Minha Vitrine Pública)
+  const [isShowcaseOpen, setIsShowcaseOpen] = useState(false)
+  const [showcaseTab, setShowcaseTab] = useState<"compartilhar" | "personalizar">("compartilhar")
+  const [showcaseCopied, setShowcaseCopied] = useState(false)
+  const [showcaseSaved, setShowcaseSaved] = useState(false)
+
+  const [showcaseSlug, setShowcaseSlug] = useState("prime")
+  const [showcaseName, setShowcaseName] = useState("Imobiliária Prime")
+  const [showcaseTitle, setShowcaseTitle] = useState("Consultoria Imobiliária de Alto Padrão")
+  const [showcaseCreci, setShowcaseCreci] = useState("29.400-J")
+  const [showcasePhone, setShowcasePhone] = useState("(11) 98765-4321")
+  const [showcaseBio, setShowcaseBio] = useState("Seleção criteriosa dos melhores imóveis residenciais e comerciais com fotos reais e atendimento consultivo.")
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(`crm_showcase_profile_${showcaseSlug}`)
+      if (saved) {
+        const parsed = JSON.parse(saved)
+        if (parsed.name) setShowcaseName(parsed.name)
+        if (parsed.title) setShowcaseTitle(parsed.title)
+        if (parsed.creci) setShowcaseCreci(parsed.creci)
+        if (parsed.whatsapp) setShowcasePhone(parsed.whatsapp)
+        if (parsed.bio) setShowcaseBio(parsed.bio)
+      }
+    } catch {}
+  }, [showcaseSlug])
+
+  const handleSaveShowcase = (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      const profileData = {
+        slug: showcaseSlug.trim().toLowerCase() || "prime",
+        name: showcaseName,
+        title: showcaseTitle,
+        type: "IMOBILIARIA",
+        creci: showcaseCreci,
+        phone: showcasePhone,
+        whatsapp: showcasePhone,
+        email: "contato@imoveis.com.br",
+        bio: showcaseBio,
+        accentColor: "blue",
+      }
+      localStorage.setItem(`crm_showcase_profile_${profileData.slug}`, JSON.stringify(profileData))
+      setShowcaseSaved(true)
+      setTimeout(() => setShowcaseSaved(false), 2500)
+    } catch {}
+  }
 
   const [saving, setSaving] = useState(false)
   const [cepLoading, setCepLoading] = useState(false)
@@ -245,13 +298,25 @@ export default function PropertiesPage() {
           </p>
         </div>
 
-        <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-          <DialogTrigger asChild>
-            <Button className="flex items-center gap-2 shadow-sm font-semibold">
-              <Plus className="h-4 w-4" />
-              Cadastrar Imóvel
-            </Button>
-          </DialogTrigger>
+        <div className="flex flex-wrap items-center gap-2.5">
+          {/* Botão de Vitrine Pública Compartilhável */}
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => setIsShowcaseOpen(true)}
+            className="flex items-center gap-2 border-primary/40 bg-primary/5 text-primary hover:bg-primary/10 font-bold shadow-xs"
+          >
+            <Share2 className="h-4 w-4" />
+            Minha Vitrine Pública
+          </Button>
+
+          <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+            <DialogTrigger asChild>
+              <Button className="flex items-center gap-2 shadow-sm font-semibold">
+                <Plus className="h-4 w-4" />
+                Cadastrar Imóvel
+              </Button>
+            </DialogTrigger>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Novo Cadastro de Imóvel</DialogTitle>
@@ -455,6 +520,7 @@ export default function PropertiesPage() {
           </DialogContent>
         </Dialog>
       </div>
+    </div>
 
       {/* Filter Bar */}
       <Card>
@@ -940,6 +1006,225 @@ export default function PropertiesPage() {
           </DialogContent>
         </Dialog>
       )}
+
+      {/* ========================================================= */}
+      {/* MODAL DE MINHA VITRINE PÚBLICA & PERSONALIZAÇÃO            */}
+      {/* ========================================================= */}
+      <Dialog open={isShowcaseOpen} onOpenChange={setIsShowcaseOpen}>
+        <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Share2 className="h-5 w-5 text-primary" />
+              Minha Vitrine Pública de Imóveis
+            </DialogTitle>
+            <DialogDescription>
+              Compartilhe sua carteira de imóveis em uma página exclusiva para clientes e personalize suas informações profissionais.
+            </DialogDescription>
+          </DialogHeader>
+
+          {/* Tabs: Compartilhar ou Personalizar */}
+          <div className="flex border-b gap-2 pt-2">
+            <button
+              type="button"
+              onClick={() => setShowcaseTab("compartilhar")}
+              className={`text-xs font-bold pb-2.5 px-3 border-b-2 transition-all ${
+                showcaseTab === "compartilhar"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              🔗 Compartilhar Link
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowcaseTab("personalizar")}
+              className={`text-xs font-bold pb-2.5 px-3 border-b-2 transition-all ${
+                showcaseTab === "personalizar"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              ⚙️ Personalizar Minha Vitrine
+            </button>
+          </div>
+
+          {showcaseTab === "compartilhar" ? (
+            <div className="space-y-4 pt-3">
+              {/* Preview Card */}
+              <div className="rounded-xl border bg-muted/30 p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                    Link Oficial da sua Vitrine
+                  </span>
+                  <span className="text-[10px] bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 font-bold px-2 py-0.5 rounded-full">
+                    Ativa & Online
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    readOnly
+                    value={`${typeof window !== "undefined" ? window.location.origin : ""}/v/${showcaseSlug}`}
+                    className="flex-1 h-9 rounded-md border border-input bg-background px-3 text-xs font-mono select-all"
+                  />
+                  <Button
+                    type="button"
+                    size="sm"
+                    onClick={() => {
+                      if (typeof window !== "undefined" && navigator.clipboard) {
+                        navigator.clipboard.writeText(`${window.location.origin}/v/${showcaseSlug}`)
+                        setShowcaseCopied(true)
+                        setTimeout(() => setShowcaseCopied(false), 2500)
+                      }
+                    }}
+                    className="h-9 font-semibold text-xs flex items-center gap-1.5"
+                  >
+                    {showcaseCopied ? <Check className="h-3.5 w-3.5 text-emerald-300" /> : <Copy className="h-3.5 w-3.5" />}
+                    {showcaseCopied ? "Copiado!" : "Copiar"}
+                  </Button>
+                </div>
+
+                <p className="text-[11px] text-muted-foreground">
+                  Seus clientes visualizarão apenas os seus imóveis com suas fotos, CRECI e botão direto para o seu WhatsApp.
+                </p>
+              </div>
+
+              {/* Botões Rápidos de Ação */}
+              <div className="grid grid-cols-2 gap-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    if (typeof window !== "undefined") {
+                      window.open(`/v/${showcaseSlug}`, "_blank")
+                    }
+                  }}
+                  className="w-full flex items-center justify-center gap-2 h-10 font-bold text-xs"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                  Abrir Vitrine em Nova Aba
+                </Button>
+
+                <Button
+                  type="button"
+                  onClick={() => {
+                    if (typeof window !== "undefined") {
+                      const link = `${window.location.origin}/v/${showcaseSlug}`
+                      const msg = encodeURIComponent(
+                        `Olá! Segue o link com todos os imóveis disponíveis na minha carteira para você conferir com fotos e ficha completa:\n\n${link}`
+                      )
+                      window.open(`https://api.whatsapp.com/send?text=${msg}`, "_blank")
+                    }
+                  }}
+                  className="w-full flex items-center justify-center gap-2 h-10 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs"
+                >
+                  <MessageSquare className="h-4 w-4" />
+                  Enviar no WhatsApp
+                </Button>
+              </div>
+
+              {/* Dica de uso */}
+              <div className="rounded-lg bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60 p-3 text-xs text-blue-800 dark:text-blue-300 space-y-1">
+                <p className="font-bold flex items-center gap-1.5">
+                  <Sparkles className="h-3.5 w-3.5" /> Dica para gerar mais negócios:
+                </p>
+                <p className="text-[11px] leading-relaxed">
+                  Coloque este link na bio do seu Instagram, no status do seu WhatsApp ou envie diretamente após atender novos interessados. A página foi otimizada para carregar rápido em qualquer celular!
+                </p>
+              </div>
+            </div>
+          ) : (
+            <form onSubmit={handleSaveShowcase} className="space-y-3.5 pt-3">
+              <div className="space-y-1">
+                <label className="text-xs font-semibold">Nome de Exibição na Vitrine</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Ex: Carlos Silveira ou Imobiliária Prime"
+                  value={showcaseName}
+                  onChange={(e) => setShowcaseName(e.target.value)}
+                  className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold">Título Profissional / Slogan</label>
+                  <input
+                    type="text"
+                    placeholder="Ex: Consultor de Imóveis de Alto Padrão"
+                    value={showcaseTitle}
+                    onChange={(e) => setShowcaseTitle(e.target.value)}
+                    className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold">Número do CRECI</label>
+                  <input
+                    type="text"
+                    placeholder="Ex: 48.912"
+                    value={showcaseCreci}
+                    onChange={(e) => setShowcaseCreci(e.target.value)}
+                    className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold">WhatsApp para Atendimento</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="(11) 98765-4321"
+                    value={showcasePhone}
+                    onChange={(e) => setShowcasePhone(e.target.value)}
+                    className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold">Identificador do Link (Slug)</label>
+                  <div className="flex items-center">
+                    <span className="text-xs text-muted-foreground mr-1">/v/</span>
+                    <input
+                      type="text"
+                      required
+                      placeholder="meu-nome"
+                      value={showcaseSlug}
+                      onChange={(e) => setShowcaseSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ""))}
+                      className="w-full h-9 rounded-md border border-input bg-background px-2.5 text-xs font-mono focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-semibold">Biografia / Mensagem de Boas-vindas</label>
+                <textarea
+                  rows={3}
+                  value={showcaseBio}
+                  onChange={(e) => setShowcaseBio(e.target.value)}
+                  placeholder="Conte um pouco sobre sua experiência, regiões atendidas e diferenciais..."
+                  className="w-full rounded-md border border-input bg-background p-2.5 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                />
+              </div>
+
+              <DialogFooter className="pt-2">
+                <Button type="button" variant="outline" onClick={() => setShowcaseTab("compartilhar")}>
+                  Voltar
+                </Button>
+                <Button type="submit" className="font-semibold gap-1.5">
+                  {showcaseSaved ? <CheckCircle2 className="h-4 w-4 text-emerald-300" /> : <Settings className="h-4 w-4" />}
+                  {showcaseSaved ? "Configurações Salvas!" : "Salvar Personalização"}
+                </Button>
+              </DialogFooter>
+            </form>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
