@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -25,7 +25,11 @@ import {
   Plus,
   ArrowUpRight,
   Filter,
-  CheckCircle2
+  CheckCircle2,
+  Pencil,
+  Trash2,
+  X,
+  RotateCcw
 } from "lucide-react"
 
 interface Plan {
@@ -145,11 +149,107 @@ export default function SubscriptionsPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [categoryFilter, setCategoryFilter] = useState("todos")
 
-  // Form State
+  // Carregar planos customizados salvos do localStorage se existirem
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("crm_super_admin_plans")
+      if (saved) {
+        const parsed = JSON.parse(saved)
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setPlans(parsed)
+        }
+      }
+    } catch {}
+  }, [])
+
+  // Estado para Criação de Novo Plano
   const [name, setName] = useState("")
   const [target, setTarget] = useState<"Corretor Autônomo" | "Imobiliária">("Corretor Autônomo")
   const [price, setPrice] = useState("")
   const [description, setDescription] = useState("")
+
+  // Estado para Edição de Parâmetros de Plano Existente
+  const [editingPlan, setEditingPlan] = useState<Plan | null>(null)
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+  const [editName, setEditName] = useState("")
+  const [editTarget, setEditTarget] = useState<"Corretor Autônomo" | "Imobiliária" | "Super Admin VIP">("Corretor Autônomo")
+  const [editPrice, setEditPrice] = useState("")
+  const [editPeriod, setEditPeriod] = useState("/mês")
+  const [editDescription, setEditDescription] = useState("")
+  const [editActiveCount, setEditActiveCount] = useState(0)
+  const [editHighlight, setEditHighlight] = useState(false)
+  const [editFeatures, setEditFeatures] = useState<string[]>([])
+  const [newFeatureText, setNewFeatureText] = useState("")
+
+  const openEditModal = (p: Plan) => {
+    setEditingPlan(p)
+    setEditName(p.name)
+    setEditTarget(p.target)
+    setEditPrice(p.price)
+    setEditPeriod(p.period || "/mês")
+    setEditDescription(p.description)
+    setEditActiveCount(p.activeCount)
+    setEditHighlight(Boolean(p.highlight))
+    setEditFeatures([...p.features])
+    setNewFeatureText("")
+    setIsEditDialogOpen(true)
+  }
+
+  const handleSaveEditedPlan = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!editingPlan || !editName || !editPrice) return
+
+    const updated: Plan = {
+      ...editingPlan,
+      name: editName,
+      target: editTarget,
+      price: editPrice.startsWith("R$") || editPrice.toLowerCase().includes("concessão") ? editPrice : `R$ ${editPrice}`,
+      period: editPeriod,
+      description: editDescription,
+      activeCount: Number(editActiveCount) || 0,
+      highlight: editHighlight,
+      features: editFeatures.filter(Boolean),
+    }
+
+    const nextPlans = plans.map((p) => (p.id === editingPlan.id ? updated : p))
+    setPlans(nextPlans)
+    try {
+      localStorage.setItem("crm_super_admin_plans", JSON.stringify(nextPlans))
+    } catch {}
+    setIsEditDialogOpen(false)
+    setEditingPlan(null)
+  }
+
+  const handleDeletePlan = (id: string) => {
+    if (confirm("Tem certeza que deseja excluir este plano comercial?")) {
+      const nextPlans = plans.filter((p) => p.id !== id)
+      setPlans(nextPlans)
+      try {
+        localStorage.setItem("crm_super_admin_plans", JSON.stringify(nextPlans))
+      } catch {}
+      setIsEditDialogOpen(false)
+      setEditingPlan(null)
+    }
+  }
+
+  const handleResetToDefault = () => {
+    if (confirm("Deseja restaurar a lista padrão de planos? Suas edições locais serão substituídas.")) {
+      setPlans(initialPlans)
+      try {
+        localStorage.removeItem("crm_super_admin_plans")
+      } catch {}
+    }
+  }
+
+  const handleAddFeature = () => {
+    if (!newFeatureText.trim()) return
+    setEditFeatures([...editFeatures, newFeatureText.trim()])
+    setNewFeatureText("")
+  }
+
+  const handleRemoveFeature = (index: number) => {
+    setEditFeatures(editFeatures.filter((_, i) => i !== index))
+  }
 
   const handleCreatePlan = (e: React.FormEvent) => {
     e.preventDefault()
@@ -167,7 +267,11 @@ export default function SubscriptionsPage() {
       highlight: false,
     }
 
-    setPlans([...plans, newPlan])
+    const nextPlans = [...plans, newPlan]
+    setPlans(nextPlans)
+    try {
+      localStorage.setItem("crm_super_admin_plans", JSON.stringify(nextPlans))
+    } catch {}
     setIsDialogOpen(false)
     setName("")
     setPrice("")
@@ -200,13 +304,23 @@ export default function SubscriptionsPage() {
           </p>
         </div>
 
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <button className="inline-flex items-center gap-2 rounded-full bg-foreground text-background hover:bg-foreground/90 px-5 py-2.5 text-xs font-bold shadow-md transition-all hover:scale-102">
-              <Plus className="h-4 w-4" />
-              <span>Criar Novo Plano</span>
-            </button>
-          </DialogTrigger>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={handleResetToDefault}
+            title="Restaurar lista padrão de planos"
+            className="p-2.5 rounded-full border border-black/[0.08] dark:border-white/[0.10] bg-muted/40 hover:bg-muted text-muted-foreground hover:text-foreground text-xs font-semibold transition-all"
+          >
+            <RotateCcw className="h-4 w-4" />
+          </button>
+
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <button className="inline-flex items-center gap-2 rounded-full bg-foreground text-background hover:bg-foreground/90 px-5 py-2.5 text-xs font-bold shadow-md transition-all hover:scale-102">
+                <Plus className="h-4 w-4" />
+                <span>Criar Novo Plano</span>
+              </button>
+            </DialogTrigger>
           <DialogContent className="max-w-md rounded-[28px] border border-black/[0.08] dark:border-white/[0.12] bg-background/95 backdrop-blur-2xl p-6 shadow-2xl">
             <DialogHeader>
               <DialogTitle className="text-lg font-black text-foreground">Criar Novo Plano Comercial</DialogTitle>
@@ -306,6 +420,7 @@ export default function SubscriptionsPage() {
             </form>
           </DialogContent>
         </Dialog>
+        </div>
       </div>
 
       {/* KPI Cards in Apple Prime Glass */}
@@ -502,16 +617,222 @@ export default function SubscriptionsPage() {
 
               <div className="pt-6 border-t border-black/[0.06] dark:border-white/[0.08] mt-6 flex items-center gap-2">
                 <button
-                  onClick={() => alert(`Plano ${p.name} selecionado para edição de parâmetros.`)}
-                  className="flex-1 py-2.5 px-4 rounded-full border border-black/[0.08] dark:border-white/[0.10] bg-muted/40 hover:bg-muted/70 text-xs font-bold text-foreground transition-all"
+                  type="button"
+                  onClick={() => openEditModal(p)}
+                  className="flex-1 py-2.5 px-4 rounded-full border border-black/[0.08] dark:border-white/[0.10] bg-muted/40 hover:bg-muted/70 text-xs font-bold text-foreground transition-all flex items-center justify-center gap-1.5 cursor-pointer hover:scale-101"
                 >
-                  Editar Parâmetros
+                  <Pencil className="h-3.5 w-3.5 text-muted-foreground" />
+                  <span>Editar Parâmetros</span>
                 </button>
               </div>
             </div>
           )
         })}
       </div>
+
+      {/* Modal Real de Edição de Parâmetros do Plano Comercial */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto rounded-[28px] border border-black/[0.08] dark:border-white/[0.12] bg-background/95 backdrop-blur-2xl p-6 sm:p-7 shadow-2xl">
+          <DialogHeader>
+            <div className="flex items-center gap-2 text-primary mb-1">
+              <Pencil className="h-4 w-4" />
+              <span className="text-[11px] font-black uppercase tracking-wider">Gestão Comercial de Planos</span>
+            </div>
+            <DialogTitle className="text-xl font-black text-foreground">
+              Editar Parâmetros: {editingPlan?.name}
+            </DialogTitle>
+            <DialogDescription className="text-xs text-muted-foreground">
+              Altere o valor, público-alvo, quantidade de clientes ativos e a lista de benefícios inclusos na vitrine comercial.
+            </DialogDescription>
+          </DialogHeader>
+
+          {editingPlan && (
+            <form onSubmit={handleSaveEditedPlan} className="space-y-4 pt-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+                    Nome do Plano *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={editName}
+                    onChange={(e) => setEditName(e.target.value)}
+                    className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] bg-muted/20 px-3.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+                    Público Alvo
+                  </label>
+                  <select
+                    value={editTarget}
+                    onChange={(e) => setEditTarget(e.target.value as any)}
+                    className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] bg-muted/20 px-3 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
+                  >
+                    <option value="Corretor Autônomo">Corretor Autônomo (PF)</option>
+                    <option value="Imobiliária">Imobiliária (PJ)</option>
+                    <option value="Super Admin VIP">Super Admin VIP</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="space-y-1">
+                  <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+                    Preço (Ex: R$ 129) *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={editPrice}
+                    onChange={(e) => setEditPrice(e.target.value)}
+                    className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] bg-muted/20 px-3.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+                    Período
+                  </label>
+                  <input
+                    type="text"
+                    value={editPeriod}
+                    onChange={(e) => setEditPeriod(e.target.value)}
+                    className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] bg-muted/20 px-3.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+                    Assinaturas Ativas
+                  </label>
+                  <input
+                    type="number"
+                    min={0}
+                    value={editActiveCount}
+                    onChange={(e) => setEditActiveCount(Number(e.target.value))}
+                    className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] bg-muted/20 px-3.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+                  Descrição Comercial
+                </label>
+                <textarea
+                  rows={2}
+                  value={editDescription}
+                  onChange={(e) => setEditDescription(e.target.value)}
+                  className="w-full rounded-2xl border border-black/[0.08] dark:border-white/[0.10] bg-muted/20 p-3 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20 resize-none"
+                />
+              </div>
+
+              {/* Destaque / Popular */}
+              <div className="flex items-center justify-between p-3 rounded-2xl bg-muted/20 border border-black/[0.06] dark:border-white/[0.08]">
+                <div>
+                  <span className="text-xs font-bold text-foreground block">Destaque na Vitrine ("Mais Popular")</span>
+                  <span className="text-[11px] text-muted-foreground">Exibe badge em evidência e borda destacada para impulsionar conversões.</span>
+                </div>
+                <input
+                  type="checkbox"
+                  checked={editHighlight}
+                  onChange={(e) => setEditHighlight(e.target.checked)}
+                  className="h-5 w-5 rounded-lg border-muted accent-primary cursor-pointer"
+                />
+              </div>
+
+              {/* Lista Dinâmica de Benefícios */}
+              <div className="space-y-2 pt-1">
+                <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider block">
+                  Benefícios & Funcionalidades Inclusas ({editFeatures.length})
+                </label>
+
+                <div className="max-h-48 overflow-y-auto space-y-1.5 p-1 rounded-2xl bg-muted/10 border border-black/[0.06] dark:border-white/[0.08]">
+                  {editFeatures.map((feat, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center justify-between gap-2 p-2 rounded-xl bg-background border border-black/[0.06] dark:border-white/[0.08] text-xs"
+                    >
+                      <div className="flex items-center gap-2 flex-1 min-w-0">
+                        <Check className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
+                        <span className="truncate text-foreground/90 font-medium">{feat}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveFeature(idx)}
+                        className="text-muted-foreground hover:text-red-500 p-1 rounded-lg transition-colors cursor-pointer"
+                        title="Remover benefício"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Adicionar novo benefício */}
+                <div className="flex items-center gap-2 pt-1">
+                  <input
+                    type="text"
+                    placeholder="Adicionar novo benefício (Ex: Sincronização Google Agenda)"
+                    value={newFeatureText}
+                    onChange={(e) => setNewFeatureText(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault()
+                        handleAddFeature()
+                      }
+                    }}
+                    className="flex-1 h-9 rounded-xl border border-black/[0.08] dark:border-white/[0.10] bg-muted/20 px-3 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-foreground/20"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleAddFeature}
+                    className="h-9 px-3 text-xs font-bold rounded-xl"
+                  >
+                    <Plus className="h-3.5 w-3.5 mr-1" />
+                    Adicionar
+                  </Button>
+                </div>
+              </div>
+
+              <DialogFooter className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-2 border-t border-black/[0.06] dark:border-white/[0.08]">
+                {!editingPlan.isMaster && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    onClick={() => handleDeletePlan(editingPlan.id)}
+                    className="text-red-500 hover:text-red-600 hover:bg-red-500/10 text-xs font-bold rounded-full mr-auto"
+                  >
+                    <Trash2 className="h-3.5 w-3.5 mr-1" />
+                    Excluir Plano
+                  </Button>
+                )}
+
+                <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    onClick={() => setIsEditDialogOpen(false)}
+                    className="text-xs rounded-full"
+                  >
+                    Cancelar
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="bg-foreground text-background hover:bg-foreground/90 font-bold text-xs rounded-full px-5 shadow-md"
+                  >
+                    Salvar Alterações
+                  </Button>
+                </div>
+              </DialogFooter>
+            </form>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
