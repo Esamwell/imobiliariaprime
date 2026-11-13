@@ -12,85 +12,126 @@ import {
   CheckCircle2, 
   Sparkles, 
   Lock,
-  Crown,
-  Smartphone,
+  Crown, 
+  ArrowUpRight,
   Globe,
-  Zap
+  Zap,
+  Check,
+  Star
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export default function CRMLandingPage() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-primary selection:text-white">
-      {/* 1. Header do CRM */}
-      <header className="sticky top-0 z-40 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
+    <div className="min-h-screen bg-[#07090e] text-slate-100 flex flex-col justify-between selection:bg-lime-400 selection:text-black">
+      {/* 1. Header do CRM - Apple Prime Glass Capsule */}
+      <header className="sticky top-0 z-40 bg-[#07090e]/80 backdrop-blur-xl border-b border-white/[0.08]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="h-9 w-9 rounded-xl bg-primary text-primary-foreground flex items-center justify-center font-black text-lg shadow-md shadow-primary/20">
-              <Building className="h-5 w-5" />
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <div className="h-9 w-9 rounded-2xl bg-white text-black flex items-center justify-center font-black text-lg shadow-sm transition-transform group-hover:scale-105">
+              <Building className="h-4 w-4" />
             </div>
             <div>
-              <span className="font-extrabold text-lg tracking-tight block text-white leading-none">
-                CRM Imobiliário
+              <span className="font-extrabold text-base tracking-tight block text-white leading-none">
+                PRIME CRM.
               </span>
-              <span className="text-[10px] font-medium text-slate-400 uppercase tracking-widest block mt-0.5">
-                Plataforma para Corretores & Imobiliárias
+              <span className="text-[9px] font-semibold text-lime-400 uppercase tracking-widest block mt-0.5">
+                Portal do Corretor & Gestor
               </span>
             </div>
           </Link>
+
+          <nav className="hidden md:flex items-center gap-6 text-xs font-semibold text-slate-400">
+            <Link href="#recursos" className="hover:text-white transition-colors">
+              Recursos
+            </Link>
+            <Link href="#vitrine" className="hover:text-white transition-colors">
+              Vitrine Pública
+            </Link>
+            <Link href="#seguranca" className="hover:text-white transition-colors">
+              Segurança
+            </Link>
+          </nav>
 
           <div className="flex items-center gap-3">
             <Link
               href="/v/prime"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-white transition-colors"
+              className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-white transition-colors glass-pill px-3.5 py-1.5"
             >
-              <Globe className="h-4 w-4 text-primary" />
-              Exemplo de Vitrine do Corretor
+              <Share2 className="h-3.5 w-3.5 text-lime-400" />
+              Ver Vitrine Pública
             </Link>
 
+            {/* Apple Electric Lime Button (Inspired by "Explore now" in inspirações/pagina inicial.jpg) */}
             <Link
               href="/login"
-              className="inline-flex items-center gap-1.5 h-9 px-4 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs shadow-md shadow-primary/20 transition-all hover:scale-105"
+              className="inline-flex items-center gap-1.5 h-9 px-4 rounded-full bg-lime-400 hover:bg-lime-300 text-black font-extrabold text-xs shadow-lg shadow-lime-400/20 transition-all hover:scale-105"
             >
-              <Lock className="h-3.5 w-3.5" />
-              Entrar no Sistema (Login)
+              <span>Acessar Painel</span>
+              <ArrowUpRight className="h-3.5 w-3.5" />
             </Link>
           </div>
         </div>
       </header>
 
-      {/* 2. Hero Section do CRM SaaS */}
+      {/* 2. Hero Section (Inspired by inspirações/pagina inicial.jpg) */}
       <main className="flex-1">
-        <section className="relative py-20 sm:py-28 px-4 sm:px-6 lg:px-8 overflow-hidden text-center">
-          <div className="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:24px_24px]"></div>
+        <section className="relative py-20 sm:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden text-center">
+          {/* Background Grid Pattern & Ambient Glow */}
+          <div className="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#ccff00_1px,transparent_1px)] [background-size:28px_28px]"></div>
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-lime-400/10 blur-[130px] rounded-full pointer-events-none"></div>
 
           <div className="max-w-4xl mx-auto relative z-10 space-y-6">
-            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 border border-primary/30 px-4 py-1.5 text-xs font-bold text-blue-400">
-              <Zap className="h-3.5 w-3.5 text-blue-400" />
-              O CRM Definitivo para Corretores Autônomos e Imobiliárias
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/[0.05] border border-white/10 px-4 py-1.5 text-[11px] font-bold text-lime-400 backdrop-blur-md">
+              <span className="flex h-2 w-2 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-lime-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-lime-500"></span>
+              </span>
+              O CRM Mais Inteligente para o Mercado Imobiliário
             </div>
 
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight text-white">
-              Centralize sua Carteira, <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-indigo-300">
-                Gere Vitrines Exclusivas
-              </span>{" "}
-              e Feche Mais Vendas.
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.08] text-white">
+              A melhor plataforma imobiliária <br className="hidden sm:block" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-lime-300 via-white to-slate-300">
+                para o seu futuro.
+              </span>
             </h1>
 
-            <p className="max-w-2xl mx-auto text-sm sm:text-lg text-slate-400 font-normal leading-relaxed">
-              Sistema completo de gestão com funil de vendas integrado ao WhatsApp, gestão de locações com reajuste automático e botão exclusivo para gerar o seu catálogo de imóveis personalizado para enviar a clientes.
+            <p className="max-w-2xl mx-auto text-sm sm:text-base text-slate-400 font-normal leading-relaxed">
+              Centralize sua carteira de imóveis, gerencie leads com pontuação de temperatura, automatize aluguéis e gere uma vitrine pública exclusiva para compartilhar com seus clientes no WhatsApp.
             </p>
 
-            {/* CTAs */}
+            {/* Realtime Users Capsule (Inspired by avatar stack in inspirações/pagina inicial.jpg) */}
+            <div className="flex items-center justify-center gap-3 pt-2">
+              <div className="flex -space-x-2">
+                <div className="h-8 w-8 rounded-full bg-amber-500 border-2 border-[#07090e] text-white text-[10px] font-bold flex items-center justify-center">
+                  CS
+                </div>
+                <div className="h-8 w-8 rounded-full bg-blue-500 border-2 border-[#07090e] text-white text-[10px] font-bold flex items-center justify-center">
+                  RV
+                </div>
+                <div className="h-8 w-8 rounded-full bg-purple-500 border-2 border-[#07090e] text-white text-[10px] font-bold flex items-center justify-center">
+                  MD
+                </div>
+                <div className="h-8 w-8 rounded-full bg-emerald-500 border-2 border-[#07090e] text-white text-[10px] font-bold flex items-center justify-center">
+                  FG
+                </div>
+              </div>
+              <div className="text-left text-xs">
+                <span className="font-extrabold text-white block">15.000+ Corretores</span>
+                <span className="text-slate-400 text-[10px]">Utilizando ativamente em todo o Brasil</span>
+              </div>
+            </div>
+
+            {/* CTAs - Apple Style Pills */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-4">
               <Link
                 href="/login"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 h-12 px-7 rounded-xl bg-primary hover:bg-primary/90 text-white font-extrabold text-sm shadow-xl shadow-primary/30 transition-all hover:scale-105"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 h-12 px-8 rounded-full bg-lime-400 hover:bg-lime-300 text-black font-extrabold text-xs shadow-xl shadow-lime-400/25 transition-all hover:scale-105"
               >
-                Acessar Demonstração Gratuita
+                <span>Acessar Demonstração Gratuita</span>
                 <ArrowRight className="h-4 w-4" />
               </Link>
 
@@ -98,106 +139,104 @@ export default function CRMLandingPage() {
                 href="/v/prime"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 h-12 px-6 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 font-bold text-sm transition-colors"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 h-12 px-7 rounded-full bg-white/[0.06] hover:bg-white/[0.12] text-white border border-white/10 font-bold text-xs backdrop-blur-md transition-all hover:scale-102"
               >
-                <Share2 className="h-4 w-4 text-emerald-400" />
-                Ver Exemplo de Vitrine Pública
+                <Share2 className="h-4 w-4 text-lime-400" />
+                <span>Ver Vitrine do Corretor</span>
               </Link>
             </div>
           </div>
         </section>
 
-        {/* 3. Funcionalidades do CRM */}
-        <section className="py-16 bg-slate-900/60 border-y border-slate-800/80 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto space-y-12">
-            <div className="text-center max-w-2xl mx-auto space-y-2">
-              <span className="text-primary font-bold text-xs uppercase tracking-widest">
-                Desenvolvido para o Mercado Imobiliário
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-black text-white">Tudo o que você precisa no seu dia a dia</h2>
-              <p className="text-xs sm:text-sm text-slate-400">
-                Recursos inteligentes criados especificamente para a rotina de corretores e administradores.
-              </p>
+        {/* 3. Feature Steps 01, 02, 03 (Exact Replica of Step Cards in inspirações/pagina inicial.jpg) */}
+        <section id="recursos" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          <div className="text-center max-w-xl mx-auto space-y-2 mb-12">
+            <span className="text-xs font-bold text-lime-400 uppercase tracking-widest">
+              Design Prime & Eficiência
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
+              Seu parceiro de confiança para fechar mais negócios.
+            </h2>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-3 items-stretch">
+            {/* Card 01 - Apple Dark Glass */}
+            <div className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-7 flex flex-col justify-between space-y-4 hover:border-white/20 transition-all">
+              <div className="space-y-3">
+                <span className="text-xl font-mono font-bold text-slate-500">01.</span>
+                <h3 className="text-xl font-bold text-white">Carteira Inteligente em Alta Resolução</h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Cadastre imóveis com preenchimento instantâneo de endereço por CEP (ViaCEP), upload de fotos em alta definição e simulação de financiamento bancário para compradores.
+                </p>
+              </div>
+              <div className="pt-4 border-t border-white/[0.08] flex items-center justify-between text-xs font-bold text-white">
+                <span>Ver no Sistema</span>
+                <ArrowUpRight className="h-4 w-4 text-lime-400" />
+              </div>
             </div>
 
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {/* Card 1: Vitrine Pública Exclusiva */}
-              <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-6 space-y-3 hover:border-primary/50 transition-colors shadow-lg">
-                <div className="h-10 w-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold">
-                  <Share2 className="h-5 w-5" />
-                </div>
-                <h3 className="font-bold text-base text-white">Vitrines Personalizadas com 1 Clique</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Gere um link exclusivo da sua carteira (ex: <code className="text-blue-400">/v/seu-nome</code>) para enviar a clientes no WhatsApp ou colocar na bio do Instagram, com sua foto, CRECI e contato direto.
+            {/* Card 02 - Electric Lime Highlight (Identical to Card 02 in inspirações/pagina inicial.jpg) */}
+            <div className="rounded-3xl bg-lime-400 text-black p-7 flex flex-col justify-between space-y-4 shadow-2xl shadow-lime-400/20 transform md:-translate-y-2 transition-transform">
+              <div className="space-y-3">
+                <span className="text-xl font-mono font-black text-black/60">02.</span>
+                <h3 className="text-xl font-black text-black">Vitrines Públicas Personalizadas</h3>
+                <p className="text-xs text-black/80 font-medium leading-relaxed">
+                  Gere com um único clique um link exclusivo da sua carteira (ex: <code>/v/seu-nome</code>) com sua foto, CRECI e botão direto de WhatsApp para enviar aos clientes ou colocar na sua bio.
                 </p>
               </div>
+              <div className="pt-4 border-t border-black/15 flex items-center justify-between text-xs font-black text-black">
+                <span>Conhecer a Vitrine</span>
+                <ArrowRight className="h-4 w-4" />
+              </div>
+            </div>
 
-              {/* Card 2: Funil Kanban com WhatsApp */}
-              <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-6 space-y-3 hover:border-emerald-500/50 transition-colors shadow-lg">
-                <div className="h-10 w-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold">
-                  <Kanban className="h-5 w-5" />
-                </div>
-                <h3 className="font-bold text-base text-white">Funil de Vendas Visual (Kanban)</h3>
+            {/* Card 03 - Apple Dark Glass */}
+            <div className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-7 flex flex-col justify-between space-y-4 hover:border-white/20 transition-all">
+              <div className="space-y-3">
+                <span className="text-xl font-mono font-bold text-slate-500">03.</span>
+                <h3 className="text-xl font-bold text-white">Gestão Completa de Leads & Aluguéis</h3>
                 <p className="text-xs text-slate-400 leading-relaxed">
-                  Acompanhe cada oportunidade de Novo Lead a Fechamento com etiquetas de temperatura, orçamento e botão direto de WhatsApp com mensagem personalizada pronta.
+                  Funil Kanban interativo com etiquetas de temperatura, gestão de contratos de locação com reajustes por IGP-M/IPCA e divisão automatizada de comissões.
                 </p>
               </div>
+              <div className="pt-4 border-t border-white/[0.08] flex items-center justify-between text-xs font-bold text-white">
+                <span>Ver no Sistema</span>
+                <ArrowUpRight className="h-4 w-4 text-lime-400" />
+              </div>
+            </div>
+          </div>
+        </section>
 
-              {/* Card 3: Carteira de Imóveis & ViaCEP */}
-              <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-6 space-y-3 hover:border-purple-500/50 transition-colors shadow-lg">
-                <div className="h-10 w-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold">
-                  <Building className="h-5 w-5" />
-                </div>
-                <h3 className="font-bold text-base text-white">Carteira com Fotos em Alta Definição</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Cadastro inteligente com preenchimento automático de endereço por CEP (ViaCEP), simulador de financiamento bancário e ficha técnica pronta para impressão.
-                </p>
-              </div>
-
-              {/* Card 4: Gestão de Aluguéis */}
-              <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-6 space-y-3 hover:border-amber-500/50 transition-colors shadow-lg">
-                <div className="h-10 w-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold">
-                  <Key className="h-5 w-5" />
-                </div>
-                <h3 className="font-bold text-base text-white">Gestão de Locações & Repasses</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Controle total de contratos de aluguel, inquilinos, dias de vencimento e cálculo de reajustes anuais com base no IPCA e IGP-M.
-                </p>
-              </div>
-
-              {/* Card 5: Financeiro e Comissões */}
-              <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-6 space-y-3 hover:border-cyan-500/50 transition-colors shadow-lg">
-                <div className="h-10 w-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-bold">
-                  <DollarSign className="h-5 w-5" />
-                </div>
-                <h3 className="font-bold text-base text-white">Comissões & Extrato Financeiro</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Divisão automática de comissões entre corretor e imobiliária, acompanhamento de valores aguardando escritura e histórico de pagamentos.
-                </p>
-              </div>
-
-              {/* Card 6: Super Admin & Multi-Tenancy */}
-              <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-6 space-y-3 hover:border-yellow-500/50 transition-colors shadow-lg">
-                <div className="h-10 w-10 rounded-xl bg-yellow-500/10 text-yellow-400 flex items-center justify-center font-bold">
-                  <Crown className="h-5 w-5" />
-                </div>
-                <h3 className="font-bold text-base text-white">Multi-Empresa & Plano Master VIP</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Arquitetura multi-tenant que atende tanto imobiliárias completas (PJ) quanto corretores autônomos (PF), com controle exclusivo de assinaturas no painel Super Admin.
-                </p>
-              </div>
+        {/* 4. Stats & Social Proof (Inspired by inspirações) */}
+        <section className="py-16 border-t border-white/[0.08] bg-white/[0.01] px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+            <div className="space-y-1">
+              <div className="text-3xl sm:text-4xl font-black text-white tracking-tight">R$ 4.2B+</div>
+              <p className="text-xs text-slate-400">Em VGV Gerenciado na Plataforma</p>
+            </div>
+            <div className="space-y-1">
+              <div className="text-3xl sm:text-4xl font-black text-lime-400 tracking-tight">450.000+</div>
+              <p className="text-xs text-slate-400">Imóveis Ativos e Divulgados</p>
+            </div>
+            <div className="space-y-1">
+              <div className="text-3xl sm:text-4xl font-black text-white tracking-tight">99.8%</div>
+              <p className="text-xs text-slate-400">Disponibilidade e Segurança em Nuvem</p>
+            </div>
+            <div className="space-y-1">
+              <div className="text-3xl sm:text-4xl font-black text-lime-400 tracking-tight">3 Minutos</div>
+              <p className="text-xs text-slate-400">Para Configurar e Começar a Vender</p>
             </div>
           </div>
         </section>
       </main>
 
-      {/* 4. Footer */}
-      <footer className="border-t border-slate-800/80 py-8 text-center text-xs text-slate-500">
+      {/* 5. Footer */}
+      <footer className="border-t border-white/[0.08] py-8 text-center text-xs text-slate-500">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>© {new Date().getFullYear()} CRM Imobiliário. Plataforma para Gestão e Vendas Imobiliárias.</p>
+          <p>© {new Date().getFullYear()} Prime CRM Imobiliário. Todos os direitos reservados.</p>
           <div className="flex items-center gap-4">
-            <Link href="/v/prime" className="hover:text-slate-300">Exemplo de Vitrine</Link>
-            <Link href="/login" className="hover:text-slate-300 font-semibold text-primary">Acessar o CRM</Link>
+            <Link href="/v/prime" className="hover:text-slate-300">Vitrine Exemplo</Link>
+            <Link href="/login" className="hover:text-slate-300 font-bold text-lime-400">Acessar o CRM</Link>
           </div>
         </div>
       </footer>

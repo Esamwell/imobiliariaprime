@@ -14,13 +14,12 @@ import {
   Menu, 
   Sun, 
   Moon, 
-  Bell,
-  Search,
-  Plus,
-  LogOut,
-  Crown,
-  Globe,
-  Share2
+  Plus, 
+  LogOut, 
+  Crown, 
+  Share2,
+  Clock,
+  Sparkles
 } from "lucide-react"
 import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
@@ -50,103 +49,136 @@ export default function UserDashboardLayout({
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-background">
-      {/* Top Header */}
-      <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b bg-background px-4 sm:px-6">
-        <div className="flex items-center gap-4">
+      {/* Top Header - Apple Prime Glass */}
+      <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b border-border/50 bg-background/80 backdrop-blur-xl px-4 sm:px-6">
+        <div className="flex items-center gap-3">
           <Button 
             variant="ghost" 
             size="icon" 
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="md:flex"
+            className="hidden md:flex h-9 w-9 rounded-full hover:bg-muted/60"
+            title={sidebarOpen ? "Recolher menu" : "Expandir menu"}
           >
-            <Menu className="h-5 w-5" />
+            <Menu className="h-4 w-4" />
           </Button>
 
-          <Link href="/dashboard" className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold">
-              <Building className="h-5 w-5" />
+          <Link href="/dashboard" className="flex items-center gap-2.5 group">
+            <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-foreground text-background font-bold shadow-sm transition-transform group-hover:scale-105">
+              <Building className="h-4 w-4" />
             </div>
-            <div className="hidden sm:block">
-              <span className="font-bold text-base leading-none">Imobiliária Prime</span>
-              <span className="block text-xs text-muted-foreground">Portal do Corretor & Gestor</span>
+            <div>
+              <div className="flex items-center gap-1.5">
+                <span className="font-bold text-sm tracking-tight text-foreground">Imobiliária Prime</span>
+                <span className="rounded-full bg-lime-400/20 text-lime-700 dark:text-lime-300 px-1.5 py-0.2 text-[9px] font-extrabold uppercase tracking-wide">
+                  CRM
+                </span>
+              </div>
+              <span className="block text-[10px] text-muted-foreground font-medium">Portal do Corretor & Gestor</span>
             </div>
           </Link>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        {/* Apple Timeline / Schedule Status Capsule (Inspired by TaskOrbit / Helix CRM) */}
+        <div className="hidden lg:flex items-center gap-2.5 rounded-full border border-black/[0.08] dark:border-white/[0.10] bg-white/60 dark:bg-white/[0.04] backdrop-blur-md px-3.5 py-1.5 text-xs shadow-sm">
+          <span className="flex h-2 w-2 relative">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-lime-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-lime-500"></span>
+          </span>
+          <span className="font-semibold text-foreground text-[11px]">Agenda do Dia</span>
+          <span className="text-muted-foreground/60">•</span>
+          <span className="text-muted-foreground text-[11px] flex items-center gap-1 font-medium">
+            <Clock className="h-3 w-3 text-lime-600 dark:text-lime-400" /> 3 Visitas Agendadas
+          </span>
+          <div className="flex -space-x-1.5 pl-1">
+            <div className="h-5 w-5 rounded-full bg-amber-500 text-white text-[9px] font-bold flex items-center justify-center ring-1 ring-background" title="Dr. Marcelo">
+              M
+            </div>
+            <div className="h-5 w-5 rounded-full bg-sky-500 text-white text-[9px] font-bold flex items-center justify-center ring-1 ring-background" title="Dra. Flávia">
+              F
+            </div>
+            <div className="h-5 w-5 rounded-full bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center ring-1 ring-background" title="Eduardo">
+              E
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
           {/* Link para a Vitrine Personalizada da Imobiliária/Corretor */}
           <Link
             href="/v/prime"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-blue-300 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 px-3 py-1.5 text-xs font-semibold text-blue-700 dark:text-blue-300 hover:bg-blue-100 transition-colors"
+            className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.05] hover:bg-black/5 dark:hover:bg-white/10 px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm transition-all hover:scale-102"
             title="Abrir minha vitrine pública personalizada de imóveis para clientes"
           >
-            <Share2 className="h-4 w-4" />
-            <span className="hidden sm:inline">Minha</span> Vitrine de Imóveis
+            <Share2 className="h-3.5 w-3.5 text-lime-600 dark:text-lime-400" />
+            <span className="hidden sm:inline">Minha</span> Vitrine
           </Link>
 
           {/* Switcher to Super Admin */}
           <Link
             href="/super-admin"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-purple-300 dark:border-purple-800 bg-purple-50 dark:bg-purple-950/60 px-3 py-1.5 text-xs font-semibold text-purple-700 dark:text-purple-300 hover:bg-purple-100 transition-colors"
+            className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-purple-500/20 bg-purple-500/10 hover:bg-purple-500/20 px-3 py-1.5 text-xs font-semibold text-purple-700 dark:text-purple-300 transition-all hover:scale-102"
           >
-            <ShieldCheck className="h-4 w-4" />
-            <span className="hidden md:inline">Acessar</span> Painel Super Admin
+            <ShieldCheck className="h-3.5 w-3.5" />
+            <span className="hidden md:inline">Painel</span> Admin
           </Link>
 
           <Button 
-            variant="outline" 
+            variant="ghost" 
             size="icon" 
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="h-9 w-9"
+            className="h-8 w-8 rounded-full hover:bg-muted/60"
+            title="Alternar tema"
           >
             {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </Button>
 
-          <div className="flex items-center gap-2 border-l pl-3">
-            <div className="h-8 w-8 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 flex items-center justify-center font-bold text-xs">
+          {/* User Profile Pill Capsule */}
+          <div className="flex items-center gap-2 rounded-full border border-black/[0.08] dark:border-white/[0.12] bg-white/60 dark:bg-white/[0.04] pl-1.5 pr-2 py-1 backdrop-blur-md shadow-sm">
+            <div className="h-7 w-7 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 flex items-center justify-center font-bold text-xs ring-1 ring-emerald-500/30">
               CS
             </div>
-            <div className="hidden lg:block text-left">
-              <p className="text-xs font-medium leading-none">Carlos Silveira</p>
-              <p className="text-[10px] text-muted-foreground">Corretor Sênior - CRECI 48.912</p>
+            <div className="hidden xl:block text-left pr-1">
+              <p className="text-xs font-semibold leading-tight text-foreground">Carlos Silveira</p>
+              <p className="text-[9px] text-muted-foreground font-medium">CRECI 48.912</p>
             </div>
             <Button
               variant="ghost"
               size="icon"
               title="Sair do Sistema"
               onClick={handleLogout}
-              className="h-8 w-8 text-muted-foreground hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/50"
+              className="h-6 w-6 rounded-full text-muted-foreground hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 ml-0.5"
             >
-              <LogOut className="h-4 w-4" />
+              <LogOut className="h-3 w-3" />
             </Button>
           </div>
         </div>
       </header>
 
-      <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar */}
+      <div className="flex flex-1 overflow-hidden relative">
+        {/* Desktop Sidebar - Frosted Apple Glass */}
         <aside
-          className={`border-r bg-background transition-all duration-300 flex flex-col justify-between shrink-0 overflow-y-auto ${
-            sidebarOpen ? "w-64" : "w-[68px]"
+          className={`hidden md:flex border-r border-border/50 bg-background/80 backdrop-blur-xl transition-all duration-300 flex-col justify-between shrink-0 overflow-y-auto ${
+            sidebarOpen ? "w-64" : "w-[72px]"
           }`}
         >
           <div className="flex-1 py-4">
-            <nav className="grid gap-1 px-2">
+            <nav className="grid gap-1.5 px-3">
               {navItems.map((item) => {
                 const isActive = pathname === item.href
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                    className={`flex items-center gap-3 rounded-2xl px-3.5 py-2.5 text-xs font-semibold transition-all duration-200 ${
                       isActive
-                        ? "bg-primary text-primary-foreground"
-                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                    } ${!sidebarOpen && "justify-center"}`}
+                        ? "bg-foreground text-background shadow-sm shadow-foreground/10"
+                        : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+                    } ${!sidebarOpen && "justify-center px-0"}`}
+                    title={!sidebarOpen ? item.title : undefined}
                   >
-                    <item.icon className="h-5 w-5 shrink-0" />
+                    <item.icon className="h-4 w-4 shrink-0" />
                     {sidebarOpen && <span>{item.title}</span>}
                   </Link>
                 )
@@ -154,37 +186,98 @@ export default function UserDashboardLayout({
             </nav>
           </div>
 
-          <div className="border-t p-3 shrink-0">
+          {/* Plano Master VIP - Apple Gold Glass Capsule */}
+          <div className="p-3 shrink-0">
             {sidebarOpen ? (
-              <div className="rounded-lg bg-gradient-to-r from-amber-500/10 via-card to-card border border-amber-500/30 p-3 text-xs space-y-1">
+              <div className="rounded-2xl bg-gradient-to-br from-amber-500/15 via-card/80 to-transparent border border-amber-500/30 p-3.5 backdrop-blur-md shadow-sm space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <p className="font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">
+                  <p className="font-bold text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
                     <Crown className="h-3.5 w-3.5" /> Plano Master VIP
                   </p>
-                  <span className="text-[10px] bg-amber-500/20 text-amber-700 dark:text-amber-300 px-1.5 py-0.5 rounded font-bold">
+                  <span className="text-[9px] bg-amber-500/20 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-full font-extrabold uppercase tracking-wider">
                     Ilimitado
                   </span>
                 </div>
-                <p className="text-muted-foreground text-[11px]">Concedido pelo Super Admin</p>
-                <div className="w-full bg-amber-500/20 rounded-full h-1.5 mt-2">
-                  <div className="bg-amber-500 h-1.5 rounded-full w-full"></div>
+                <p className="text-muted-foreground text-[10px] leading-tight">
+                  Corretores, imóveis e vitrines ilimitadas ativas.
+                </p>
+                <div className="w-full bg-amber-500/20 rounded-full h-1 mt-2">
+                  <div className="bg-amber-500 h-1 rounded-full w-full"></div>
                 </div>
-                <p className="text-[10px] text-muted-foreground pt-0.5">Corretores e Imóveis Sem Limites</p>
               </div>
             ) : (
-              <div className="flex justify-center" title="Plano Master VIP">
-                <Crown className="h-5 w-5 text-amber-500" />
+              <div className="flex justify-center p-2 rounded-2xl bg-amber-500/10 border border-amber-500/30" title="Plano Master VIP - Ativo">
+                <Crown className="h-4 w-4 text-amber-500" />
               </div>
             )}
           </div>
         </aside>
 
-        {/* Content */}
-        <main className="flex-1 overflow-y-auto overflow-x-hidden p-6 bg-muted/10">
+        {/* Content Workspace */}
+        <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 pb-28 md:pb-6 bg-muted/15 dark:bg-black/20">
           {children}
         </main>
+
+        {/* Mobile Floating Dock (Apple iOS Style - Inspired by mobile.jpg & 4f94d76b4179d260a2c0cb2b13112928.jpg) */}
+        <div className="md:hidden fixed bottom-4 inset-x-4 z-50 pointer-events-none">
+          <div className="max-w-md mx-auto pointer-events-auto">
+            <div className="rounded-full backdrop-blur-2xl bg-card/90 dark:bg-[#0c0e14]/90 border border-black/[0.08] dark:border-white/[0.12] px-4 py-2.5 shadow-[0_10px_35px_rgba(0,0,0,0.25)] flex items-center justify-between">
+              {/* Home */}
+              <Link
+                href="/dashboard"
+                className={`flex flex-col items-center gap-1 py-1 px-2.5 rounded-full transition-colors ${
+                  pathname === "/dashboard" ? "text-foreground font-bold" : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                <Home className="h-5 w-5" />
+                <span className="text-[9px]">Início</span>
+              </Link>
+
+              {/* Imóveis */}
+              <Link
+                href="/dashboard/imoveis"
+                className={`flex flex-col items-center gap-1 py-1 px-2.5 rounded-full transition-colors ${
+                  pathname === "/dashboard/imoveis" ? "text-foreground font-bold" : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                <Building className="h-5 w-5" />
+                <span className="text-[9px]">Imóveis</span>
+              </Link>
+
+              {/* Center Floating Action Button (FAB) */}
+              <Link
+                href="/dashboard/imoveis"
+                className="h-11 w-11 -mt-5 rounded-full bg-foreground text-background shadow-lg flex items-center justify-center font-bold hover:scale-105 active:scale-95 transition-transform"
+                title="Novo Cadastro Rápido"
+              >
+                <Plus className="h-5 w-5" />
+              </Link>
+
+              {/* Funil */}
+              <Link
+                href="/dashboard/pipeline"
+                className={`flex flex-col items-center gap-1 py-1 px-2.5 rounded-full transition-colors ${
+                  pathname === "/dashboard/pipeline" ? "text-foreground font-bold" : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                <Kanban className="h-5 w-5" />
+                <span className="text-[9px]">Funil</span>
+              </Link>
+
+              {/* Clientes */}
+              <Link
+                href="/dashboard/clientes"
+                className={`flex flex-col items-center gap-1 py-1 px-2.5 rounded-full transition-colors ${
+                  pathname === "/dashboard/clientes" ? "text-foreground font-bold" : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                <Users className="h-5 w-5" />
+                <span className="text-[9px]">Clientes</span>
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )
 }
-

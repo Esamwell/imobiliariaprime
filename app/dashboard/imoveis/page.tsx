@@ -289,30 +289,37 @@ export default function PropertiesPage() {
 
   return (
     <div className="space-y-6">
-      {/* Top Header */}
+      {/* Top Header - Apple Prime */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Carteira de Imóveis</h1>
-          <p className="text-sm text-muted-foreground">
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+              Carteira de Imóveis
+            </h1>
+            <span className="rounded-full bg-lime-400/20 text-lime-800 dark:text-lime-300 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider">
+              {properties.length} Ativos
+            </span>
+          </div>
+          <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
             Catálogo completo com fotos em alta definição, edição em tempo real e ficha de detalhes.
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2.5">
-          {/* Botão de Vitrine Pública Compartilhável */}
+          {/* Botão de Vitrine Pública Compartilhável - Apple Glass Pill */}
           <Button
             type="button"
             variant="outline"
             onClick={() => setIsShowcaseOpen(true)}
-            className="flex items-center gap-2 border-primary/40 bg-primary/5 text-primary hover:bg-primary/10 font-bold shadow-xs"
+            className="rounded-full flex items-center gap-2 border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.05] hover:bg-black/5 dark:hover:bg-white/10 text-foreground font-bold text-xs h-9 shadow-sm transition-all hover:scale-102"
           >
-            <Share2 className="h-4 w-4" />
+            <Share2 className="h-3.5 w-3.5 text-lime-600 dark:text-lime-400" />
             Minha Vitrine Pública
           </Button>
 
           <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
             <DialogTrigger asChild>
-              <Button className="flex items-center gap-2 shadow-sm font-semibold">
+              <Button className="rounded-full bg-foreground text-background hover:bg-foreground/90 flex items-center gap-2 font-bold text-xs h-9 shadow-md transition-all hover:scale-102">
                 <Plus className="h-4 w-4" />
                 Cadastrar Imóvel
               </Button>
@@ -522,64 +529,77 @@ export default function PropertiesPage() {
       </div>
     </div>
 
-      {/* Filter Bar */}
-      <Card>
-        <CardContent className="p-3.5">
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Buscar por código (ex: AP0420), bairro ou título..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full h-9 pl-9 pr-3 rounded-md border border-input bg-background text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-              />
-            </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <select
-                value={typeFilter}
-                onChange={(e) => setTypeFilter(e.target.value)}
-                className="h-9 rounded-md border border-input bg-background px-3 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-              >
-                <option value="todos">Venda & Aluguel</option>
-                <option value="venda">Apenas Venda</option>
-                <option value="aluguel">Apenas Aluguel</option>
-              </select>
-
-              <select
-                value={categoryFilter}
-                onChange={(e) => setCategoryFilter(e.target.value)}
-                className="h-9 rounded-md border border-input bg-background px-3 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-              >
-                <option value="todos">Todas as tipologias</option>
-                <option value="apartamento">Apartamento</option>
-                <option value="casa">Casa</option>
-                <option value="cobertura">Cobertura</option>
-                <option value="comercial">Comercial</option>
-              </select>
-            </div>
+      {/* Filter Bar - Apple Glass Pills */}
+      <div className="glass-card rounded-2xl p-3 sm:p-4 border border-black/[0.06] dark:border-white/[0.08]">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div className="relative flex-1">
+            <Search className="absolute left-3.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="Buscar por código (ex: AP0420), bairro ou título..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full h-10 pl-10 pr-4 rounded-full border border-black/[0.08] dark:border-white/[0.12] bg-white/60 dark:bg-white/[0.04] text-xs sm:text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground backdrop-blur-md transition-all"
+            />
           </div>
-        </CardContent>
-      </Card>
 
-      {/* Properties Grid with Realistic Photos */}
+          <div className="flex items-center gap-2 flex-wrap">
+            {/* Type Filters */}
+            <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
+              {[
+                { id: "todos", label: "Todos" },
+                { id: "venda", label: "Venda" },
+                { id: "aluguel", label: "Aluguel" },
+              ].map((t) => (
+                <button
+                  key={t.id}
+                  type="button"
+                  onClick={() => setTypeFilter(t.id)}
+                  className={`rounded-full px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition-all ${
+                    typeFilter === t.id
+                      ? "bg-foreground text-background shadow-sm"
+                      : "glass-pill text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Category Select Pill */}
+            <select
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+              className="h-9 rounded-full border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.05] px-3.5 text-xs font-semibold focus-visible:outline-none text-foreground backdrop-blur-md"
+            >
+              <option value="todos">Todas as tipologias</option>
+              <option value="apartamento">Apartamento</option>
+              <option value="casa">Casa</option>
+              <option value="cobertura">Cobertura</option>
+              <option value="comercial">Comercial</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {/* Properties Grid with Apple Prime Glass Cards */}
       {loading ? (
-        <div className="py-16 text-center text-sm text-muted-foreground flex items-center justify-center gap-2">
-          <Loader2 className="h-5 w-5 animate-spin text-primary" /> Carregando imóveis com fotos...
+        <div className="py-20 text-center text-sm text-muted-foreground flex flex-col items-center justify-center gap-2">
+          <Loader2 className="h-6 w-6 animate-spin text-foreground" />
+          <span>Carregando sua carteira em alta definição...</span>
         </div>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((property) => {
             const photoUrl = property.imageUrl || PHOTO_PRESETS[0].url
 
             return (
               <div
                 key={property.id}
-                className="group rounded-xl border bg-card overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+                className="group glass-card glass-card-hover rounded-3xl overflow-hidden border border-black/[0.06] dark:border-white/[0.08] flex flex-col justify-between"
               >
                 <div>
-                  {/* Photo with Overlay Badge and Price */}
+                  {/* Photo with Apple Glass Overlay Badge and Price */}
                   <div className="h-48 relative overflow-hidden bg-slate-900">
                     <img
                       src={photoUrl}
@@ -587,80 +607,83 @@ export default function PropertiesPage() {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-black/40 p-3 flex flex-col justify-between text-white">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/40 p-3.5 flex flex-col justify-between text-white">
                       <div className="flex items-center justify-between">
                         <div className="flex gap-1.5">
-                          <span className="rounded bg-primary px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider shadow">
+                          <span className="rounded-full bg-white/20 backdrop-blur-md px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider shadow-sm">
                             {property.type}
                           </span>
-                          <span className="rounded bg-black/60 backdrop-blur-sm px-2 py-0.5 text-[11px] font-medium">
+                          <span className="rounded-full bg-black/50 backdrop-blur-md px-2.5 py-0.5 text-[10px] font-medium">
                             {property.category}
                           </span>
                         </div>
                         <span
-                          className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold shadow-sm ${property.status === "Disponível"
-                              ? "bg-emerald-500 text-white"
+                          className={`rounded-full px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wide backdrop-blur-md ${
+                            property.status === "Disponível"
+                              ? "bg-emerald-500/80 text-white"
                               : property.status === "Reservado"
-                                ? "bg-amber-500 text-white"
-                                : "bg-slate-700 text-white"
-                            }`}
+                              ? "bg-amber-500/80 text-white"
+                              : "bg-slate-700/80 text-white"
+                          }`}
                         >
                           {property.status}
                         </span>
                       </div>
 
                       <div>
-                        <span className="text-[10px] font-mono tracking-wider opacity-90 block">
+                        <span className="text-[10px] font-mono tracking-wider opacity-80 block">
                           CÓD. {property.code}
                         </span>
-                        <p className="text-2xl font-black tracking-tight text-white drop-shadow">
-                          {property.type === "Aluguel"
-                            ? `R$ ${property.price.toLocaleString("pt-BR")} /mês`
-                            : `R$ ${property.price.toLocaleString("pt-BR")}`}
-                        </p>
+                        <div className="inline-block mt-0.5">
+                          <span className="rounded-full bg-black/60 backdrop-blur-md px-3 py-1 text-base sm:text-lg font-black tracking-tight text-white drop-shadow">
+                            {property.type === "Aluguel"
+                              ? `R$ ${property.price.toLocaleString("pt-BR")} /mês`
+                              : `R$ ${property.price.toLocaleString("pt-BR")}`}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
 
                   {/* Body Specs */}
-                  <div className="p-4 space-y-3">
+                  <div className="p-4 space-y-2.5">
                     <h3 className="font-bold text-sm leading-snug line-clamp-2 text-foreground group-hover:text-primary transition-colors">
                       {property.title}
                     </h3>
 
-                    <p className="text-xs text-muted-foreground flex items-center gap-1">
-                      <MapPin className="h-3.5 w-3.5 text-primary shrink-0" />
+                    <p className="text-xs text-muted-foreground flex items-center gap-1 font-medium">
+                      <MapPin className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
                       {property.neighborhood}, {property.city}
                     </p>
 
-                    <div className="grid grid-cols-4 gap-1.5 pt-2 border-t text-xs text-muted-foreground">
+                    <div className="grid grid-cols-4 gap-1.5 pt-2 border-t border-border/40 text-xs text-muted-foreground">
                       <div className="flex items-center gap-1">
                         <Bed className="h-3.5 w-3.5" />
-                        <span>{property.bedrooms} qtos</span>
+                        <span className="font-medium">{property.bedrooms} qtos</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <Bath className="h-3.5 w-3.5" />
-                        <span>{property.bathrooms} banh</span>
+                        <span className="font-medium">{property.bathrooms} banh</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <Car className="h-3.5 w-3.5" />
-                        <span>{property.parking} vag</span>
+                        <span className="font-medium">{property.parking} vag</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <Maximize className="h-3.5 w-3.5" />
-                        <span>{property.area} m²</span>
+                        <span className="font-medium">{property.area} m²</span>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Card Action Buttons (Detalhes e Editar 100% Funcionais) */}
-                <div className="p-3 pt-0 border-t flex items-center justify-between gap-2 mt-2 bg-muted/10">
+                {/* Card Action Buttons (Apple Pills) */}
+                <div className="p-3 pt-0 border-t border-border/40 flex items-center justify-between gap-2 mt-2 pt-3">
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => setDetailsProperty(property)}
-                    className="flex-1 h-8 text-xs flex items-center justify-center gap-1.5 font-medium hover:border-primary hover:text-primary"
+                    className="flex-1 rounded-full h-8 text-xs flex items-center justify-center gap-1.5 font-bold glass-pill hover:bg-muted/60"
                   >
                     <Eye className="h-3.5 w-3.5" /> Detalhes
                   </Button>
@@ -669,17 +692,28 @@ export default function PropertiesPage() {
                     variant="default"
                     size="sm"
                     onClick={() => setEditingProperty(property)}
-                    className="flex-1 h-8 text-xs flex items-center justify-center gap-1.5 font-medium"
+                    className="flex-1 rounded-full h-8 text-xs flex items-center justify-center gap-1.5 font-bold bg-foreground text-background hover:bg-foreground/90 shadow-sm"
                   >
                     <Edit className="h-3.5 w-3.5" /> Editar
                   </Button>
+
+                  {/* Share on WhatsApp */}
+                  <a
+                    href={`https://wa.me/?text=${encodeURIComponent(`Confira este imóvel: ${property.title} - ${window.location.origin}/imovel/${property.code}`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="h-8 w-8 rounded-full border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.05] hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-600 flex items-center justify-center text-muted-foreground transition-colors shrink-0"
+                    title="Compartilhar no WhatsApp"
+                  >
+                    <MessageSquare className="h-3.5 w-3.5" />
+                  </a>
 
                   <Link
                     href={`/imovel/${property.code}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="h-8 px-2.5 rounded-md border border-input bg-background hover:bg-muted text-xs flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-                    title="Abrir página pública do anúncio"
+                    className="h-8 w-8 rounded-full border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.05] hover:bg-black/5 dark:hover:bg-white/10 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors shrink-0"
+                    title="Abrir página pública do imóvel"
                   >
                     <ExternalLink className="h-3.5 w-3.5" />
                   </Link>
