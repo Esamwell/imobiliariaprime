@@ -607,6 +607,16 @@ export default function PropertiesPage() {
                   >
                     <Edit className="h-3.5 w-3.5" /> Editar
                   </Button>
+
+                  <Link
+                    href={`/imovel/${property.code}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="h-8 px-2.5 rounded-md border border-input bg-background hover:bg-muted text-xs flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+                    title="Abrir página pública do anúncio"
+                  >
+                    <ExternalLink className="h-3.5 w-3.5" />
+                  </Link>
                 </div>
               </div>
             )

@@ -18,7 +18,8 @@ import {
   Search,
   Plus,
   LogOut,
-  Crown
+  Crown,
+  Globe
 } from "lucide-react"
 import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
@@ -71,7 +72,19 @@ export default function UserDashboardLayout({
           </Link>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
+          {/* Link para o Portal Público da Imobiliária */}
+          <Link
+            href="/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-blue-300 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 px-3 py-1.5 text-xs font-semibold text-blue-700 dark:text-blue-300 hover:bg-blue-100 transition-colors"
+            title="Abrir o site público de imóveis em nova aba"
+          >
+            <Globe className="h-4 w-4" />
+            <span className="hidden sm:inline">Ver</span> Portal de Imóveis
+          </Link>
+
           {/* Switcher to Super Admin */}
           <Link
             href="/super-admin"
