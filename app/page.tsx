@@ -1,10 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { TactusLogo } from "@/components/tactus-logo"
-import { CinematicHero } from "@/components/ui/cinematic-landing-hero"
 import { 
   Building, 
   Building2,
@@ -45,6 +44,117 @@ import {
   Briefcase
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+
+const UNIFIED_STYLES = `
+  /* Film grain subtle overlay from 21st.dev */
+  .film-grain {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 50; opacity: 0.035; mix-blend-mode: overlay;
+    background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)"/></svg>');
+  }
+
+  .bg-grid-theme {
+    background-size: 48px 48px;
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    mask-image: radial-gradient(ellipse at center, black 0%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 75%);
+  }
+
+  /* 3D Physical Skeuomorphic Materials */
+  .text-3d-matte {
+    color: #FFFFFF;
+    text-shadow: 
+      0 10px 30px rgba(0, 0, 0, 0.8), 
+      0 2px 4px rgba(0, 0, 0, 0.6);
+  }
+
+  .text-silver-matte {
+    background: linear-gradient(180deg, #FFFFFF 0%, #A1A1AA 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transform: translateZ(0);
+    filter: 
+      drop-shadow(0px 10px 20px rgba(0, 0, 0, 0.8)) 
+      drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.5));
+  }
+
+  .text-lime-matte {
+    background: linear-gradient(180deg, #CCFF00 0%, #99E600 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transform: translateZ(0);
+    filter: 
+      drop-shadow(0px 10px 25px rgba(204, 255, 0, 0.35)) 
+      drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.8));
+  }
+
+  /* Deep Physical Card with Dynamic Mouse Lighting Sheen */
+  .premium-depth-card {
+    background: linear-gradient(145deg, #101524 0%, #060911 100%);
+    box-shadow: 
+      0 40px 100px -20px rgba(0, 0, 0, 0.95),
+      0 20px 40px -20px rgba(0, 0, 0, 0.85),
+      inset 0 1px 2px rgba(255, 255, 255, 0.15),
+      inset 0 -2px 4px rgba(0, 0, 0, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+  }
+
+  .card-sheen {
+    position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 40;
+    background: radial-gradient(900px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(204, 255, 0, 0.08) 0%, transparent 45%);
+    mix-blend-mode: screen; transition: opacity 0.3s ease;
+  }
+
+  .floating-ui-badge {
+    background: linear-gradient(135deg, rgba(16, 21, 35, 0.88) 0%, rgba(6, 9, 17, 0.92) 100%);
+    backdrop-filter: blur(28px); 
+    -webkit-backdrop-filter: blur(28px);
+    box-shadow: 
+      0 0 0 1px rgba(255, 255, 255, 0.12),
+      0 25px 50px -12px rgba(0, 0, 0, 0.9),
+      inset 0 1px 1px rgba(255,255,255,0.2),
+      inset 0 -1px 1px rgba(0,0,0,0.6);
+  }
+
+  /* Tactile Physical Buttons */
+  .btn-modern-lime {
+    transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+    background: linear-gradient(180deg, #CCFF00 0%, #A8E600 100%);
+    color: #07090E;
+    box-shadow: 0 0 0 1px rgba(204,255,0,0.3), 0 2px 4px rgba(0,0,0,0.2), 0 12px 28px -4px rgba(204,255,0,0.35), inset 0 1px 1px rgba(255,255,255,0.6), inset 0 -3px 6px rgba(0,0,0,0.1);
+  }
+  .btn-modern-lime:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 0 1px rgba(204,255,0,0.5), 0 6px 14px -2px rgba(0,0,0,0.3), 0 20px 36px -6px rgba(204,255,0,0.5), inset 0 1px 1px rgba(255,255,255,0.8), inset 0 -3px 6px rgba(0,0,0,0.1);
+  }
+  .btn-modern-lime:active {
+    transform: translateY(1px);
+    background: #A8E600;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.2), 0 1px 2px rgba(0,0,0,0.2), inset 0 3px 6px rgba(0,0,0,0.2);
+  }
+
+  .btn-modern-dark {
+    transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+    background: linear-gradient(180deg, #27272A 0%, #141416 100%);
+    color: #FFFFFF;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.12), 0 2px 4px rgba(0,0,0,0.6), 0 12px 24px -4px rgba(0,0,0,0.9), inset 0 1px 1px rgba(255,255,255,0.15), inset 0 -3px 6px rgba(0,0,0,0.8);
+  }
+  .btn-modern-dark:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(180deg, #3F3F46 0%, #202024 100%);
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.2), 0 6px 12px -2px rgba(0,0,0,0.7), 0 20px 32px -6px rgba(0,0,0,1), inset 0 1px 1px rgba(255,255,255,0.25), inset 0 -3px 6px rgba(0,0,0,0.8);
+  }
+  .btn-modern-dark:active {
+    transform: translateY(1px);
+    background: #141416;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.05), inset 0 3px 8px rgba(0,0,0,0.9);
+  }
+`;
 
 interface PlanDetail {
   id: string
@@ -200,6 +310,31 @@ export default function CRMLandingPage() {
   // Segment Switcher (Corretor Autônomo vs. Imobiliária vs. Rede)
   const [activeSegment, setActiveSegment] = useState<"corretor" | "imobiliaria" | "enterprise">("corretor")
 
+  // Refs for 3D mouse parallax and specular lighting
+  const showcaseCardRef = useRef<HTMLDivElement>(null)
+  const deviceTiltRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!showcaseCardRef.current) return
+      const rect = showcaseCardRef.current.getBoundingClientRect()
+      const mouseX = e.clientX - rect.left
+      const mouseY = e.clientY - rect.top
+      
+      showcaseCardRef.current.style.setProperty("--mouse-x", `${mouseX}px`)
+      showcaseCardRef.current.style.setProperty("--mouse-y", `${mouseY}px`)
+
+      if (deviceTiltRef.current && window.innerWidth >= 1024) {
+        const xPercent = (e.clientX / window.innerWidth - 0.5) * 2
+        const yPercent = (e.clientY / window.innerHeight - 0.5) * 2
+        deviceTiltRef.current.style.transform = `perspective(1200px) rotateY(${xPercent * 5}deg) rotateX(${-yPercent * 5}deg)`
+      }
+    }
+
+    window.addEventListener("mousemove", handleMouseMove)
+    return () => window.removeEventListener("mousemove", handleMouseMove)
+  }, [])
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -222,13 +357,19 @@ export default function CRMLandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#07090E] text-slate-100 flex flex-col justify-between selection:bg-[#CCFF00] selection:text-black font-sans overflow-x-hidden">
+    <div className="min-h-screen bg-[#07090E] text-slate-100 flex flex-col justify-between selection:bg-[#CCFF00] selection:text-black font-sans overflow-x-hidden relative">
       
+      {/* 0. INJECTED 3D SKEUOMORPHIC & FILM GRAIN STYLES */}
+      <style dangerouslySetInnerHTML={{ __html: UNIFIED_STYLES }} />
+
+      {/* Film grain environmental overlay */}
+      <div className="film-grain" aria-hidden="true" />
+
       {/* Ambient Lighting Gradients */}
       <div className="pointer-events-none fixed inset-0 z-0">
-        <div className="absolute top-0 left-1/3 -translate-x-1/2 w-[700px] h-[500px] bg-indigo-600/15 blur-[150px] rounded-full" />
-        <div className="absolute top-80 right-10 w-[600px] h-[450px] bg-[#CCFF00]/10 blur-[170px] rounded-full animate-glow-pulse" />
-        <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:28px_28px] opacity-40" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[550px] bg-indigo-600/12 blur-[170px] rounded-full" />
+        <div className="absolute top-96 right-10 w-[650px] h-[500px] bg-[#CCFF00]/10 blur-[180px] rounded-full animate-glow-pulse" />
+        <div className="absolute inset-0 bg-grid-theme opacity-35" />
       </div>
 
       {/* 1. Header do CRM - Apple Prime Glass Capsule */}
@@ -297,25 +438,23 @@ export default function CRMLandingPage() {
         </div>
       </header>
 
-      {/* 2. Cinematic 3D Apple Landing Hero (21st.dev Component) */}
-      <CinematicHero />
-
-      {/* 3. Hero Section: Conectando o Corretor e a Imobiliária ao Cliente Final */}
+      {/* 2. MASTER UNIFIED HERO & HARDWARE SHOWCASE STAGE */}
       <main className="flex-1 relative z-10">
-        <section className="relative pt-12 sm:pt-20 pb-12 sm:pb-20 px-4 sm:px-6 lg:px-8 text-center">
+        
+        {/* Top Hero Typography & Call to Action */}
+        <section className="relative pt-12 sm:pt-20 pb-8 px-4 sm:px-6 lg:px-8 text-center max-w-5xl mx-auto">
           
-          <div className="max-w-4xl mx-auto space-y-6">
-            
+          <div className="space-y-6">
             {/* Pill Header Badge */}
             <div className="inline-flex items-center gap-2 rounded-full bg-white/[0.05] border border-white/10 px-4 py-1.5 text-[11px] font-extrabold text-[#CCFF00] backdrop-blur-md">
               <span className="flex h-2 w-2 relative">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#CCFF00] opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-[#CCFF00]"></span>
               </span>
-              TACTUS CRM • DESENVOLVIDO PARA CORRETORES & IMOBILIÁRIAS
+              TACTUS CRM • O ECOSSISTEMA DO CORRETOR & IMOBILIÁRIA DE ALTO PADRÃO
             </div>
 
-            {/* Main Headline */}
+            {/* Master Headline */}
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.08] text-white">
               O CRM que conecta sua imobiliária e <br className="hidden sm:block" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#CCFF00] via-white to-slate-200">
@@ -323,214 +462,36 @@ export default function CRMLandingPage() {
               </span>
             </h1>
 
-            {/* Description */}
+            {/* Master Subtitle */}
             <p className="max-w-2xl mx-auto text-sm sm:text-base text-slate-400 font-normal leading-relaxed">
               Esqueça portais tradicionais que cobram fortunas para exibir anúncios dos seus concorrentes. 
               Com o <strong className="text-white">Tactus CRM</strong>, você tem sua Vitrine Digital exclusiva com botão de WhatsApp direto, 
-              funil Kanban de alta conversão, Google Agenda integrada e gestão automatizada de contratos e comissões.
+              funil Kanban de alta conversão, agendamento com Google Agenda e gestão automatizada de aluguéis e comissões.
             </p>
 
-            {/* Interactive Broker & Agency Solution Hub */}
-            <div className="max-w-4xl mx-auto pt-6 text-left">
-              <div className="rounded-[32px] border border-white/15 bg-[#0F121B]/90 backdrop-blur-2xl p-4 sm:p-6 shadow-[0_24px_60px_rgba(0,0,0,0.6)]">
-                
-                {/* Segment Selector Tabs */}
-                <div className="flex flex-wrap items-center gap-2 mb-5 border-b border-white/[0.08] pb-4">
-                  <button
-                    type="button"
-                    onClick={() => setActiveSegment("corretor")}
-                    className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-extrabold transition-all ${
-                      activeSegment === "corretor"
-                        ? "bg-[#CCFF00] text-black shadow-lg shadow-[#CCFF00]/25 font-black scale-102"
-                        : "bg-white/[0.04] text-white/70 hover:text-white hover:bg-white/[0.08]"
-                    }`}
-                  >
-                    <UserCheck className="w-4 h-4" />
-                    <span>Para Corretores Autônomos (PF)</span>
-                  </button>
+            {/* Tactile Physical CTA Buttons */}
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                href="#precos"
+                className="btn-modern-lime flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full font-black text-xs sm:text-sm shadow-xl"
+              >
+                <span>Começar Agora (Planos a partir de R$ 69/mês)</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
 
-                  <button
-                    type="button"
-                    onClick={() => setActiveSegment("imobiliaria")}
-                    className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-extrabold transition-all ${
-                      activeSegment === "imobiliaria"
-                        ? "bg-[#CCFF00] text-black shadow-lg shadow-[#CCFF00]/25 font-black scale-102"
-                        : "bg-white/[0.04] text-white/70 hover:text-white hover:bg-white/[0.08]"
-                    }`}
-                  >
-                    <Building2 className="w-4 h-4" />
-                    <span>Para Imobiliárias & Gestores (PJ)</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setActiveSegment("enterprise")}
-                    className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-extrabold transition-all ${
-                      activeSegment === "enterprise"
-                        ? "bg-[#CCFF00] text-black shadow-lg shadow-[#CCFF00]/25 font-black scale-102"
-                        : "bg-white/[0.04] text-white/70 hover:text-white hover:bg-white/[0.08]"
-                    }`}
-                  >
-                    <Crown className="w-4 h-4 text-amber-400" />
-                    <span>Redes & Incorporadoras</span>
-                  </button>
-                </div>
-
-                {/* Tab 1: Corretor Autônomo */}
-                {activeSegment === "corretor" && (
-                  <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-                    <div className="md:col-span-8 space-y-3">
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[11px] font-bold border border-emerald-500/20">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                        A partir de R$ 69/mês • 1 Corretor • Até 50 Imóveis
-                      </div>
-                      <h3 className="text-xl sm:text-2xl font-black text-white">
-                        Sua marca pessoal forte e fechamentos no WhatsApp.
-                      </h3>
-                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                        Tenha sua própria Vitrine Digital (<code className="text-[#CCFF00] bg-white/[0.05] px-1.5 py-0.5 rounded">/v/seu-nome</code>) para enviar no WhatsApp e Instagram do cliente sem anúncios concorrentes. Agende visitas com 1 clique sincronizado ao Google Agenda e controle todos os leads no funil Kanban pelo celular.
-                      </p>
-                      <div className="grid grid-cols-2 gap-2 pt-2 text-xs text-slate-300">
-                        <span className="flex items-center gap-1.5">
-                          <Check className="w-4 h-4 text-[#CCFF00]" /> Vitrine Pessoal Própria
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                          <Check className="w-4 h-4 text-[#CCFF00]" /> Google Agenda Integrada
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                          <Check className="w-4 h-4 text-[#CCFF00]" /> Funil Kanban no Celular
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                          <Check className="w-4 h-4 text-[#CCFF00]" /> Notificações Push PWA
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="md:col-span-4 flex flex-col gap-2.5">
-                      <Link
-                        href="#precos"
-                        className="w-full h-12 rounded-2xl bg-[#CCFF00] hover:bg-[#bbf000] text-black font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg shadow-[#CCFF00]/25 transition-all"
-                      >
-                        <span>Assinar Plano Corretor</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </Link>
-                      <Link
-                        href="/v/tactus"
-                        target="_blank"
-                        className="w-full h-11 rounded-2xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all"
-                      >
-                        <Share2 className="w-3.5 h-3.5 text-[#CCFF00]" />
-                        <span>Ver Vitrine Exemplo</span>
-                      </Link>
-                    </div>
-                  </div>
-                )}
-
-                {/* Tab 2: Imobiliária & Gestores */}
-                {activeSegment === "imobiliaria" && (
-                  <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-                    <div className="md:col-span-8 space-y-3">
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#CCFF00]/10 text-[#CCFF00] text-[11px] font-bold border border-[#CCFF00]/20">
-                        <Sparkles className="w-3.5 h-3.5" />
-                        Mais Escolhido • Até 10 Corretores • Imóveis Ilimitados
-                      </div>
-                      <h3 className="text-xl sm:text-2xl font-black text-white">
-                        Gestão de equipe, divisão de comissões e carteira de locações.
-                      </h3>
-                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                        Coordenador geral com controle de permissões por corretor, carteira de imóveis ilimitada, módulo completo de locações com reajustes por IGP-M/IPCA e repasses a proprietários automatizados.
-                      </p>
-                      <div className="grid grid-cols-2 gap-2 pt-2 text-xs text-slate-300">
-                        <span className="flex items-center gap-1.5">
-                          <Check className="w-4 h-4 text-[#CCFF00]" /> Até 10 Corretores na Equipe
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                          <Check className="w-4 h-4 text-[#CCFF00]" /> Módulo de Locações & Aluguéis
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                          <Check className="w-4 h-4 text-[#CCFF00]" /> Divisão Automática de Comissões
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                          <Check className="w-4 h-4 text-[#CCFF00]" /> Relatórios de VGV Consolidado
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="md:col-span-4 flex flex-col gap-2.5">
-                      <Link
-                        href="#precos"
-                        className="w-full h-12 rounded-2xl bg-[#CCFF00] hover:bg-[#bbf000] text-black font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg shadow-[#CCFF00]/25 transition-all"
-                      >
-                        <span>Assinar Imobiliária Tactus</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </Link>
-                      <Link
-                        href="/login"
-                        className="w-full h-11 rounded-2xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all"
-                      >
-                        <Laptop className="w-3.5 h-3.5 text-[#CCFF00]" />
-                        <span>Acessar Painel Demo</span>
-                      </Link>
-                    </div>
-                  </div>
-                )}
-
-                {/* Tab 3: Redes & Incorporadoras */}
-                {activeSegment === "enterprise" && (
-                  <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-                    <div className="md:col-span-8 space-y-3">
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-[11px] font-bold border border-amber-500/20">
-                        <Crown className="w-3.5 h-3.5" />
-                        Enterprise • Multi-Filiais • Corretores e Imóveis Ilimitados
-                      </div>
-                      <h3 className="text-xl sm:text-2xl font-black text-white">
-                        Escala máxima, multi-tenant e integração com portais.
-                      </h3>
-                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                        Estrutura pronta para redes de franquias, grandes imobiliárias e incorporadoras com exportação de feeds para portais (ZAP, VivaReal, OLX), assinatura eletrônica e gerente de contas dedicado.
-                      </p>
-                      <div className="grid grid-cols-2 gap-2 pt-2 text-xs text-slate-300">
-                        <span className="flex items-center gap-1.5">
-                          <Check className="w-4 h-4 text-amber-400" /> Multi-Tenant e Multi-Filiais
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                          <Check className="w-4 h-4 text-amber-400" /> Feeds XML para Portais
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                          <Check className="w-4 h-4 text-amber-400" /> Assinatura Eletrônica
-                        </span>
-                        <span className="flex items-center gap-1.5">
-                          <Check className="w-4 h-4 text-amber-400" /> Onboarding VIP para Equipe
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="md:col-span-4 flex flex-col gap-2.5">
-                      <Link
-                        href="#precos"
-                        className="w-full h-12 rounded-2xl bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-500/25 transition-all"
-                      >
-                        <span>Contratar Master VIP</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </Link>
-                      <a
-                        href="https://wa.me/5511987654321?text=Ol%C3%A1!%20Gostaria%20de%20falar%20sobre%20o%20Plano%20Enterprise%20do%20Tactus%20CRM."
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full h-11 rounded-2xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all"
-                      >
-                        <MessageSquare className="w-3.5 h-3.5 text-amber-400" />
-                        <span>Falar com Consultor</span>
-                      </a>
-                    </div>
-                  </div>
-                )}
-
-              </div>
+              <Link
+                href="/v/tactus"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-modern-dark flex items-center justify-center gap-2 px-6 py-3.5 rounded-full font-bold text-xs sm:text-sm text-slate-300 hover:text-white"
+              >
+                <Share2 className="w-4 h-4 text-[#CCFF00]" />
+                <span>Conhecer a Vitrine Modelo</span>
+              </Link>
             </div>
 
             {/* Proof Stack */}
-            <div className="flex items-center justify-center gap-3 pt-4">
+            <div className="flex items-center justify-center gap-3 pt-2">
               <div className="flex -space-x-2">
                 <div className="h-8 w-8 rounded-full bg-amber-500 border-2 border-[#07090E] text-white text-[10px] font-bold flex items-center justify-center">
                   CS
@@ -550,24 +511,27 @@ export default function CRMLandingPage() {
                 <span className="text-slate-400 text-[10px]">Aumentando o VGV e fechando negócios sem intermediários</span>
               </div>
             </div>
-
           </div>
         </section>
 
-        {/* 4. SHOWCASE MOCKUPS: MACBOOK PRO & IPHONE COM PRINTS REAIS DO SISTEMA */}
-        <section className="relative px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-10 sm:py-16">
-          <div className="relative mx-auto">
-            
-            {/* Ambient Backlight Glow behind Mockups */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[500px] bg-gradient-to-tr from-[#CCFF00]/15 via-indigo-600/10 to-emerald-500/15 blur-[160px] rounded-full pointer-events-none animate-glow-pulse" />
+        {/* 3. CENTRAL 3D PHYSICAL HARDWARE STAGE (MacBook Pro + iPhone 16 Pro + Dynamic Sheen) */}
+        <section className="relative px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pt-4 pb-12 sm:pb-20">
+          <div
+            ref={showcaseCardRef}
+            className="premium-depth-card rounded-[32px] sm:rounded-[44px] p-4 sm:p-8 lg:p-12 overflow-hidden"
+          >
+            {/* Specular Mouse Sheen Overlay */}
+            <div className="card-sheen" aria-hidden="true" />
 
-            {/* Central Devices Container */}
-            <div className="relative flex flex-col lg:flex-row items-center justify-center">
-              
+            {/* Devices Tilt Wrapper */}
+            <div
+              ref={deviceTiltRef}
+              className="relative flex flex-col lg:flex-row items-center justify-center transition-transform duration-300 ease-out z-10"
+            >
               {/* MACBOOK PRO MOCKUP (DESKTOP DASHBOARD) */}
-              <div className="relative w-full max-w-4xl rounded-[32px] sm:rounded-[38px] bg-[#141722] border border-white/20 p-2 sm:p-3.5 shadow-[0_40px_100px_rgba(0,0,0,0.85)] group">
+              <div className="relative w-full max-w-4xl rounded-[28px] sm:rounded-[36px] bg-[#141722] border border-white/20 p-2 sm:p-3 shadow-[0_40px_100px_rgba(0,0,0,0.85)] group">
                 
-                {/* Top Camera Notch & Bar */}
+                {/* Top Camera Notch & Browser Bar */}
                 <div className="flex items-center justify-between px-3 py-1.5 mb-1.5 bg-black/40 rounded-t-2xl border-b border-white/[0.08]">
                   <div className="flex items-center gap-1.5">
                     <span className="w-2.5 h-2.5 rounded-full bg-red-500/80 inline-block" />
@@ -590,7 +554,7 @@ export default function CRMLandingPage() {
                     priority
                     className="object-cover object-top hover:scale-[1.01] transition-transform duration-700"
                   />
-                  {/* Subtle Screen Reflection */}
+                  {/* Screen Glare Highlight */}
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-white/[0.08] via-transparent to-transparent opacity-60" />
                 </div>
 
@@ -601,37 +565,36 @@ export default function CRMLandingPage() {
               </div>
 
               {/* IPHONE 16 PRO MOCKUP (MOBILE DASHBOARD) - Floating & Overlapping */}
-              <div className="relative lg:absolute lg:-right-4 lg:-bottom-10 mt-8 lg:mt-0 z-30 animate-float">
-                <div className="w-[260px] sm:w-[290px] rounded-[48px] bg-[#0E1017] border-2 border-white/25 p-2.5 shadow-[0_35px_80px_rgba(0,0,0,0.95)] relative">
+              <div className="relative lg:absolute lg:-right-2 lg:-bottom-6 mt-8 lg:mt-0 z-30 animate-float">
+                <div className="w-[240px] sm:w-[275px] rounded-[44px] bg-[#0E1017] border-2 border-white/25 p-2 shadow-[0_35px_80px_rgba(0,0,0,0.95)] relative">
                   
                   {/* Dynamic Island */}
-                  <div className="absolute top-4 left-1/2 -translate-x-1/2 w-24 h-5 rounded-full bg-black flex items-center justify-between px-2.5 z-20 border border-white/10">
-                    <div className="w-2 h-2 rounded-full bg-white/20" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#CCFF00]/40 animate-pulse" />
+                  <div className="absolute top-3.5 left-1/2 -translate-x-1/2 w-20 h-4.5 rounded-full bg-black flex items-center justify-between px-2.5 z-20 border border-white/10">
+                    <div className="w-1.5 h-1.5 rounded-full bg-white/20" />
+                    <div className="w-2 h-2 rounded-full bg-[#CCFF00]/50 animate-pulse" />
                   </div>
 
                   {/* iPhone Screen with Mobile Dashboard Print */}
-                  <div className="relative aspect-[9/19] w-full overflow-hidden rounded-[40px] border border-white/10 bg-black">
+                  <div className="relative aspect-[9/19] w-full overflow-hidden rounded-[36px] border border-white/10 bg-black">
                     <Image
                       src="/mockups/dashboard-mobile.jpg"
                       alt="Painel Mobile Tactus CRM no iPhone"
                       fill
                       className="object-cover object-top"
                     />
-                    {/* Screen Glare */}
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-white/[0.07] via-transparent to-transparent" />
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-white/[0.08] via-transparent to-transparent" />
                   </div>
 
                   {/* Home indicator bar */}
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-28 h-1 rounded-full bg-white/40" />
+                  <div className="absolute bottom-3.5 left-1/2 -translate-x-1/2 w-24 h-1 rounded-full bg-white/40" />
                 </div>
               </div>
 
-              {/* FLOATING INTERACTIVE GLASS PILLS */}
+              {/* 3D FLOATING GLASS BADGES */}
               
               {/* Badge 1: Google Agenda Sincronizada (Top Left) */}
-              <div className="hidden md:flex absolute -top-8 -left-4 lg:-left-10 z-30 animate-float items-center gap-3 p-3.5 rounded-2xl border border-white/15 bg-[#12151E]/90 backdrop-blur-2xl shadow-2xl shadow-black/80">
-                <div className="w-10 h-10 rounded-xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center text-blue-400">
+              <div className="hidden md:flex absolute -top-4 -left-2 lg:-left-6 z-30 animate-float items-center gap-3 p-3.5 rounded-2xl floating-ui-badge">
+                <div className="w-10 h-10 rounded-xl bg-blue-500/20 border border-blue-400/40 flex items-center justify-center text-blue-400">
                   <Calendar className="w-5 h-5" />
                 </div>
                 <div>
@@ -649,8 +612,8 @@ export default function CRMLandingPage() {
               </div>
 
               {/* Badge 2: Lead Quente via Vitrine (Bottom Left) */}
-              <div className="hidden md:flex absolute -bottom-6 left-6 lg:left-8 z-30 animate-float-reverse items-center gap-3 p-3.5 rounded-2xl border border-white/15 bg-[#12151E]/90 backdrop-blur-2xl shadow-2xl shadow-black/80">
-                <div className="w-10 h-10 rounded-xl bg-[#CCFF00]/15 border border-[#CCFF00]/30 flex items-center justify-center text-[#CCFF00]">
+              <div className="hidden md:flex absolute -bottom-4 left-4 lg:left-6 z-30 animate-float-reverse items-center gap-3 p-3.5 rounded-2xl floating-ui-badge">
+                <div className="w-10 h-10 rounded-xl bg-[#CCFF00]/20 border border-[#CCFF00]/40 flex items-center justify-center text-[#CCFF00]">
                   <Sparkles className="w-5 h-5" />
                 </div>
                 <div>
@@ -667,7 +630,7 @@ export default function CRMLandingPage() {
               </div>
 
               {/* Badge 3: VGV Fechado (Top Right) */}
-              <div className="hidden lg:flex absolute -top-10 right-28 z-30 animate-float-slow items-center gap-2.5 px-4 py-2 rounded-full border border-[#CCFF00]/30 bg-black/80 backdrop-blur-2xl shadow-xl">
+              <div className="hidden lg:flex absolute -top-5 right-24 z-30 animate-float-slow items-center gap-2.5 px-4 py-2 rounded-full border border-[#CCFF00]/40 bg-black/85 backdrop-blur-2xl shadow-xl">
                 <TrendingUp className="w-4 h-4 text-[#CCFF00]" />
                 <span className="text-xs font-black text-white">R$ 4.850.000 VGV</span>
                 <span className="px-2 py-0.5 rounded-full bg-[#CCFF00] text-black text-[9px] font-black uppercase">
@@ -679,7 +642,206 @@ export default function CRMLandingPage() {
           </div>
         </section>
 
-        {/* 5. TICKER EM TEMPO REAL: ATIVIDADES DA REDE DE CORRETORES */}
+        {/* 4. INTERACTIVE BROKER & AGENCY SOLUTION CONSOLE */}
+        <section className="relative px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto pb-16">
+          <div className="rounded-[32px] border border-white/15 bg-[#0F121B]/90 backdrop-blur-2xl p-4 sm:p-7 shadow-[0_24px_60px_rgba(0,0,0,0.6)]">
+            
+            {/* Segment Selector Tabs */}
+            <div className="flex flex-wrap items-center gap-2 mb-6 border-b border-white/[0.08] pb-4">
+              <button
+                type="button"
+                onClick={() => setActiveSegment("corretor")}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-extrabold transition-all ${
+                  activeSegment === "corretor"
+                    ? "bg-[#CCFF00] text-black shadow-lg shadow-[#CCFF00]/25 font-black scale-102"
+                    : "bg-white/[0.04] text-white/70 hover:text-white hover:bg-white/[0.08]"
+                }`}
+              >
+                <UserCheck className="w-4 h-4" />
+                <span>Para Corretores Autônomos (PF)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveSegment("imobiliaria")}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-extrabold transition-all ${
+                  activeSegment === "imobiliaria"
+                    ? "bg-[#CCFF00] text-black shadow-lg shadow-[#CCFF00]/25 font-black scale-102"
+                    : "bg-white/[0.04] text-white/70 hover:text-white hover:bg-white/[0.08]"
+                }`}
+              >
+                <Building2 className="w-4 h-4" />
+                <span>Para Imobiliárias & Gestores (PJ)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveSegment("enterprise")}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-extrabold transition-all ${
+                  activeSegment === "enterprise"
+                    ? "bg-[#CCFF00] text-black shadow-lg shadow-[#CCFF00]/25 font-black scale-102"
+                    : "bg-white/[0.04] text-white/70 hover:text-white hover:bg-white/[0.08]"
+                }`}
+              >
+                <Crown className="w-4 h-4 text-amber-400" />
+                <span>Redes & Incorporadoras</span>
+              </button>
+            </div>
+
+            {/* Tab 1: Corretor Autônomo */}
+            {activeSegment === "corretor" && (
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                <div className="md:col-span-8 space-y-3">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[11px] font-bold border border-emerald-500/20">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    A partir de R$ 69/mês • 1 Corretor • Até 50 Imóveis
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-black text-white">
+                    Sua marca pessoal forte e fechamentos no WhatsApp.
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                    Tenha sua própria Vitrine Digital (<code className="text-[#CCFF00] bg-white/[0.05] px-1.5 py-0.5 rounded">/v/seu-nome</code>) para enviar no WhatsApp e Instagram do cliente sem anúncios concorrentes. Agende visitas com 1 clique sincronizado ao Google Agenda e controle todos os leads no funil Kanban pelo celular.
+                  </p>
+                  <div className="grid grid-cols-2 gap-2 pt-2 text-xs text-slate-300">
+                    <span className="flex items-center gap-1.5">
+                      <Check className="w-4 h-4 text-[#CCFF00]" /> Vitrine Pessoal Própria
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Check className="w-4 h-4 text-[#CCFF00]" /> Google Agenda Integrada
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Check className="w-4 h-4 text-[#CCFF00]" /> Funil Kanban no Celular
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Check className="w-4 h-4 text-[#CCFF00]" /> Notificações Push PWA
+                    </span>
+                  </div>
+                </div>
+
+                <div className="md:col-span-4 flex flex-col gap-2.5">
+                  <Link
+                    href="#precos"
+                    className="w-full h-12 rounded-2xl bg-[#CCFF00] hover:bg-[#bbf000] text-black font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg shadow-[#CCFF00]/25 transition-all"
+                  >
+                    <span>Assinar Plano Corretor</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                  <Link
+                    href="/v/tactus"
+                    target="_blank"
+                    className="w-full h-11 rounded-2xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all"
+                  >
+                    <Share2 className="w-3.5 h-3.5 text-[#CCFF00]" />
+                    <span>Ver Vitrine Exemplo</span>
+                  </Link>
+                </div>
+              </div>
+            )}
+
+            {/* Tab 2: Imobiliária & Gestores */}
+            {activeSegment === "imobiliaria" && (
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                <div className="md:col-span-8 space-y-3">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#CCFF00]/10 text-[#CCFF00] text-[11px] font-bold border border-[#CCFF00]/20">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    Mais Escolhido • Até 10 Corretores • Imóveis Ilimitados
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-black text-white">
+                    Gestão de equipe, divisão de comissões e carteira de locações.
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                    Coordenador geral com controle de permissões por corretor, carteira de imóveis ilimitada, módulo completo de locações com reajustes por IGP-M/IPCA e repasses a proprietários automatizados.
+                  </p>
+                  <div className="grid grid-cols-2 gap-2 pt-2 text-xs text-slate-300">
+                    <span className="flex items-center gap-1.5">
+                      <Check className="w-4 h-4 text-[#CCFF00]" /> Até 10 Corretores na Equipe
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Check className="w-4 h-4 text-[#CCFF00]" /> Módulo de Locações & Aluguéis
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Check className="w-4 h-4 text-[#CCFF00]" /> Divisão Automática de Comissões
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Check className="w-4 h-4 text-[#CCFF00]" /> Relatórios de VGV Consolidado
+                    </span>
+                  </div>
+                </div>
+
+                <div className="md:col-span-4 flex flex-col gap-2.5">
+                  <Link
+                    href="#precos"
+                    className="w-full h-12 rounded-2xl bg-[#CCFF00] hover:bg-[#bbf000] text-black font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg shadow-[#CCFF00]/25 transition-all"
+                  >
+                    <span>Assinar Imobiliária Tactus</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                  <Link
+                    href="/login"
+                    className="w-full h-11 rounded-2xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all"
+                  >
+                    <Laptop className="w-3.5 h-3.5 text-[#CCFF00]" />
+                    <span>Acessar Painel Demo</span>
+                  </Link>
+                </div>
+              </div>
+            )}
+
+            {/* Tab 3: Redes & Incorporadoras */}
+            {activeSegment === "enterprise" && (
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                <div className="md:col-span-8 space-y-3">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-[11px] font-bold border border-amber-500/20">
+                    <Crown className="w-3.5 h-3.5" />
+                    Enterprise • Multi-Filiais • Corretores e Imóveis Ilimitados
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-black text-white">
+                    Escala máxima, multi-tenant e integração com portais.
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                    Estrutura pronta para redes de franquias, grandes imobiliárias e incorporadoras com exportação de feeds para portais (ZAP, VivaReal, OLX), assinatura eletrônica e gerente de contas dedicado.
+                  </p>
+                  <div className="grid grid-cols-2 gap-2 pt-2 text-xs text-slate-300">
+                    <span className="flex items-center gap-1.5">
+                      <Check className="w-4 h-4 text-amber-400" /> Multi-Tenant e Multi-Filiais
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Check className="w-4 h-4 text-amber-400" /> Feeds XML para Portais
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Check className="w-4 h-4 text-amber-400" /> Assinatura Eletrônica
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Check className="w-4 h-4 text-amber-400" /> Onboarding VIP para Equipe
+                    </span>
+                  </div>
+                </div>
+
+                <div className="md:col-span-4 flex flex-col gap-2.5">
+                  <Link
+                    href="#precos"
+                    className="w-full h-12 rounded-2xl bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-500/25 transition-all"
+                  >
+                    <span>Contratar Master VIP</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                  <a
+                    href="https://wa.me/5511987654321?text=Ol%C3%A1!%20Gostaria%20de%20falar%20sobre%20o%20Plano%20Enterprise%20do%20Tactus%20CRM."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full h-11 rounded-2xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all"
+                  >
+                    <MessageSquare className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Falar com Consultor</span>
+                  </a>
+                </div>
+              </div>
+            )}
+
+          </div>
+        </section>
+
+        {/* 5. REALTIME TICKER: ATIVIDADES DA REDE DE CORRETORES */}
         <div className="w-full border-y border-white/[0.08] bg-white/[0.02] py-3.5 overflow-hidden backdrop-blur-md">
           <div className="max-w-7xl mx-auto px-4 flex items-center justify-between text-xs text-white/60">
             <div className="flex items-center gap-2 text-[#CCFF00] font-bold shrink-0 pr-4 border-r border-white/10">
