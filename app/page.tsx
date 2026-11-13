@@ -375,18 +375,8 @@ export default function CRMLandingPage() {
       {/* 1. Header do CRM - Apple Prime Glass Capsule */}
       <header className="sticky top-0 z-40 bg-[#07090E]/85 backdrop-blur-2xl border-b border-white/[0.08]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="h-10 w-10 rounded-2xl bg-white/[0.06] border border-white/10 p-1.5 flex items-center justify-center backdrop-blur-xl shadow-sm transition-transform group-hover:scale-105">
-              <TactusLogo variant="verde" size="sm" className="h-full w-full" />
-            </div>
-            <div>
-              <span className="font-extrabold text-base tracking-tight block text-white leading-none">
-                TACTUS<span className="text-[#CCFF00]">.</span> CRM
-              </span>
-              <span className="text-[9px] font-semibold text-[#CCFF00] uppercase tracking-widest block mt-0.5">
-                Portal do Corretor & Gestor
-              </span>
-            </div>
+          <Link href="/" className="flex items-center group transition-transform hover:scale-105">
+            <TactusLogo variant="verde" className="h-11 sm:h-12 w-auto" priority />
           </Link>
 
           <nav className="hidden md:flex items-center gap-6 text-xs font-semibold text-slate-400">
@@ -1559,9 +1549,9 @@ export default function CRMLandingPage() {
       {/* 11. Global Footer B2B */}
       <footer className="border-t border-white/[0.08] py-8 text-center text-xs text-slate-500 relative z-10">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5">
-            <TactusLogo variant="branco" size="xs" />
-            <p>© {new Date().getFullYear()} Tactus CRM Imobiliário. Plataforma de Gestão e Vendas para Corretores e Imobiliárias.</p>
+          <div className="flex items-center gap-3">
+            <TactusLogo variant="verde" className="h-7 w-auto" />
+            <p>© {new Date().getFullYear()} Tactus CRM. Plataforma de Gestão e Vendas para Corretores e Imobiliárias.</p>
           </div>
           <div className="flex items-center gap-4">
             <Link href="#recursos" className="hover:text-slate-300">Recursos do CRM</Link>

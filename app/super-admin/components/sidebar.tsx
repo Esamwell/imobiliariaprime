@@ -77,19 +77,12 @@ export function Sidebar({ open }: SidebarProps) {
     >
       {/* Top Sidebar Logo Brand */}
       <div className="p-3.5 border-b border-border/40">
-        <Link href="/super-admin" className="flex items-center gap-2.5 group">
-          <div className="h-9 w-9 rounded-2xl bg-black/[0.04] dark:bg-white/[0.06] border border-black/[0.06] dark:border-white/[0.10] p-1.5 flex items-center justify-center shadow-sm transition-transform group-hover:scale-105 shrink-0">
-            <TactusLogo variant="auto" size="xs" />
-          </div>
+        <Link href="/super-admin" className="flex items-center gap-2 group transition-transform hover:scale-105">
+          <TactusLogo variant="auto" className={cn("w-auto transition-all", open ? "h-9" : "h-7")} />
           {open && (
-            <div className="overflow-hidden">
-              <span className="font-extrabold text-sm tracking-tight text-foreground block truncate">
-                TACTUS<span className="text-[#CCFF00]">.</span>
-              </span>
-              <span className="text-[9px] font-bold text-purple-600 dark:text-purple-400 uppercase tracking-widest block -mt-0.5">
-                Super Admin
-              </span>
-            </div>
+            <span className="text-[9px] font-black text-purple-600 dark:text-purple-400 uppercase tracking-widest bg-purple-500/10 px-1.5 py-0.5 rounded-full">
+              Admin
+            </span>
           )}
         </Link>
       </div>

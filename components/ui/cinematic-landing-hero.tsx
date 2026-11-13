@@ -402,13 +402,10 @@ export function CinematicHero({
             
             {/* 1. TOP (Mobile) / RIGHT (Desktop): BRAND */}
             <div className="card-right-text gsap-reveal order-1 lg:order-3 flex flex-col items-center lg:items-end justify-center z-20 w-full">
-              <div className="flex items-center gap-3">
-                <TactusLogo variant="verde" size="lg" className="h-12 w-12" />
-                <h2 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter text-card-silver-matte">
-                  {brandName}<span className="text-[#CCFF00]">.</span>
-                </h2>
+              <div className="flex items-center">
+                <TactusLogo variant="verde" className="h-16 md:h-20 lg:h-24 w-auto" priority />
               </div>
-              <span className="text-xs text-[#CCFF00] font-black uppercase tracking-widest mt-1">
+              <span className="text-xs text-[#CCFF00] font-black uppercase tracking-widest mt-3">
                 Portal & CRM Imobiliário
               </span>
             </div>
@@ -444,10 +441,7 @@ export function CinematicHero({
                       
                       {/* Top App Header */}
                       <div className="phone-widget flex justify-between items-center mb-2 pt-2">
-                        <div className="flex items-center gap-2">
-                          <TactusLogo variant="verde" size="xs" className="h-6 w-6" />
-                          <span className="text-xs font-black tracking-tight text-white">Tactus CRM</span>
-                        </div>
+                        <TactusLogo variant="verde" className="h-6 w-auto" />
                         <div className="w-7 h-7 rounded-full bg-[#CCFF00]/15 text-[#CCFF00] flex items-center justify-center font-bold text-[10px] border border-[#CCFF00]/30">
                           CS
                         </div>

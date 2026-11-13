@@ -608,7 +608,7 @@ export default function BrokerShowcasePage() {
         <div className="max-w-5xl mx-auto px-4 space-y-3">
           <p className="font-semibold text-foreground">{profile.name} • CRECI {profile.creci}</p>
           <div className="flex items-center justify-center gap-2 text-[11px]">
-            <TactusLogo variant="auto" size="xs" className="h-4 w-4" />
+            <TactusLogo variant="auto" className="h-5 w-auto" />
             <span>Vitrine digital personalizada criada através da plataforma <strong>Tactus CRM Imobiliário</strong>.</span>
           </div>
         </div>

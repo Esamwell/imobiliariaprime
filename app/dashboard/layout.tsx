@@ -77,29 +77,12 @@ export default function UserDashboardLayout({
             <Menu className="h-4 w-4" />
           </Button>
 
-          {/* Mobile Clean Header Branding (Sem poluição visual) */}
-          <Link href="/dashboard" className="flex md:hidden items-center gap-2 group">
-            <TactusLogo variant="auto" size="sm" className="h-8 w-8" />
-            <div className="flex items-center gap-1.5">
-              <span className="font-extrabold text-sm tracking-tight text-foreground">Tactus CRM</span>
-              <span className="h-2 w-2 rounded-full bg-lime-500 animate-pulse"></span>
-            </div>
-          </Link>
-
-          {/* Desktop Header Branding */}
-          <Link href="/dashboard" className="hidden md:flex items-center gap-2.5 group">
-            <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-black/[0.04] dark:bg-white/[0.06] border border-black/[0.06] dark:border-white/[0.10] p-1.5 shadow-sm transition-transform group-hover:scale-105">
-              <TactusLogo variant="auto" size="sm" className="h-full w-full" />
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-sm tracking-tight text-foreground">Tactus CRM</span>
-                <span className="rounded-full bg-lime-400/20 text-lime-700 dark:text-lime-300 px-1.5 py-0.2 text-[9px] font-extrabold uppercase tracking-wide">
-                  PRO
-                </span>
-              </div>
-              <span className="block text-[10px] text-muted-foreground font-medium">Portal do Corretor & Gestor</span>
-            </div>
+          {/* Header Branding (Mobile & Desktop - Logo Oficial sem caixinha) */}
+          <Link href="/dashboard" className="flex items-center gap-2.5 group transition-transform hover:scale-105">
+            <TactusLogo variant="auto" className="h-9 sm:h-10 w-auto" priority />
+            <span className="inline-flex items-center rounded-full bg-lime-400/20 text-lime-700 dark:text-lime-300 px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wide">
+              PRO
+            </span>
           </Link>
         </div>
 

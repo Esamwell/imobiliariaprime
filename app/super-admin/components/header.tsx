@@ -52,20 +52,12 @@ export function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
           </svg>
         </button>
 
-        <div className="flex items-center gap-2.5">
-          <div className="h-9 w-9 rounded-2xl bg-black/[0.04] dark:bg-white/[0.06] border border-black/[0.06] dark:border-white/[0.10] p-1.5 flex items-center justify-center shadow-sm">
-            <TactusLogo variant="auto" size="xs" />
-          </div>
-          <div>
-            <div className="flex items-center gap-1.5">
-              <span className="font-extrabold text-sm tracking-tight text-foreground">Tactus</span>
-              <span className="rounded-full bg-purple-500/20 text-purple-700 dark:text-purple-300 px-1.5 py-0.2 text-[9px] font-black uppercase">
-                Super Admin
-              </span>
-            </div>
-            <span className="hidden sm:block text-[10px] text-muted-foreground font-medium">Console Central Multi-Tenant</span>
-          </div>
-        </div>
+        <Link href="/super-admin" className="flex items-center gap-2.5 group transition-transform hover:scale-105">
+          <TactusLogo variant="auto" className="h-8 sm:h-9 w-auto" priority />
+          <span className="rounded-full bg-purple-500/20 text-purple-700 dark:text-purple-300 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider">
+            Super Admin
+          </span>
+        </Link>
       </div>
 
       {/* Center Apple Status Capsule */}

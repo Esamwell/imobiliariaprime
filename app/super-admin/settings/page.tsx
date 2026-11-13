@@ -128,7 +128,7 @@ export default function SettingsPage() {
                 {/* 1. Tactus Verde */}
                 <div className="p-3 rounded-2xl bg-black/80 border border-white/10 text-center space-y-1.5 shadow-sm">
                   <div className="h-12 w-full flex items-center justify-center">
-                    <TactusLogo variant="verde" size="sm" className="h-9 w-9" />
+                    <TactusLogo variant="verde" className="h-10 w-auto" />
                   </div>
                   <div>
                     <span className="text-[10px] font-extrabold text-[#CCFF00] block">Verde Neon</span>
@@ -142,7 +142,7 @@ export default function SettingsPage() {
                 {/* 2. Tactus Branco */}
                 <div className="p-3 rounded-2xl bg-black/80 border border-white/10 text-center space-y-1.5 shadow-sm">
                   <div className="h-12 w-full flex items-center justify-center">
-                    <TactusLogo variant="branco" size="sm" className="h-9 w-9" />
+                    <TactusLogo variant="branco" className="h-10 w-auto" />
                   </div>
                   <div>
                     <span className="text-[10px] font-extrabold text-white block">Branco Apple</span>
@@ -156,7 +156,7 @@ export default function SettingsPage() {
                 {/* 3. Tactus Azul */}
                 <div className="p-3 rounded-2xl bg-white border border-black/10 text-center space-y-1.5 shadow-sm">
                   <div className="h-12 w-full flex items-center justify-center">
-                    <TactusLogo variant="azul" size="sm" className="h-9 w-9" />
+                    <TactusLogo variant="azul" className="h-10 w-auto" />
                   </div>
                   <div>
                     <span className="text-[10px] font-extrabold text-[#0B132B] block">Navy / Escuro</span>

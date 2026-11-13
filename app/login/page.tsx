@@ -131,18 +131,13 @@ export default function LoginPage() {
                 </span>
               </div>
 
-              <div className="flex items-center gap-4">
-                <div className="relative w-14 h-14 rounded-2xl bg-white/[0.06] border border-white/15 p-2 flex items-center justify-center backdrop-blur-xl shadow-lg shadow-black/50">
-                  <TactusLogo variant="verde" size="lg" className="w-full h-full" priority />
-                </div>
-                <div>
-                  <h1 className="text-4xl xl:text-5xl font-black tracking-tight text-white leading-tight">
-                    TACTUS<span className="text-[#CCFF00]">.</span> CRM
-                  </h1>
-                  <p className="text-sm font-semibold text-white/50 tracking-wide uppercase mt-0.5">
-                    Tecnologia Apple Prime para Gestores e Corretores
-                  </p>
-                </div>
+              <div className="pt-2">
+                <Link href="/" className="inline-block transition-transform hover:scale-105" title="Ir para a página inicial do Tactus CRM">
+                  <TactusLogo variant="verde" className="h-16 xl:h-20 w-auto" priority />
+                </Link>
+                <p className="text-sm font-semibold text-white/50 tracking-wide uppercase mt-3">
+                  Tecnologia Prime para Gestores e Corretores
+                </p>
               </div>
 
               <p className="text-base text-white/70 max-w-xl leading-relaxed pt-1">
@@ -235,15 +230,12 @@ export default function LoginPage() {
           {/* Right Column: High-End Frosted Glass Login Console */}
           <div className="w-full lg:col-span-5 max-w-md mx-auto">
             
-            {/* Mobile Brand Header */}
-            <div className="lg:hidden text-center space-y-2 mb-6">
-              <div className="inline-flex p-3 rounded-2xl bg-white/[0.06] border border-white/15 backdrop-blur-xl shadow-lg">
-                <TactusLogo variant="verde" size="md" className="w-10 h-10" priority />
-              </div>
-              <h1 className="text-2xl font-black text-white tracking-tight">
-                TACTUS<span className="text-[#CCFF00]">.</span> CRM
-              </h1>
-              <p className="text-xs text-white/50">Gestão Imobiliária & Portal do Corretor</p>
+            {/* Mobile Brand Header (Logo Limpa e Marcante) */}
+            <div className="lg:hidden flex flex-col items-center text-center space-y-2 mb-6">
+              <Link href="/" className="transition-transform active:scale-95" title="Ir para a página inicial do Tactus CRM">
+                <TactusLogo variant="verde" className="h-12 w-auto" priority />
+              </Link>
+              <p className="text-xs text-white/50 font-medium">Gestão Imobiliária & Portal do Corretor</p>
             </div>
 
             {/* Main Frosted Glass Card */}

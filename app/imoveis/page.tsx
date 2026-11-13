@@ -216,14 +216,11 @@ export default function CatalogPage() {
       {/* Top Header */}
       <header className="sticky top-0 z-30 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="h-9 w-9 rounded-2xl bg-black/[0.04] dark:bg-white/[0.08] border border-black/[0.06] dark:border-white/[0.10] p-1.5 flex items-center justify-center shadow-sm transition-transform group-hover:scale-105">
-              <TactusLogo variant="auto" size="sm" className="h-full w-full" />
-            </div>
-            <div>
-              <span className="font-extrabold text-base leading-none block text-foreground">Tactus Imóveis</span>
-              <span className="text-[10px] text-muted-foreground uppercase tracking-wider block mt-0.5">Catálogo Geral da Carteira</span>
-            </div>
+          <Link href="/" className="flex items-center gap-3 group transition-transform hover:scale-105">
+            <TactusLogo variant="auto" className="h-9 sm:h-10 w-auto" priority />
+            <span className="text-[11px] font-semibold text-muted-foreground border-l border-border/60 pl-3 hidden sm:inline-block">
+              Catálogo Geral de Imóveis
+            </span>
           </Link>
 
           <div className="flex items-center gap-3">
