@@ -12,7 +12,9 @@ import {
   CheckCircle2, 
   Server, 
   Lock, 
-  Sparkles 
+  Sparkles,
+  Calendar,
+  Link2
 } from "lucide-react"
 
 export default function SettingsPage() {
@@ -257,6 +259,84 @@ export default function SettingsPage() {
                   : "Executar Backup Manual Agora"}
               </button>
             </div>
+          </div>
+        </div>
+
+        {/* Card 5: Google Workspace & Agenda (Google Calendar) */}
+        <div className="glass-card rounded-3xl border border-black/[0.06] dark:border-white/[0.08] p-6 shadow-sm space-y-4 md:col-span-2">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-black/[0.06] dark:border-white/[0.08] pb-3">
+            <div className="flex items-center gap-2.5">
+              <div className="h-8 w-8 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+                <Calendar className="h-4 w-4" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="font-extrabold text-sm text-foreground">Google Workspace & Google Agenda (Calendar API)</h3>
+                  <span className="rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-2 py-0.5 text-[9px] font-black uppercase">
+                    API Ativa
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground">Sincronização bidirecional de visitas, reuniões e vistorias para todos os corretores e imobiliárias</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-muted/40 border border-black/[0.06] dark:border-white/[0.08] text-[11px] text-muted-foreground">
+              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Sincronizador Automático Operacional</span>
+            </div>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-3 text-xs">
+            <div className="space-y-1">
+              <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+                Google Client ID (OAuth 2.0)
+              </label>
+              <input
+                type="text"
+                defaultValue="8492039102-tactus-crm.apps.googleusercontent.com"
+                className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] bg-muted/20 px-3.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20 font-mono"
+              />
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+                ID do Calendário Padrão
+              </label>
+              <input
+                type="text"
+                defaultValue="primary (ou tactus_agenda_central@tactus.com.br)"
+                className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] bg-muted/20 px-3.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20 font-mono"
+              />
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+                Webhook de Notificação (Push Sync)
+              </label>
+              <div className="relative">
+                <input
+                  type="text"
+                  readOnly
+                  defaultValue="https://tactus.com.br/api/calendar/google/sync"
+                  className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] bg-muted/40 px-3.5 text-xs text-muted-foreground focus:outline-none font-mono"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-black/[0.04] dark:border-white/[0.06]">
+            <div className="flex items-center gap-3 text-xs text-muted-foreground">
+              <span className="flex items-center gap-1.5 text-foreground font-semibold">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#CCFF00]" />
+                Web Intent Direto (1-Clique sem necessidade de setup de API pelos corretores)
+              </span>
+              <span className="hidden sm:inline">•</span>
+              <span className="hidden sm:inline">Notificação no Celular e Desktop via PWA</span>
+            </div>
+
+            <span className="text-[11px] font-bold text-muted-foreground">
+              Suporta Google Workspace Corporativo e Contas Pessoais @gmail.com
+            </span>
           </div>
         </div>
       </div>

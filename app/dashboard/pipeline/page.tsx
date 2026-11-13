@@ -20,19 +20,21 @@ import {
   Loader2, 
   Check, 
   ArrowRight, 
-  ArrowLeft,
+  ArrowLeft, 
   Edit2, 
   Trash2, 
   Search, 
   Filter, 
   Clock, 
   DollarSign, 
-  Building,
-  User,
-  Sparkles,
-  Tag
+  Building, 
+  User, 
+  Sparkles, 
+  Tag,
+  Calendar
 } from "lucide-react"
 import { getWhatsAppLink } from "@/lib/whatsapp"
+import { generateGoogleCalendarLink } from "@/lib/google-calendar"
 
 interface Lead {
   id: string
@@ -564,17 +566,41 @@ export default function PipelinePage() {
                           </div>
                         )}
 
-                        {/* Card Footer: WhatsApp & Stage Shift */}
-                        <div className="pt-2 flex items-center justify-between border-t gap-1">
+                        {/* Card Footer: WhatsApp, Google Agenda & Stage Shift */}
+                        <div className="pt-2 flex flex-wrap items-center justify-between border-t gap-1">
                           <div className="flex items-center gap-1">
                             {/* WhatsApp Button */}
                             <a
                               href={waUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-100/80 dark:bg-emerald-950/80 hover:bg-emerald-200 px-2.5 py-1 rounded-md transition-colors"
+                              className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-100/80 dark:bg-emerald-950/80 hover:bg-emerald-200 px-2 py-1 rounded-md transition-colors"
                             >
-                              <MessageSquare className="h-3.5 w-3.5" /> WhatsApp
+                              <MessageSquare className="h-3 w-3" /> WhatsApp
+                            </a>
+
+                            {/* Google Agenda Button */}
+                            <a
+                              href={generateGoogleCalendarLink({
+                                title: `Visita Imóvel: ${lead.name}`,
+                                location: lead.property ? `${lead.property.title} (${lead.property.code})` : "Imóvel do Cliente",
+                                startTime: "10:00",
+                                clientName: lead.name,
+                                clientPhone: lead.phone,
+                                propertyCode: lead.property?.code,
+                                description: `Visita ao imóvel com o lead ${lead.name}.\nWhatsApp: ${lead.phone}\nImóvel: ${lead.property?.title || "Interesse geral"}\nValor: ${lead.budget || lead.property?.price || "A combinar"}`
+                              })}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={`inline-flex items-center gap-1 text-[11px] font-bold rounded-md px-2 py-1 transition-colors ${
+                                lead.stage === "VISITA"
+                                  ? "bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 hover:bg-blue-200"
+                                  : "border border-input text-muted-foreground hover:text-blue-600 dark:hover:text-blue-400"
+                              }`}
+                              title="Agendar Visita no Google Agenda"
+                            >
+                              <Calendar className="h-3 w-3 text-blue-500" />
+                              {lead.stage === "VISITA" && <span>Agenda</span>}
                             </a>
 
                             {/* Call Button */}

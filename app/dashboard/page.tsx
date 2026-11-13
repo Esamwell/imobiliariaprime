@@ -25,6 +25,8 @@ import {
   Search
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { generateGoogleCalendarLink } from "@/lib/google-calendar"
+import { GoogleCalendarSyncModal } from "@/components/google-calendar-sync-modal"
 import {
   Dialog,
   DialogContent,
@@ -113,6 +115,8 @@ export default function UserDashboardPage() {
   const [appointments, setAppointments] = useState<Appointment[]>(initialAppointments)
   const [leadFilter, setLeadFilter] = useState("all")
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isGcalModalOpen, setIsGcalModalOpen] = useState(false)
+  const [syncWithGcal, setSyncWithGcal] = useState(true)
 
   // Form State
   const [time, setTime] = useState("11:00")
@@ -133,6 +137,17 @@ export default function UserDashboardPage() {
     }
 
     setAppointments([...appointments, newApp])
+
+    if (syncWithGcal) {
+      const gcalUrl = generateGoogleCalendarLink({
+        title,
+        location: location || "A definir",
+        startTime: time,
+        clientName: contact,
+      })
+      window.open(gcalUrl, "_blank")
+    }
+
     setIsDialogOpen(false)
     setTitle("")
     setLocation("")
@@ -403,82 +418,121 @@ export default function UserDashboardPage() {
                 Agenda & Compromissos
               </h2>
               <p className="text-xs text-muted-foreground">
-                Visitas técnicas e fechamentos de hoje.
+                Visitas técnicas e fechamentos de hoje sincronizados com o Google Agenda.
               </p>
             </div>
 
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogTrigger asChild>
-                <Button size="sm" variant="outline" className="rounded-full h-8 text-xs px-3 flex items-center gap-1 glass-pill">
-                  <Plus className="h-3.5 w-3.5" /> Novo
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-md rounded-3xl p-6 sm:p-7">
-                <DialogHeader>
-                  <DialogTitle className="text-xl font-black text-foreground">Novo Compromisso na Agenda</DialogTitle>
-                  <DialogDescription className="text-xs text-muted-foreground">
-                    Agende uma visita com cliente, vistoria técnica ou assinatura de contrato.
-                  </DialogDescription>
-                </DialogHeader>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setIsGcalModalOpen(true)}
+                className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.05] hover:bg-black/5 dark:hover:bg-white/10 px-3 py-1.5 text-xs font-semibold text-foreground shadow-xs transition-all hover:scale-102"
+                title="Configurações e Sincronização do Google Agenda"
+              >
+                <svg className="h-3.5 w-3.5" viewBox="0 0 24 24">
+                  <path fill="#4285F4" d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                  <path fill="#34A853" d="M7 11h5v5H7z"/>
+                  <path fill="#FBBC05" d="M12 11h5v5h-5z"/>
+                  <path fill="#EA4335" d="M7 6h10v2H7z"/>
+                </svg>
+                <span className="hidden sm:inline">Google</span> Agenda
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              </button>
 
-                <form onSubmit={handleCreateAppointment} className="space-y-3.5 pt-2">
-                  <div className="grid grid-cols-3 gap-2.5">
-                    <div className="space-y-1">
-                      <label className="text-xs font-bold text-foreground">Horário</label>
-                      <input
-                        type="time"
-                        required
-                        value={time}
-                        onChange={(e) => setTime(e.target.value)}
-                        className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3 text-xs sm:text-sm font-semibold"
-                      />
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button size="sm" variant="outline" className="rounded-full h-8 text-xs px-3 flex items-center gap-1 glass-pill">
+                    <Plus className="h-3.5 w-3.5" /> Novo
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-md rounded-3xl p-6 sm:p-7">
+                  <DialogHeader>
+                    <DialogTitle className="text-xl font-black text-foreground">Novo Compromisso na Agenda</DialogTitle>
+                    <DialogDescription className="text-xs text-muted-foreground">
+                      Agende uma visita com cliente, vistoria técnica ou assinatura de contrato.
+                    </DialogDescription>
+                  </DialogHeader>
+
+                  <form onSubmit={handleCreateAppointment} className="space-y-3.5 pt-2">
+                    <div className="grid grid-cols-3 gap-2.5">
+                      <div className="space-y-1">
+                        <label className="text-xs font-bold text-foreground">Horário</label>
+                        <input
+                          type="time"
+                          required
+                          value={time}
+                          onChange={(e) => setTime(e.target.value)}
+                          className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3 text-xs sm:text-sm font-semibold"
+                        />
+                      </div>
+                      <div className="col-span-2 space-y-1">
+                        <label className="text-xs font-bold text-foreground">Título</label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="Ex: Visita Alphaville"
+                          value={title}
+                          onChange={(e) => setTitle(e.target.value)}
+                          className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-xs sm:text-sm"
+                        />
+                      </div>
                     </div>
-                    <div className="col-span-2 space-y-1">
-                      <label className="text-xs font-bold text-foreground">Título</label>
+
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-foreground">Cliente / Contato</label>
                       <input
                         type="text"
-                        required
-                        placeholder="Ex: Visita Alphaville"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+                        placeholder="Ex: Dr. Marcelo"
+                        value={contact}
+                        onChange={(e) => setContact(e.target.value)}
                         className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-xs sm:text-sm"
                       />
                     </div>
-                  </div>
 
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-foreground">Cliente / Contato</label>
-                    <input
-                      type="text"
-                      placeholder="Ex: Dr. Marcelo"
-                      value={contact}
-                      onChange={(e) => setContact(e.target.value)}
-                      className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-xs sm:text-sm"
-                    />
-                  </div>
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-foreground">Local / Endereço</label>
+                      <input
+                        type="text"
+                        placeholder="Ex: Alameda dos Ipês, 450"
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                        className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-xs sm:text-sm"
+                      />
+                    </div>
 
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-foreground">Local / Endereço</label>
-                    <input
-                      type="text"
-                      placeholder="Ex: Alameda dos Ipês, 450"
-                      value={location}
-                      onChange={(e) => setLocation(e.target.value)}
-                      className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-xs sm:text-sm"
-                    />
-                  </div>
+                    <div className="flex items-center justify-between p-3 rounded-2xl border border-black/[0.06] dark:border-white/[0.08] bg-muted/20">
+                      <div className="flex items-center gap-2">
+                        <svg className="h-4 w-4" viewBox="0 0 24 24">
+                          <path fill="#4285F4" d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                          <path fill="#34A853" d="M7 11h5v5H7z"/>
+                          <path fill="#FBBC05" d="M12 11h5v5h-5z"/>
+                          <path fill="#EA4335" d="M7 6h10v2H7z"/>
+                        </svg>
+                        <div>
+                          <p className="text-xs font-bold text-foreground">Sincronizar no Google Agenda</p>
+                          <p className="text-[10px] text-muted-foreground">Abre o evento automaticamente para confirmação</p>
+                        </div>
+                      </div>
+                      <input
+                        type="checkbox"
+                        checked={syncWithGcal}
+                        onChange={(e) => setSyncWithGcal(e.target.checked)}
+                        className="h-4 w-4 rounded accent-lime-500 cursor-pointer"
+                      />
+                    </div>
 
-                  <DialogFooter className="pt-3 flex items-center justify-end gap-2">
-                    <Button type="button" variant="outline" className="rounded-full h-10 px-5 text-xs font-bold" onClick={() => setIsDialogOpen(false)}>
-                      Cancelar
-                    </Button>
-                    <Button type="submit" className="rounded-full h-10 px-6 font-bold text-xs bg-foreground text-background hover:bg-foreground/90 shadow-sm">
-                      Salvar na Agenda
-                    </Button>
-                  </DialogFooter>
-                </form>
-              </DialogContent>
-            </Dialog>
+                    <DialogFooter className="pt-3 flex items-center justify-end gap-2">
+                      <Button type="button" variant="outline" className="rounded-full h-10 px-5 text-xs font-bold" onClick={() => setIsDialogOpen(false)}>
+                        Cancelar
+                      </Button>
+                      <Button type="submit" className="rounded-full h-10 px-6 font-bold text-xs bg-foreground text-background hover:bg-foreground/90 shadow-sm">
+                        Salvar na Agenda
+                      </Button>
+                    </DialogFooter>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            </div>
           </div>
 
           {/* Featured Urgent Task (Iconic Apple Lime Glass Card - Inspired by inspirações) */}
@@ -509,6 +563,21 @@ export default function UserDashboardPage() {
                 >
                   Abrir Rota GPS
                 </a>
+                <a
+                  href={generateGoogleCalendarLink({
+                    title: appointments[0].title,
+                    location: appointments[0].location,
+                    startTime: appointments[0].time,
+                    clientName: appointments[0].contact,
+                  })}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full bg-black/10 dark:bg-white/10 hover:bg-black/20 px-3 py-1 text-xs font-semibold transition-colors flex items-center gap-1.5"
+                  title="Abrir no Google Agenda"
+                >
+                  <Calendar className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
+                  <span>Google Agenda</span>
+                </a>
                 <span className="text-xs font-semibold opacity-75">
                   Contato: {appointments[0].contact}
                 </span>
@@ -534,8 +603,24 @@ export default function UserDashboardPage() {
                     </p>
                   </div>
                 </div>
-                <div className="h-7 w-7 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground">
-                  <ChevronRight className="h-4 w-4" />
+                <div className="flex items-center gap-1.5">
+                  <a
+                    href={generateGoogleCalendarLink({
+                      title: app.title,
+                      location: app.location,
+                      startTime: app.time,
+                      clientName: app.contact,
+                    })}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="h-7 w-7 rounded-full border border-border/70 hover:border-emerald-500/50 hover:bg-emerald-500/10 flex items-center justify-center text-muted-foreground hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                    title="Adicionar ao Google Agenda"
+                  >
+                    <Calendar className="h-3.5 w-3.5" />
+                  </a>
+                  <div className="h-7 w-7 rounded-full border border-border flex items-center justify-center text-muted-foreground">
+                    <ChevronRight className="h-4 w-4" />
+                  </div>
                 </div>
               </div>
             ))}
@@ -696,6 +781,12 @@ export default function UserDashboardPage() {
           ))}
         </div>
       </div>
+
+      {/* Google Calendar Sync Modal */}
+      <GoogleCalendarSyncModal
+        isOpen={isGcalModalOpen}
+        onClose={() => setIsGcalModalOpen(false)}
+      />
     </div>
   )
 }
