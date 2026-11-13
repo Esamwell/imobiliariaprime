@@ -19,10 +19,21 @@ import {
   Crown, 
   Share2,
   Clock,
-  Sparkles
+  Sparkles,
+  ExternalLink,
+  ChevronRight
 } from "lucide-react"
 import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
+import { NotificationCenter } from "@/components/notification-center"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 const navItems = [
   { title: "Visão Geral", href: "/dashboard", icon: Home },
@@ -39,6 +50,7 @@ export default function UserDashboardLayout({
   children: React.ReactNode
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [mobileProfileOpen, setMobileProfileOpen] = useState(false)
   const pathname = usePathname()
   const { setTheme, theme } = useTheme()
 
@@ -49,8 +61,10 @@ export default function UserDashboardLayout({
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-background">
-      {/* Top Header - Apple Prime Glass */}
+      {/* Top Header - Apple Prime Glass (Desktop & Mobile Optimized) */}
       <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b border-border/50 bg-background/80 backdrop-blur-xl px-4 sm:px-6">
+        
+        {/* Left Side: Desktop and Mobile Branding */}
         <div className="flex items-center gap-3">
           <Button 
             variant="ghost" 
@@ -62,7 +76,19 @@ export default function UserDashboardLayout({
             <Menu className="h-4 w-4" />
           </Button>
 
-          <Link href="/dashboard" className="flex items-center gap-2.5 group">
+          {/* Mobile Clean Header Branding (Sem poluição visual) */}
+          <Link href="/dashboard" className="flex md:hidden items-center gap-2 group">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-foreground text-background font-bold shadow-sm">
+              <Building className="h-4 w-4" />
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="font-extrabold text-sm tracking-tight text-foreground">Prime CRM</span>
+              <span className="h-2 w-2 rounded-full bg-lime-500 animate-pulse"></span>
+            </div>
+          </Link>
+
+          {/* Desktop Header Branding */}
+          <Link href="/dashboard" className="hidden md:flex items-center gap-2.5 group">
             <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-foreground text-background font-bold shadow-sm transition-transform group-hover:scale-105">
               <Building className="h-4 w-4" />
             </div>
@@ -78,7 +104,7 @@ export default function UserDashboardLayout({
           </Link>
         </div>
 
-        {/* Apple Timeline / Schedule Status Capsule (Inspired by TaskOrbit / Helix CRM) */}
+        {/* Center: Apple Timeline / Schedule Status Capsule (Desktop only) */}
         <div className="hidden lg:flex items-center gap-2.5 rounded-full border border-black/[0.08] dark:border-white/[0.10] bg-white/60 dark:bg-white/[0.04] backdrop-blur-md px-3.5 py-1.5 text-xs shadow-sm">
           <span className="flex h-2 w-2 relative">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-lime-400 opacity-75"></span>
@@ -102,23 +128,27 @@ export default function UserDashboardLayout({
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        {/* Right Side: Desktop Controls */}
+        <div className="hidden md:flex items-center gap-2">
+          {/* Notification Center with PWA Push */}
+          <NotificationCenter />
+
           {/* Link para a Vitrine Personalizada da Imobiliária/Corretor */}
           <Link
             href="/v/prime"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.05] hover:bg-black/5 dark:hover:bg-white/10 px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm transition-all hover:scale-102"
+            className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.05] hover:bg-black/5 dark:hover:bg-white/10 px-3.5 py-1.5 text-xs font-semibold text-foreground shadow-sm transition-all hover:scale-102"
             title="Abrir minha vitrine pública personalizada de imóveis para clientes"
           >
             <Share2 className="h-3.5 w-3.5 text-lime-600 dark:text-lime-400" />
-            <span className="hidden sm:inline">Minha</span> Vitrine
+            <span>Minha Vitrine</span>
           </Link>
 
           {/* Switcher to Super Admin */}
           <Link
             href="/super-admin"
-            className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-purple-500/20 bg-purple-500/10 hover:bg-purple-500/20 px-3 py-1.5 text-xs font-semibold text-purple-700 dark:text-purple-300 transition-all hover:scale-102"
+            className="inline-flex items-center gap-1.5 rounded-full border border-purple-500/20 bg-purple-500/10 hover:bg-purple-500/20 px-3 py-1.5 text-xs font-semibold text-purple-700 dark:text-purple-300 transition-all hover:scale-102"
           >
             <ShieldCheck className="h-3.5 w-3.5" />
             <span className="hidden md:inline">Painel</span> Admin
@@ -153,6 +183,89 @@ export default function UserDashboardLayout({
               <LogOut className="h-3 w-3" />
             </Button>
           </div>
+        </div>
+
+        {/* Right Side: Mobile Native App Controls (Limpo, Espaçoso e Intuitivo) */}
+        <div className="flex md:hidden items-center gap-2">
+          {/* Notification Center com PWA Native Alerts */}
+          <NotificationCenter />
+
+          {/* Theme Toggle Button */}
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="h-9 w-9 rounded-full border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.05]"
+            title="Alternar tema"
+          >
+            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </Button>
+
+          {/* Mobile Profile Dialog Trigger */}
+          <Dialog open={mobileProfileOpen} onOpenChange={setMobileProfileOpen}>
+            <DialogTrigger asChild>
+              <button
+                className="h-9 w-9 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 flex items-center justify-center font-bold text-xs ring-2 ring-emerald-500/30 active:scale-95 transition-transform"
+                title="Meu Perfil e Ações"
+              >
+                CS
+              </button>
+            </DialogTrigger>
+
+            <DialogContent className="max-w-xs rounded-3xl p-5">
+              <DialogHeader>
+                <div className="flex items-center gap-3">
+                  <div className="h-11 w-11 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 flex items-center justify-center font-bold text-sm ring-2 ring-emerald-500/30">
+                    CS
+                  </div>
+                  <div className="text-left">
+                    <DialogTitle className="text-sm font-extrabold text-foreground">Carlos Silveira</DialogTitle>
+                    <DialogDescription className="text-xs text-muted-foreground">
+                      Corretor Sênior • CRECI 48.912
+                    </DialogDescription>
+                  </div>
+                </div>
+              </DialogHeader>
+
+              {/* Quick Actions List in Mobile Profile Sheet */}
+              <div className="space-y-2 pt-2">
+                <Link
+                  href="/v/prime"
+                  target="_blank"
+                  onClick={() => setMobileProfileOpen(false)}
+                  className="w-full flex items-center justify-between p-3 rounded-2xl border border-black/[0.06] dark:border-white/[0.08] bg-muted/40 hover:bg-muted text-xs font-bold text-foreground transition-colors"
+                >
+                  <span className="flex items-center gap-2">
+                    <Share2 className="h-4 w-4 text-lime-600 dark:text-lime-400" />
+                    Abrir Minha Vitrine Pública
+                  </span>
+                  <ExternalLink className="h-3.5 w-3.5 text-muted-foreground" />
+                </Link>
+
+                <Link
+                  href="/super-admin"
+                  onClick={() => setMobileProfileOpen(false)}
+                  className="w-full flex items-center justify-between p-3 rounded-2xl border border-black/[0.06] dark:border-white/[0.08] bg-muted/40 hover:bg-muted text-xs font-bold text-foreground transition-colors"
+                >
+                  <span className="flex items-center gap-2">
+                    <ShieldCheck className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                    Painel Super Admin
+                  </span>
+                  <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
+                </Link>
+
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center justify-between p-3 rounded-2xl border border-red-500/20 bg-red-500/10 hover:bg-red-500/20 text-xs font-bold text-red-600 dark:text-red-400 transition-colors"
+                >
+                  <span className="flex items-center gap-2">
+                    <LogOut className="h-4 w-4" />
+                    Sair do Sistema (Logout)
+                  </span>
+                </button>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </header>
 

@@ -324,46 +324,46 @@ export default function PropertiesPage() {
                 Cadastrar Imóvel
               </Button>
             </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl p-6 sm:p-7">
             <DialogHeader>
-              <DialogTitle>Novo Cadastro de Imóvel</DialogTitle>
-              <DialogDescription>
+              <DialogTitle className="text-xl font-black text-foreground">Novo Cadastro de Imóvel</DialogTitle>
+              <DialogDescription className="text-xs text-muted-foreground">
                 Informe os dados do imóvel, foto de capa e localização por CEP.
               </DialogDescription>
             </DialogHeader>
 
             <form onSubmit={handleSaveProperty} className="space-y-4 pt-2">
-              <div className="space-y-1">
-                <label className="text-xs font-semibold">Título do Imóvel</label>
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-foreground">Título do Imóvel</label>
                 <input
                   type="text"
                   required
                   placeholder="Ex: Apartamento de Luxo com Vista para o Parque"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-xs sm:text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground transition-all"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold">Finalidade</label>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-foreground">Finalidade</label>
                   <select
                     value={type}
                     onChange={(e) => setType(e.target.value)}
-                    className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-xs sm:text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground text-foreground"
                   >
                     <option value="Venda">Venda</option>
                     <option value="Aluguel">Aluguel</option>
                   </select>
                 </div>
 
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold">Tipologia</label>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-foreground">Tipologia</label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-xs sm:text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground text-foreground"
                   >
                     <option value="Apartamento">Apartamento</option>
                     <option value="Casa">Casa</option>
@@ -374,21 +374,22 @@ export default function PropertiesPage() {
                 </div>
               </div>
 
-              {/* Seletor de Foto de Capa */}
-              <div className="rounded-lg border bg-muted/30 p-3 space-y-2">
-                <label className="text-xs font-semibold flex items-center gap-1.5 text-primary">
-                  <ImageIcon className="h-4 w-4" /> Foto de Capa do Imóvel
+              {/* Seletor de Foto de Capa - Apple Style Pills */}
+              <div className="rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-muted/30 p-3.5 space-y-2.5">
+                <label className="text-xs font-bold flex items-center gap-1.5 text-foreground">
+                  <ImageIcon className="h-4 w-4 text-lime-600 dark:text-lime-400" /> Foto de Capa do Imóvel
                 </label>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5">
                   {PHOTO_PRESETS.map((preset, idx) => (
                     <button
                       key={idx}
                       type="button"
                       onClick={() => setImageUrl(preset.url)}
-                      className={`text-xs px-2.5 py-1 rounded-md border transition-all ${imageUrl === preset.url
-                          ? "bg-primary text-primary-foreground font-bold border-primary shadow-sm"
-                          : "bg-background text-muted-foreground hover:text-foreground"
-                        }`}
+                      className={`text-xs px-3 py-1.5 rounded-full transition-all font-semibold ${
+                        imageUrl === preset.url
+                          ? "bg-foreground text-background shadow-sm"
+                          : "glass-pill text-muted-foreground hover:text-foreground"
+                      }`}
                     >
                       {preset.label}
                     </button>
@@ -399,127 +400,127 @@ export default function PropertiesPage() {
                   placeholder="Ou cole uma URL personalizada de foto..."
                   value={imageUrl}
                   onChange={(e) => setImageUrl(e.target.value)}
-                  className="w-full h-8 rounded-md border border-input bg-background px-2.5 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  className="w-full h-9 rounded-xl border border-black/[0.08] dark:border-white/[0.12] bg-background px-3 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
                 />
               </div>
 
-              {/* Endereço com Busca Automática por CEP */}
-              <div className="rounded-lg border bg-muted/40 p-3 space-y-3">
+              {/* Endereço com Busca Automática por CEP (ViaCEP) */}
+              <div className="rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-muted/40 p-3.5 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold flex items-center gap-1.5 text-primary">
-                    <Sparkles className="h-3.5 w-3.5" /> Endereço & Localização (ViaCEP)
+                  <span className="text-xs font-bold flex items-center gap-1.5 text-foreground">
+                    <Sparkles className="h-3.5 w-3.5 text-lime-600 dark:text-lime-400" /> Endereço & Localização (ViaCEP)
                   </span>
-                  {cepLoading && <span className="text-xs text-muted-foreground animate-pulse">Buscando CEP...</span>}
+                  {cepLoading && <span className="text-xs text-lime-600 dark:text-lime-400 font-semibold animate-pulse">Buscando CEP...</span>}
                 </div>
 
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-3 gap-2.5">
                   <div className="space-y-1">
-                    <label className="text-[11px] font-medium text-muted-foreground">CEP (8 dígitos)</label>
+                    <label className="text-[11px] font-semibold text-muted-foreground">CEP (8 dígitos)</label>
                     <input
                       type="text"
                       placeholder="04505-001"
                       value={zipCode}
                       onChange={(e) => setZipCode(e.target.value)}
                       onBlur={handleCepBlur}
-                      className="w-full h-8 rounded-md border border-input bg-background px-2.5 text-xs font-mono"
+                      className="w-full h-9 rounded-xl border border-input bg-background px-3 text-xs font-mono"
                     />
                   </div>
 
                   <div className="col-span-2 space-y-1">
-                    <label className="text-[11px] font-medium text-muted-foreground">Bairro</label>
+                    <label className="text-[11px] font-semibold text-muted-foreground">Bairro</label>
                     <input
                       type="text"
                       required
                       placeholder="Bairro"
                       value={neighborhood}
                       onChange={(e) => setNeighborhood(e.target.value)}
-                      className="w-full h-8 rounded-md border border-input bg-background px-2.5 text-xs"
+                      className="w-full h-9 rounded-xl border border-input bg-background px-3 text-xs"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-3 gap-2.5">
                   <div className="col-span-2 space-y-1">
-                    <label className="text-[11px] font-medium text-muted-foreground">Logradouro / Rua</label>
+                    <label className="text-[11px] font-semibold text-muted-foreground">Logradouro / Rua</label>
                     <input
                       type="text"
                       placeholder="Ex: Rua Afonso Braz, 850"
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
-                      className="w-full h-8 rounded-md border border-input bg-background px-2.5 text-xs"
+                      className="w-full h-9 rounded-xl border border-input bg-background px-3 text-xs"
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[11px] font-medium text-muted-foreground">Cidade / UF</label>
+                    <label className="text-[11px] font-semibold text-muted-foreground">Cidade / UF</label>
                     <input
                       type="text"
                       value={`${city} - ${state}`}
                       readOnly
-                      className="w-full h-8 rounded-md border border-input bg-muted px-2.5 text-xs text-muted-foreground"
+                      className="w-full h-9 rounded-xl border border-input bg-muted px-3 text-xs text-muted-foreground"
                     />
                   </div>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold">Valor (R$)</label>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-foreground">Valor (R$)</label>
                   <input
                     type="number"
                     required
                     placeholder="2450000"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
-                    className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring font-bold"
+                    className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-sm font-black focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
                   />
                 </div>
 
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold">Área Útil (m²)</label>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-foreground">Área Útil (m²)</label>
                   <input
                     type="number"
                     value={area}
                     onChange={(e) => setArea(e.target.value)}
-                    className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm"
+                    className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-xs sm:text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-3 gap-2.5">
                 <div className="space-y-1">
-                  <label className="text-xs font-medium">Quartos</label>
+                  <label className="text-xs font-semibold text-muted-foreground">Quartos</label>
                   <input
                     type="number"
                     value={bedrooms}
                     onChange={(e) => setBedrooms(e.target.value)}
-                    className="w-full h-8 rounded-md border border-input bg-background px-2 text-xs"
+                    className="w-full h-9 rounded-xl border border-input bg-background px-2.5 text-xs"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs font-medium">Banheiros</label>
+                  <label className="text-xs font-semibold text-muted-foreground">Banheiros</label>
                   <input
                     type="number"
                     value={bathrooms}
                     onChange={(e) => setBathrooms(e.target.value)}
-                    className="w-full h-8 rounded-md border border-input bg-background px-2 text-xs"
+                    className="w-full h-9 rounded-xl border border-input bg-background px-2.5 text-xs"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs font-medium">Vagas</label>
+                  <label className="text-xs font-semibold text-muted-foreground">Vagas</label>
                   <input
                     type="number"
                     value={parking}
                     onChange={(e) => setParking(e.target.value)}
-                    className="w-full h-8 rounded-md border border-input bg-background px-2 text-xs"
+                    className="w-full h-9 rounded-xl border border-input bg-background px-2.5 text-xs"
                   />
                 </div>
               </div>
 
-              <DialogFooter className="pt-4">
-                <Button type="button" variant="outline" onClick={() => setIsCreateOpen(false)}>
+              <DialogFooter className="pt-4 flex items-center justify-end gap-2">
+                <Button type="button" variant="outline" className="rounded-full h-10 px-5 text-xs font-bold" onClick={() => setIsCreateOpen(false)}>
                   Cancelar
                 </Button>
-                <Button type="submit" disabled={saving} className="font-semibold">
+                <Button type="submit" disabled={saving} className="rounded-full h-10 px-6 font-bold text-xs bg-foreground text-background hover:bg-foreground/90 shadow-md">
                   {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : "Salvar no Catálogo"}
                 </Button>
               </DialogFooter>
@@ -725,37 +726,37 @@ export default function PropertiesPage() {
       )}
 
       {/* ========================================================= */}
-      {/* MODAL DE DETALHES DO IMÓVEL (100% FUNCIONAL)             */}
+      {/* MODAL DE DETALHES DO IMÓVEL (APPLE PRIME GLASS)          */}
       {/* ========================================================= */}
       {detailsProperty && (
         <Dialog open={Boolean(detailsProperty)} onOpenChange={() => setDetailsProperty(null)}>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl p-6 sm:p-7">
             <DialogHeader>
               <div className="flex items-center justify-between pr-6">
                 <div>
-                  <span className="font-mono text-xs font-bold bg-primary/10 text-primary px-2 py-0.5 rounded">
+                  <span className="font-mono text-[11px] font-black bg-lime-400/20 text-lime-800 dark:text-lime-300 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                     CÓD. {detailsProperty.code}
                   </span>
-                  <DialogTitle className="text-xl mt-1">{detailsProperty.title}</DialogTitle>
+                  <DialogTitle className="text-xl font-black text-foreground mt-1.5">{detailsProperty.title}</DialogTitle>
                 </div>
               </div>
-              <DialogDescription className="text-xs flex items-center gap-1">
-                <MapPin className="h-3.5 w-3.5 text-primary" />
+              <DialogDescription className="text-xs text-muted-foreground flex items-center gap-1 mt-1 font-medium">
+                <MapPin className="h-3.5 w-3.5 text-muted-foreground" />
                 {detailsProperty.address || detailsProperty.neighborhood}, {detailsProperty.neighborhood} - {detailsProperty.city}
               </DialogDescription>
             </DialogHeader>
 
             <div className="space-y-4 pt-2">
-              {/* Foto Expandida */}
-              <div className="h-56 rounded-xl overflow-hidden relative shadow">
+              {/* Foto Expandida com Preço em Vidro Apple */}
+              <div className="h-60 rounded-3xl overflow-hidden relative shadow-md">
                 <img
                   src={detailsProperty.imageUrl || PHOTO_PRESETS[0].url}
                   alt={detailsProperty.title}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute bottom-3 left-3 bg-black/70 backdrop-blur-md px-3 py-1.5 rounded-lg text-white">
-                  <span className="text-[10px] text-slate-300 block">Preço de {detailsProperty.type}</span>
-                  <span className="text-2xl font-black">
+                <div className="absolute bottom-3.5 left-3.5 bg-black/60 backdrop-blur-xl px-4 py-2 rounded-2xl text-white shadow-lg border border-white/10">
+                  <span className="text-[10px] text-slate-300 font-bold uppercase tracking-wider block">Valor de {detailsProperty.type}</span>
+                  <span className="text-2xl font-black tracking-tight">
                     {detailsProperty.type === "Aluguel"
                       ? `R$ ${detailsProperty.price.toLocaleString("pt-BR")} /mês`
                       : `R$ ${detailsProperty.price.toLocaleString("pt-BR")}`}
@@ -763,61 +764,61 @@ export default function PropertiesPage() {
                 </div>
               </div>
 
-              {/* Especificações em Grid */}
+              {/* Especificações em Grid com Cápsulas Apple */}
               <div className="grid grid-cols-4 gap-2 text-center text-xs">
-                <div className="rounded-lg border bg-muted/30 p-2.5">
-                  <p className="text-muted-foreground text-[10px] uppercase font-semibold">Área Útil</p>
-                  <p className="font-bold text-base mt-0.5">{detailsProperty.area} m²</p>
+                <div className="rounded-2xl border border-black/[0.06] dark:border-white/[0.08] bg-muted/30 p-3">
+                  <p className="text-muted-foreground text-[10px] uppercase font-bold tracking-wider">Área Útil</p>
+                  <p className="font-black text-base text-foreground mt-0.5">{detailsProperty.area} m²</p>
                 </div>
-                <div className="rounded-lg border bg-muted/30 p-2.5">
-                  <p className="text-muted-foreground text-[10px] uppercase font-semibold">Quartos</p>
-                  <p className="font-bold text-base mt-0.5">{detailsProperty.bedrooms}</p>
+                <div className="rounded-2xl border border-black/[0.06] dark:border-white/[0.08] bg-muted/30 p-3">
+                  <p className="text-muted-foreground text-[10px] uppercase font-bold tracking-wider">Quartos</p>
+                  <p className="font-black text-base text-foreground mt-0.5">{detailsProperty.bedrooms}</p>
                 </div>
-                <div className="rounded-lg border bg-muted/30 p-2.5">
-                  <p className="text-muted-foreground text-[10px] uppercase font-semibold">Banheiros</p>
-                  <p className="font-bold text-base mt-0.5">{detailsProperty.bathrooms}</p>
+                <div className="rounded-2xl border border-black/[0.06] dark:border-white/[0.08] bg-muted/30 p-3">
+                  <p className="text-muted-foreground text-[10px] uppercase font-bold tracking-wider">Banheiros</p>
+                  <p className="font-black text-base text-foreground mt-0.5">{detailsProperty.bathrooms}</p>
                 </div>
-                <div className="rounded-lg border bg-muted/30 p-2.5">
-                  <p className="text-muted-foreground text-[10px] uppercase font-semibold">Vagas</p>
-                  <p className="font-bold text-base mt-0.5">{detailsProperty.parking}</p>
+                <div className="rounded-2xl border border-black/[0.06] dark:border-white/[0.08] bg-muted/30 p-3">
+                  <p className="text-muted-foreground text-[10px] uppercase font-bold tracking-wider">Vagas</p>
+                  <p className="font-black text-base text-foreground mt-0.5">{detailsProperty.parking}</p>
                 </div>
               </div>
 
               {/* Condomínio e IPTU */}
-              <div className="rounded-lg border p-3 flex items-center justify-between text-xs bg-muted/20">
+              <div className="rounded-2xl border border-black/[0.06] dark:border-white/[0.08] p-3.5 flex items-center justify-between text-xs bg-muted/20">
                 <div>
                   <span className="text-muted-foreground">Condomínio: </span>
-                  <span className="font-bold">
+                  <span className="font-bold text-foreground">
                     R$ {(detailsProperty.condoFee || 0).toLocaleString("pt-BR")}
                   </span>
                 </div>
                 <div>
                   <span className="text-muted-foreground">IPTU Mensal: </span>
-                  <span className="font-bold">
+                  <span className="font-bold text-foreground">
                     R$ {(detailsProperty.iptu || 0).toLocaleString("pt-BR")}
                   </span>
                 </div>
                 <div>
                   <span className="text-muted-foreground">Status: </span>
-                  <span className="font-bold text-emerald-600">{detailsProperty.status}</span>
+                  <span className="font-black text-emerald-600 dark:text-emerald-400">{detailsProperty.status}</span>
                 </div>
               </div>
 
               {/* Descrição */}
               {detailsProperty.description && (
-                <div className="space-y-1">
-                  <p className="text-xs font-semibold text-foreground">Descrição do Imóvel:</p>
-                  <p className="text-xs text-muted-foreground leading-relaxed bg-muted/30 p-3 rounded-lg">
+                <div className="space-y-1.5">
+                  <p className="text-xs font-bold text-foreground">Descrição do Imóvel:</p>
+                  <p className="text-xs text-muted-foreground leading-relaxed bg-muted/30 p-3.5 rounded-2xl border border-black/[0.04] dark:border-white/[0.06]">
                     {detailsProperty.description}
                   </p>
                 </div>
               )}
             </div>
 
-            <DialogFooter className="pt-3 flex flex-wrap gap-2 sm:justify-between border-t mt-4">
+            <DialogFooter className="pt-3 flex flex-wrap gap-2 sm:justify-between border-t border-border/40 mt-4">
               <div className="flex gap-2">
                 <Link href={`/imovel/${detailsProperty.code}`} target="_blank">
-                  <Button variant="outline" size="sm" className="h-8 text-xs flex items-center gap-1.5">
+                  <Button variant="outline" size="sm" className="rounded-full h-9 px-4 text-xs font-bold flex items-center gap-1.5 glass-pill">
                     <ExternalLink className="h-3.5 w-3.5" /> Ver Vitrine Pública
                   </Button>
                 </Link>
@@ -825,7 +826,7 @@ export default function PropertiesPage() {
                   variant="outline"
                   size="sm"
                   onClick={() => window.print()}
-                  className="h-8 text-xs flex items-center gap-1.5"
+                  className="rounded-full h-9 px-4 text-xs font-bold flex items-center gap-1.5 glass-pill"
                 >
                   <Printer className="h-3.5 w-3.5" /> Imprimir Ficha
                 </Button>
@@ -839,7 +840,7 @@ export default function PropertiesPage() {
                     setEditingProperty(detailsProperty)
                     setDetailsProperty(null)
                   }}
-                  className="h-8 text-xs flex items-center gap-1.5 font-semibold"
+                  className="rounded-full h-9 px-5 text-xs font-bold flex items-center gap-1.5 bg-foreground text-background hover:bg-foreground/90 shadow-sm"
                 >
                   <Edit className="h-3.5 w-3.5" /> Editar Dados
                 </Button>
@@ -850,18 +851,18 @@ export default function PropertiesPage() {
       )}
 
       {/* ========================================================= */}
-      {/* MODAL DE EDIÇÃO DO IMÓVEL (100% FUNCIONAL COM BANCO)      */}
+      {/* MODAL DE EDIÇÃO DO IMÓVEL (APPLE PRIME GLASS)             */}
       {/* ========================================================= */}
       {editingProperty && (
         <Dialog open={Boolean(editingProperty)} onOpenChange={() => setEditingProperty(null)}>
-          <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto rounded-3xl p-6 sm:p-7">
             <DialogHeader>
               <div className="flex items-center justify-between pr-6">
                 <div>
-                  <span className="font-mono text-xs font-bold bg-primary/10 text-primary px-2 py-0.5 rounded">
+                  <span className="font-mono text-[11px] font-black bg-lime-400/20 text-lime-800 dark:text-lime-300 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                     CÓD. {editingProperty.code}
                   </span>
-                  <DialogTitle className="text-lg mt-1">Editar Imóvel</DialogTitle>
+                  <DialogTitle className="text-xl font-black text-foreground mt-1.5">Editar Imóvel</DialogTitle>
                 </div>
                 <Button
                   variant="ghost"
@@ -878,47 +879,47 @@ export default function PropertiesPage() {
             </DialogHeader>
 
             <form onSubmit={handleUpdateProperty} className="space-y-3.5 pt-2">
-              <div className="space-y-1">
-                <label className="text-xs font-semibold">Título do Imóvel</label>
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-foreground">Título do Imóvel</label>
                 <input
                   type="text"
                   required
                   value={editingProperty.title}
                   onChange={(e) => setEditingProperty({ ...editingProperty, title: e.target.value })}
-                  className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-xs sm:text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
                 />
               </div>
 
               <div className="grid grid-cols-3 gap-3">
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold">Preço (R$)</label>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-foreground">Preço (R$)</label>
                   <input
                     type="number"
                     required
                     value={editingProperty.price}
                     onChange={(e) => setEditingProperty({ ...editingProperty, price: parseFloat(e.target.value) || 0 })}
-                    className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm font-bold"
+                    className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-sm font-black focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
                   />
                 </div>
 
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold">Finalidade</label>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-foreground">Finalidade</label>
                   <select
                     value={editingProperty.type}
                     onChange={(e) => setEditingProperty({ ...editingProperty, type: e.target.value })}
-                    className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm"
+                    className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-xs sm:text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
                   >
                     <option value="Venda">Venda</option>
                     <option value="Aluguel">Aluguel</option>
                   </select>
                 </div>
 
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold">Status</label>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-foreground">Status</label>
                   <select
                     value={editingProperty.status}
                     onChange={(e) => setEditingProperty({ ...editingProperty, status: e.target.value })}
-                    className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm font-semibold"
+                    className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-xs sm:text-sm font-bold focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
                   >
                     <option value="Disponível">Disponível</option>
                     <option value="Reservado">Reservado</option>
@@ -928,10 +929,10 @@ export default function PropertiesPage() {
                 </div>
               </div>
 
-              {/* Seletor Rápido de Foto */}
-              <div className="rounded-lg border bg-muted/30 p-2.5 space-y-2">
-                <label className="text-xs font-semibold flex items-center gap-1.5 text-primary">
-                  <ImageIcon className="h-3.5 w-3.5" /> Alterar Foto de Capa
+              {/* Seletor Rápido de Foto - Apple Pills */}
+              <div className="rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-muted/30 p-3 space-y-2">
+                <label className="text-xs font-bold flex items-center gap-1.5 text-foreground">
+                  <ImageIcon className="h-3.5 w-3.5 text-lime-600 dark:text-lime-400" /> Alterar Foto de Capa
                 </label>
                 <div className="flex flex-wrap gap-1.5">
                   {PHOTO_PRESETS.map((preset, idx) => (
@@ -939,10 +940,11 @@ export default function PropertiesPage() {
                       key={idx}
                       type="button"
                       onClick={() => setEditingProperty({ ...editingProperty, imageUrl: preset.url })}
-                      className={`text-[11px] px-2 py-0.5 rounded border transition-all ${editingProperty.imageUrl === preset.url
-                          ? "bg-primary text-primary-foreground font-bold border-primary"
-                          : "bg-background text-muted-foreground hover:text-foreground"
-                        }`}
+                      className={`text-xs px-3 py-1 rounded-full transition-all font-semibold ${
+                        editingProperty.imageUrl === preset.url
+                          ? "bg-foreground text-background shadow-sm"
+                          : "glass-pill text-muted-foreground hover:text-foreground"
+                      }`}
                     >
                       {preset.label}
                     </button>
@@ -953,86 +955,86 @@ export default function PropertiesPage() {
                   placeholder="URL da imagem..."
                   value={editingProperty.imageUrl || ""}
                   onChange={(e) => setEditingProperty({ ...editingProperty, imageUrl: e.target.value })}
-                  className="w-full h-8 rounded-md border border-input bg-background px-2.5 text-xs"
+                  className="w-full h-9 rounded-xl border border-black/[0.08] dark:border-white/[0.12] bg-background px-3 text-xs"
                 />
               </div>
 
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-4 gap-2.5">
                 <div className="space-y-1">
-                  <label className="text-xs font-medium">Área (m²)</label>
+                  <label className="text-xs font-semibold text-muted-foreground">Área (m²)</label>
                   <input
                     type="number"
                     value={editingProperty.area}
                     onChange={(e) => setEditingProperty({ ...editingProperty, area: parseFloat(e.target.value) || 0 })}
-                    className="w-full h-8 rounded-md border border-input bg-background px-2 text-xs"
+                    className="w-full h-9 rounded-xl border border-input bg-background px-2.5 text-xs"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs font-medium">Quartos</label>
+                  <label className="text-xs font-semibold text-muted-foreground">Quartos</label>
                   <input
                     type="number"
                     value={editingProperty.bedrooms}
                     onChange={(e) => setEditingProperty({ ...editingProperty, bedrooms: parseInt(e.target.value) || 0 })}
-                    className="w-full h-8 rounded-md border border-input bg-background px-2 text-xs"
+                    className="w-full h-9 rounded-xl border border-input bg-background px-2.5 text-xs"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs font-medium">Banheiros</label>
+                  <label className="text-xs font-semibold text-muted-foreground">Banheiros</label>
                   <input
                     type="number"
                     value={editingProperty.bathrooms}
                     onChange={(e) => setEditingProperty({ ...editingProperty, bathrooms: parseInt(e.target.value) || 0 })}
-                    className="w-full h-8 rounded-md border border-input bg-background px-2 text-xs"
+                    className="w-full h-9 rounded-xl border border-input bg-background px-2.5 text-xs"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs font-medium">Vagas</label>
+                  <label className="text-xs font-semibold text-muted-foreground">Vagas</label>
                   <input
                     type="number"
                     value={editingProperty.parking}
                     onChange={(e) => setEditingProperty({ ...editingProperty, parking: parseInt(e.target.value) || 0 })}
-                    className="w-full h-8 rounded-md border border-input bg-background px-2 text-xs"
+                    className="w-full h-9 rounded-xl border border-input bg-background px-2.5 text-xs"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold">Bairro</label>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-foreground">Bairro</label>
                   <input
                     type="text"
                     value={editingProperty.neighborhood}
                     onChange={(e) => setEditingProperty({ ...editingProperty, neighborhood: e.target.value })}
-                    className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm"
+                    className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-xs sm:text-sm"
                   />
                 </div>
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold">Cidade</label>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-foreground">Cidade</label>
                   <input
                     type="text"
                     value={editingProperty.city}
                     onChange={(e) => setEditingProperty({ ...editingProperty, city: e.target.value })}
-                    className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm"
+                    className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-xs sm:text-sm"
                   />
                 </div>
               </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-semibold">Descrição do Imóvel</label>
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-foreground">Descrição do Imóvel</label>
                 <textarea
                   rows={3}
                   value={editingProperty.description || ""}
                   onChange={(e) => setEditingProperty({ ...editingProperty, description: e.target.value })}
                   placeholder="Destaques, acabamentos, infraestrutura do condomínio..."
-                  className="w-full rounded-md border border-input bg-background p-2.5 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  className="w-full rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] p-3 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
                 />
               </div>
 
-              <DialogFooter className="pt-3">
-                <Button type="button" variant="outline" onClick={() => setEditingProperty(null)}>
+              <DialogFooter className="pt-3 flex items-center justify-end gap-2">
+                <Button type="button" variant="outline" className="rounded-full h-10 px-5 text-xs font-bold" onClick={() => setEditingProperty(null)}>
                   Cancelar
                 </Button>
-                <Button type="submit" disabled={saving} className="font-semibold">
+                <Button type="submit" disabled={saving} className="rounded-full h-10 px-6 font-bold text-xs bg-foreground text-background hover:bg-foreground/90 shadow-sm">
                   {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : "Salvar Alterações"}
                 </Button>
               </DialogFooter>
@@ -1042,56 +1044,56 @@ export default function PropertiesPage() {
       )}
 
       {/* ========================================================= */}
-      {/* MODAL DE MINHA VITRINE PÚBLICA & PERSONALIZAÇÃO            */}
+      {/* MODAL DE MINHA VITRINE PÚBLICA (APPLE PRIME GLASS)        */}
       {/* ========================================================= */}
       <Dialog open={isShowcaseOpen} onOpenChange={setIsShowcaseOpen}>
-        <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto rounded-3xl p-6 sm:p-7">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Share2 className="h-5 w-5 text-primary" />
+            <DialogTitle className="text-xl font-black text-foreground flex items-center gap-2">
+              <Share2 className="h-5 w-5 text-lime-600 dark:text-lime-400" />
               Minha Vitrine Pública de Imóveis
             </DialogTitle>
-            <DialogDescription>
-              Compartilhe sua carteira de imóveis em uma página exclusiva para clientes e personalize suas informações profissionais.
+            <DialogDescription className="text-xs text-muted-foreground">
+              Compartilhe sua carteira em uma página exclusiva para seus clientes com sua foto, CRECI e WhatsApp.
             </DialogDescription>
           </DialogHeader>
 
-          {/* Tabs: Compartilhar ou Personalizar */}
-          <div className="flex border-b gap-2 pt-2">
+          {/* Apple Pill Tabs: Compartilhar ou Personalizar */}
+          <div className="flex p-1 rounded-full bg-muted/50 border border-black/[0.06] dark:border-white/[0.08] gap-1 mt-2">
             <button
               type="button"
               onClick={() => setShowcaseTab("compartilhar")}
-              className={`text-xs font-bold pb-2.5 px-3 border-b-2 transition-all ${
+              className={`flex-1 text-xs font-bold py-2 px-3 rounded-full transition-all ${
                 showcaseTab === "compartilhar"
-                  ? "border-primary text-primary"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
+                  ? "bg-foreground text-background shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              🔗 Compartilhar Link
+              Compartilhar Link
             </button>
             <button
               type="button"
               onClick={() => setShowcaseTab("personalizar")}
-              className={`text-xs font-bold pb-2.5 px-3 border-b-2 transition-all ${
+              className={`flex-1 text-xs font-bold py-2 px-3 rounded-full transition-all ${
                 showcaseTab === "personalizar"
-                  ? "border-primary text-primary"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
+                  ? "bg-foreground text-background shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              ⚙️ Personalizar Minha Vitrine
+              Personalizar Vitrine
             </button>
           </div>
 
           {showcaseTab === "compartilhar" ? (
             <div className="space-y-4 pt-3">
-              {/* Preview Card */}
-              <div className="rounded-xl border bg-muted/30 p-4 space-y-3">
+              {/* Apple Glass Link Card */}
+              <div className="rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-muted/30 p-4 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                  <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
                     Link Oficial da sua Vitrine
                   </span>
-                  <span className="text-[10px] bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 font-bold px-2 py-0.5 rounded-full">
-                    Ativa & Online
+                  <span className="text-[10px] bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 font-extrabold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Ativa & Online
                   </span>
                 </div>
 
@@ -1100,7 +1102,7 @@ export default function PropertiesPage() {
                     type="text"
                     readOnly
                     value={`${typeof window !== "undefined" ? window.location.origin : ""}/v/${showcaseSlug}`}
-                    className="flex-1 h-9 rounded-md border border-input bg-background px-3 text-xs font-mono select-all"
+                    className="flex-1 h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-xs font-mono select-all focus:outline-none"
                   />
                   <Button
                     type="button"
@@ -1112,20 +1114,20 @@ export default function PropertiesPage() {
                         setTimeout(() => setShowcaseCopied(false), 2500)
                       }
                     }}
-                    className="h-9 font-semibold text-xs flex items-center gap-1.5"
+                    className="h-10 px-4 rounded-full font-bold text-xs flex items-center gap-1.5 bg-foreground text-background hover:bg-foreground/90 shadow-sm"
                   >
-                    {showcaseCopied ? <Check className="h-3.5 w-3.5 text-emerald-300" /> : <Copy className="h-3.5 w-3.5" />}
+                    {showcaseCopied ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : <Copy className="h-3.5 w-3.5" />}
                     {showcaseCopied ? "Copiado!" : "Copiar"}
                   </Button>
                 </div>
 
                 <p className="text-[11px] text-muted-foreground">
-                  Seus clientes visualizarão apenas os seus imóveis com suas fotos, CRECI e botão direto para o seu WhatsApp.
+                  Seus clientes visualizarão apenas a sua carteira, sem anúncios de concorrentes ou taxas de portais.
                 </p>
               </div>
 
-              {/* Botões Rápidos de Ação */}
-              <div className="grid grid-cols-2 gap-3">
+              {/* Botões de Ação Apple Style */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 <Button
                   type="button"
                   variant="outline"
@@ -1134,7 +1136,7 @@ export default function PropertiesPage() {
                       window.open(`/v/${showcaseSlug}`, "_blank")
                     }
                   }}
-                  className="w-full flex items-center justify-center gap-2 h-10 font-bold text-xs"
+                  className="rounded-full w-full flex items-center justify-center gap-2 h-11 font-bold text-xs glass-pill hover:bg-muted/60"
                 >
                   <ExternalLink className="h-4 w-4" />
                   Abrir Vitrine em Nova Aba
@@ -1151,106 +1153,106 @@ export default function PropertiesPage() {
                       window.open(`https://api.whatsapp.com/send?text=${msg}`, "_blank")
                     }
                   }}
-                  className="w-full flex items-center justify-center gap-2 h-10 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs"
+                  className="rounded-full w-full flex items-center justify-center gap-2 h-11 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-md shadow-emerald-600/20"
                 >
                   <MessageSquare className="h-4 w-4" />
                   Enviar no WhatsApp
                 </Button>
               </div>
 
-              {/* Dica de uso */}
-              <div className="rounded-lg bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60 p-3 text-xs text-blue-800 dark:text-blue-300 space-y-1">
+              {/* Dica de Uso */}
+              <div className="rounded-2xl bg-lime-400/10 border border-lime-500/20 p-3.5 text-xs text-lime-950 dark:text-lime-300 space-y-1">
                 <p className="font-bold flex items-center gap-1.5">
-                  <Sparkles className="h-3.5 w-3.5" /> Dica para gerar mais negócios:
+                  <Sparkles className="h-3.5 w-3.5" /> Dica para acelerar suas vendas:
                 </p>
-                <p className="text-[11px] leading-relaxed">
-                  Coloque este link na bio do seu Instagram, no status do seu WhatsApp ou envie diretamente após atender novos interessados. A página foi otimizada para carregar rápido em qualquer celular!
+                <p className="text-[11px] leading-relaxed opacity-90">
+                  Coloque este link na bio do seu Instagram, no status do WhatsApp ou envie diretamente ao iniciar conversas com leads. O catálogo carrega de forma instantânea em qualquer aparelho!
                 </p>
               </div>
             </div>
           ) : (
             <form onSubmit={handleSaveShowcase} className="space-y-3.5 pt-3">
-              <div className="space-y-1">
-                <label className="text-xs font-semibold">Nome de Exibição na Vitrine</label>
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-foreground">Nome de Exibição na Vitrine</label>
                 <input
                   type="text"
                   required
                   placeholder="Ex: Carlos Silveira ou Imobiliária Prime"
                   value={showcaseName}
                   onChange={(e) => setShowcaseName(e.target.value)}
-                  className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-xs sm:text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold">Título Profissional / Slogan</label>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-foreground">Título / Slogan</label>
                   <input
                     type="text"
-                    placeholder="Ex: Consultor de Imóveis de Alto Padrão"
+                    placeholder="Ex: Consultor de Alto Padrão"
                     value={showcaseTitle}
                     onChange={(e) => setShowcaseTitle(e.target.value)}
-                    className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-xs sm:text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
                   />
                 </div>
 
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold">Número do CRECI</label>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-foreground">Número do CRECI</label>
                   <input
                     type="text"
                     placeholder="Ex: 48.912"
                     value={showcaseCreci}
                     onChange={(e) => setShowcaseCreci(e.target.value)}
-                    className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-xs sm:text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold">WhatsApp para Atendimento</label>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-foreground">WhatsApp para Atendimento</label>
                   <input
                     type="text"
                     required
                     placeholder="(11) 98765-4321"
                     value={showcasePhone}
                     onChange={(e) => setShowcasePhone(e.target.value)}
-                    className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-xs sm:text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
                   />
                 </div>
 
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold">Identificador do Link (Slug)</label>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-foreground">Identificador do Link (Slug)</label>
                   <div className="flex items-center">
-                    <span className="text-xs text-muted-foreground mr-1">/v/</span>
+                    <span className="text-xs text-muted-foreground mr-1.5 font-mono">/v/</span>
                     <input
                       type="text"
                       required
                       placeholder="meu-nome"
                       value={showcaseSlug}
                       onChange={(e) => setShowcaseSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ""))}
-                      className="w-full h-9 rounded-md border border-input bg-background px-2.5 text-xs font-mono focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                      className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3 text-xs font-mono focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-semibold">Biografia / Mensagem de Boas-vindas</label>
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-foreground">Mensagem de Boas-vindas</label>
                 <textarea
                   rows={3}
                   value={showcaseBio}
                   onChange={(e) => setShowcaseBio(e.target.value)}
                   placeholder="Conte um pouco sobre sua experiência, regiões atendidas e diferenciais..."
-                  className="w-full rounded-md border border-input bg-background p-2.5 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  className="w-full rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] p-3 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
                 />
               </div>
 
-              <DialogFooter className="pt-2">
-                <Button type="button" variant="outline" onClick={() => setShowcaseTab("compartilhar")}>
+              <DialogFooter className="pt-2 flex items-center justify-end gap-2">
+                <Button type="button" variant="outline" className="rounded-full h-10 px-5 text-xs font-bold" onClick={() => setShowcaseTab("compartilhar")}>
                   Voltar
                 </Button>
-                <Button type="submit" className="font-semibold gap-1.5">
+                <Button type="submit" className="rounded-full h-10 px-6 font-bold text-xs bg-foreground text-background hover:bg-foreground/90 shadow-sm gap-1.5">
                   {showcaseSaved ? <CheckCircle2 className="h-4 w-4 text-emerald-300" /> : <Settings className="h-4 w-4" />}
                   {showcaseSaved ? "Configurações Salvas!" : "Salvar Personalização"}
                 </Button>

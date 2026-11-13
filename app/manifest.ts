@@ -1,0 +1,35 @@
+import { MetadataRoute } from 'next'
+
+export default function manifest(): MetadataRoute.Manifest {
+  return {
+    name: 'Imobiliária Prime - CRM',
+    short_name: 'Prime CRM',
+    description: 'Sistema completo para gestão imobiliária, corretores, vitrines e aluguéis.',
+    start_url: '/dashboard',
+    display: 'standalone',
+    background_color: '#07090e',
+    theme_color: '#07090e',
+    orientation: 'portrait',
+    icons: [
+      {
+        src: '/icons/icon-192.svg',
+        sizes: '192x192',
+        type: 'image/svg+xml',
+        purpose: 'any'
+      },
+      {
+        src: '/icons/icon-512.svg',
+        sizes: '512x512',
+        type: 'image/svg+xml',
+        purpose: 'any'
+      },
+      {
+        src: '/icons/icon-512.svg',
+        sizes: '512x512',
+        type: 'image/svg+xml',
+        purpose: 'maskable'
+      }
+    ],
+    categories: ['business', 'productivity', 'finance']
+  }
+}

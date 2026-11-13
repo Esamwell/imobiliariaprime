@@ -413,66 +413,68 @@ export default function UserDashboardPage() {
                   <Plus className="h-3.5 w-3.5" /> Novo
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-md rounded-2xl">
+              <DialogContent className="max-w-md rounded-3xl p-6 sm:p-7">
                 <DialogHeader>
-                  <DialogTitle>Novo Compromisso na Agenda</DialogTitle>
-                  <DialogDescription>
-                    Agende uma visita com cliente, vistoria ou assinatura de contrato.
+                  <DialogTitle className="text-xl font-black text-foreground">Novo Compromisso na Agenda</DialogTitle>
+                  <DialogDescription className="text-xs text-muted-foreground">
+                    Agende uma visita com cliente, vistoria técnica ou assinatura de contrato.
                   </DialogDescription>
                 </DialogHeader>
 
-                <form onSubmit={handleCreateAppointment} className="space-y-3 pt-2">
-                  <div className="grid grid-cols-3 gap-2">
+                <form onSubmit={handleCreateAppointment} className="space-y-3.5 pt-2">
+                  <div className="grid grid-cols-3 gap-2.5">
                     <div className="space-y-1">
-                      <label className="text-xs font-semibold">Horário</label>
+                      <label className="text-xs font-bold text-foreground">Horário</label>
                       <input
                         type="time"
                         required
                         value={time}
                         onChange={(e) => setTime(e.target.value)}
-                        className="w-full h-9 rounded-xl border border-input bg-background px-2 text-sm"
+                        className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3 text-xs sm:text-sm font-semibold"
                       />
                     </div>
                     <div className="col-span-2 space-y-1">
-                      <label className="text-xs font-semibold">Título</label>
+                      <label className="text-xs font-bold text-foreground">Título</label>
                       <input
                         type="text"
                         required
                         placeholder="Ex: Visita Alphaville"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
-                        className="w-full h-9 rounded-xl border border-input bg-background px-3 text-sm"
+                        className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-xs sm:text-sm"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold">Cliente / Contato</label>
+                    <label className="text-xs font-bold text-foreground">Cliente / Contato</label>
                     <input
                       type="text"
                       placeholder="Ex: Dr. Marcelo"
                       value={contact}
                       onChange={(e) => setContact(e.target.value)}
-                      className="w-full h-9 rounded-xl border border-input bg-background px-3 text-sm"
+                      className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-xs sm:text-sm"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold">Local / Endereço</label>
+                    <label className="text-xs font-bold text-foreground">Local / Endereço</label>
                     <input
                       type="text"
                       placeholder="Ex: Alameda dos Ipês, 450"
                       value={location}
                       onChange={(e) => setLocation(e.target.value)}
-                      className="w-full h-9 rounded-xl border border-input bg-background px-3 text-sm"
+                      className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-xs sm:text-sm"
                     />
                   </div>
 
-                  <DialogFooter className="pt-3">
-                    <Button type="button" variant="outline" className="rounded-full" onClick={() => setIsDialogOpen(false)}>
+                  <DialogFooter className="pt-3 flex items-center justify-end gap-2">
+                    <Button type="button" variant="outline" className="rounded-full h-10 px-5 text-xs font-bold" onClick={() => setIsDialogOpen(false)}>
                       Cancelar
                     </Button>
-                    <Button type="submit" className="rounded-full bg-foreground text-background">Salvar na Agenda</Button>
+                    <Button type="submit" className="rounded-full h-10 px-6 font-bold text-xs bg-foreground text-background hover:bg-foreground/90 shadow-sm">
+                      Salvar na Agenda
+                    </Button>
                   </DialogFooter>
                 </form>
               </DialogContent>
