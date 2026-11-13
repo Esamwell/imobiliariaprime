@@ -247,9 +247,12 @@ export default function CatalogPage() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-1 space-y-6">
         <div>
-          <h1 className="text-3xl font-black tracking-tight">Catálogo Geral de Imóveis</h1>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold mb-2">
+            Vitrines Públicas Integradas ao Tactus CRM
+          </div>
+          <h1 className="text-3xl font-black tracking-tight">Vitrines & Carteiras de Imóveis dos Corretores</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Encontre o imóvel ideal com fotos reais, ficha técnica completa e contato direto com o corretor responsável.
+            Imóveis cadastrados e gerenciados por corretores e imobiliárias credenciadas no Tactus CRM com atendimento direto no WhatsApp.
           </p>
         </div>
 
@@ -430,7 +433,7 @@ export default function CatalogPage() {
       </main>
 
       <footer className="bg-white dark:bg-slate-900 border-t py-6 text-center text-xs text-muted-foreground">
-        <p>© {new Date().getFullYear()} Imobiliária Prime. Todos os direitos reservados.</p>
+        <p>© {new Date().getFullYear()} Tactus CRM & Vitrines Imobiliárias. Todos os direitos reservados.</p>
       </footer>
     </div>
   )

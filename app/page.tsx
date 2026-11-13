@@ -7,6 +7,7 @@ import { TactusLogo } from "@/components/tactus-logo"
 import { CinematicHero } from "@/components/ui/cinematic-landing-hero"
 import { 
   Building, 
+  Building2,
   Share2, 
   Kanban, 
   Key, 
@@ -29,18 +30,19 @@ import {
   FileCheck2, 
   HelpCircle, 
   X, 
-  BadgePercent,
-  Search,
-  MapPin,
-  Bed,
-  Bath,
-  Car,
-  Maximize,
   Calendar,
   TrendingUp,
   MessageSquare,
   PhoneCall,
-  Laptop
+  Laptop,
+  Flame,
+  Clock,
+  Layers,
+  FileSpreadsheet,
+  AlertTriangle,
+  ChevronRight,
+  UserCheck,
+  Briefcase
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -69,18 +71,18 @@ const plans: PlanDetail[] = [
     priceMonthly: 89,
     priceAnnual: 69,
     period: "/mês",
-    description: "Projetado sob medida para o corretor independente que precisa de presença digital e agilidade.",
+    description: "Projetado sob medida para o corretor independente que precisa de presença digital exclusiva e agilidade no fechamento de negócios.",
     brokerLimit: "1 Corretor Individual",
     propertiesLimit: "Até 50 Imóveis Ativos",
     features: [
-      "Vitrine Pública Pessoal Exclusiva (/v/seu-nome)",
+      "Sua Vitrine Pública Exclusiva (/v/seu-nome)",
       "Botão Direto de WhatsApp com mensagem pré-configurada",
       "Upload de fotos em Alta Resolução (HD)",
       "Preenchimento automático de endereço por CEP (ViaCEP)",
       "Funil de Vendas Kanban com etiquetas de temperatura",
-      "Sincronização 1-clique com Google Agenda",
+      "Sincronização 1-clique com Google Agenda no celular",
       "App Mobile PWA com notificações em tempo real",
-      "Link direto compartilhável no Instagram e WhatsApp",
+      "Sem anúncios de concorrentes na sua vitrine",
       "Suporte ágil via WhatsApp"
     ],
     ctaText: "Assinar Plano Autônomo",
@@ -95,7 +97,7 @@ const plans: PlanDetail[] = [
     priceMonthly: 249,
     priceAnnual: 199,
     period: "/mês",
-    description: "A ferramenta definitiva para imobiliárias que coordenam equipe de corretores e alta demanda.",
+    description: "A ferramenta definitiva para imobiliárias que gerenciam equipe de corretores, alta demanda de leads e carteira de locações.",
     brokerLimit: "Até 10 Corretores Cadastrados",
     propertiesLimit: "Imóveis ILIMITADOS na Carteira",
     features: [
@@ -121,7 +123,7 @@ const plans: PlanDetail[] = [
     priceMonthly: 589,
     priceAnnual: 489,
     period: "/mês",
-    description: "Para grandes imobiliárias, redes de franquias e incorporadoras com alta demanda operacional.",
+    description: "Para grandes imobiliárias, redes de franquias e incorporadoras com alta demanda operacional e múltiplas filiais.",
     brokerLimit: "Corretores e Filiais ILIMITADOS",
     propertiesLimit: "Imóveis e Armazenamento ILIMITADOS",
     features: [
@@ -140,8 +142,8 @@ const plans: PlanDetail[] = [
   }
 ]
 
-// Imóveis em Destaque na Plataforma (Vitrine Viva Real / QuintoAndar Style)
-const FEATURED_PROPERTIES = [
+// Exemplo da Vitrine Digital do Corretor para demonstração
+const SHOWCASE_DEMO_PROPERTIES = [
   {
     id: "prop-1",
     code: "AP0420",
@@ -155,7 +157,7 @@ const FEATURED_PROPERTIES = [
     parking: 3,
     area: 185,
     imageUrl: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&auto=format&fit=crop&q=80",
-    broker: "Carlos Silveira"
+    broker: "Carlos Silveira • CRECI 48.912"
   },
   {
     id: "prop-2",
@@ -170,7 +172,7 @@ const FEATURED_PROPERTIES = [
     parking: 4,
     area: 420,
     imageUrl: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&auto=format&fit=crop&q=80",
-    broker: "Carlos Silveira"
+    broker: "Carlos Silveira • CRECI 48.912"
   },
   {
     id: "prop-3",
@@ -185,7 +187,7 @@ const FEATURED_PROPERTIES = [
     parking: 3,
     area: 210,
     imageUrl: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&auto=format&fit=crop&q=80",
-    broker: "Mariana Alencar"
+    broker: "Mariana Alencar • CRECI 52.104"
   }
 ]
 
@@ -195,10 +197,8 @@ export default function CRMLandingPage() {
   const [checkoutStep, setCheckoutStep] = useState<"form" | "success">("form")
   const [clientType, setClientType] = useState<"PF" | "PJ">("PF")
   
-  // Search intent state (Viva Real / QuintoAndar Style)
-  const [searchTab, setSearchTab] = useState<"comprar" | "alugar" | "anunciar">("comprar")
-  const [searchQuery, setSearchQuery] = useState("")
-  const [propertyType, setPropertyType] = useState("todos")
+  // Segment Switcher (Corretor Autônomo vs. Imobiliária vs. Rede)
+  const [activeSegment, setActiveSegment] = useState<"corretor" | "imobiliaria" | "enterprise">("corretor")
 
   const [formData, setFormData] = useState({
     name: "",
@@ -249,17 +249,20 @@ export default function CRMLandingPage() {
           </Link>
 
           <nav className="hidden md:flex items-center gap-6 text-xs font-semibold text-slate-400">
-            <Link href="#imoveis" className="hover:text-white transition-colors">
-              Buscar Imóveis
-            </Link>
             <Link href="#recursos" className="hover:text-white transition-colors">
-              Para Corretores
+              O CRM
+            </Link>
+            <Link href="#vitrine-exemplo" className="hover:text-white transition-colors">
+              Vitrines Digitais
+            </Link>
+            <Link href="#comparativo" className="hover:text-white transition-colors">
+              Por que o Tactus?
             </Link>
             <Link href="#precos" className="hover:text-white transition-colors text-[#CCFF00]">
               Planos & Preços
             </Link>
             <Link href="/v/tactus" target="_blank" className="hover:text-white transition-colors">
-              Vitrine Exemplo
+              Vitrine Modelo
             </Link>
           </nav>
 
@@ -279,7 +282,7 @@ export default function CRMLandingPage() {
               className="hidden lg:inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-white transition-colors glass-pill px-3.5 py-1.5"
             >
               <Share2 className="h-3.5 w-3.5 text-[#CCFF00]" />
-              Vitrine Pública
+              Vitrine Exemplo
             </Link>
 
             {/* Apple Electric Lime Button */}
@@ -287,7 +290,7 @@ export default function CRMLandingPage() {
               href="/login"
               className="inline-flex items-center gap-1.5 h-9 px-4 rounded-full bg-[#CCFF00] hover:bg-[#bbf000] text-black font-extrabold text-xs shadow-lg shadow-[#CCFF00]/20 transition-all hover:scale-105"
             >
-              <span>Acessar Painel</span>
+              <span>Acessar o CRM</span>
               <ArrowUpRight className="h-3.5 w-3.5" />
             </Link>
           </div>
@@ -297,7 +300,7 @@ export default function CRMLandingPage() {
       {/* 2. Cinematic 3D Apple Landing Hero (21st.dev Component) */}
       <CinematicHero />
 
-      {/* 3. Hero Section: Conectando Compradores, Proprietários e Corretores */}
+      {/* 3. Hero Section: Conectando o Corretor e a Imobiliária ao Cliente Final */}
       <main className="flex-1 relative z-10">
         <section className="relative pt-12 sm:pt-20 pb-12 sm:pb-20 px-4 sm:px-6 lg:px-8 text-center">
           
@@ -309,139 +312,219 @@ export default function CRMLandingPage() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#CCFF00] opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-[#CCFF00]"></span>
               </span>
-              ECOSSISTEMA IMOBILIÁRIO PRIME • COMPRA, VENDA & GESTÃO
+              TACTUS CRM • DESENVOLVIDO PARA CORRETORES & IMOBILIÁRIAS
             </div>
 
             {/* Main Headline */}
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.08] text-white">
-              Onde compradores, proprietários e <br className="hidden sm:block" />
+              O CRM que conecta sua imobiliária e <br className="hidden sm:block" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#CCFF00] via-white to-slate-200">
-                corretores de elite fecham negócios.
+                seus corretores ao cliente final.
               </span>
             </h1>
 
             {/* Description */}
             <p className="max-w-2xl mx-auto text-sm sm:text-base text-slate-400 font-normal leading-relaxed">
-              Conectamos você aos melhores imóveis de São Paulo e região através de corretores credenciados, 
-              com vitrines exclusivas de alta definição, agendamento de visitas com o Google Agenda e atendimento direto no WhatsApp.
+              Esqueça portais tradicionais que cobram fortunas para exibir anúncios dos seus concorrentes. 
+              Com o <strong className="text-white">Tactus CRM</strong>, você tem sua Vitrine Digital exclusiva com botão de WhatsApp direto, 
+              funil Kanban de alta conversão, Google Agenda integrada e gestão automatizada de contratos e comissões.
             </p>
 
-            {/* Interactive Search Console (Inspired by Viva Real, QuintoAndar, RE/MAX) */}
-            <div className="max-w-4xl mx-auto pt-4 text-left">
-              <div className="rounded-[32px] border border-white/15 bg-[#0F121B]/90 backdrop-blur-2xl p-3 sm:p-5 shadow-[0_24px_60px_rgba(0,0,0,0.6)]">
+            {/* Interactive Broker & Agency Solution Hub */}
+            <div className="max-w-4xl mx-auto pt-6 text-left">
+              <div className="rounded-[32px] border border-white/15 bg-[#0F121B]/90 backdrop-blur-2xl p-4 sm:p-6 shadow-[0_24px_60px_rgba(0,0,0,0.6)]">
                 
-                {/* Tabs: Comprar, Alugar, Anunciar */}
-                <div className="flex items-center gap-1.5 mb-3.5 border-b border-white/[0.08] pb-3 px-1">
+                {/* Segment Selector Tabs */}
+                <div className="flex flex-wrap items-center gap-2 mb-5 border-b border-white/[0.08] pb-4">
                   <button
                     type="button"
-                    onClick={() => setSearchTab("comprar")}
-                    className={`px-4 py-2 rounded-full text-xs font-extrabold transition-all ${
-                      searchTab === "comprar"
-                        ? "bg-[#CCFF00] text-black shadow-md shadow-[#CCFF00]/20 font-black"
-                        : "text-white/60 hover:text-white"
+                    onClick={() => setActiveSegment("corretor")}
+                    className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-extrabold transition-all ${
+                      activeSegment === "corretor"
+                        ? "bg-[#CCFF00] text-black shadow-lg shadow-[#CCFF00]/25 font-black scale-102"
+                        : "bg-white/[0.04] text-white/70 hover:text-white hover:bg-white/[0.08]"
                     }`}
                   >
-                    Comprar Imóvel
+                    <UserCheck className="w-4 h-4" />
+                    <span>Para Corretores Autônomos (PF)</span>
                   </button>
 
                   <button
                     type="button"
-                    onClick={() => setSearchTab("alugar")}
-                    className={`px-4 py-2 rounded-full text-xs font-extrabold transition-all ${
-                      searchTab === "alugar"
-                        ? "bg-[#CCFF00] text-black shadow-md shadow-[#CCFF00]/20 font-black"
-                        : "text-white/60 hover:text-white"
+                    onClick={() => setActiveSegment("imobiliaria")}
+                    className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-extrabold transition-all ${
+                      activeSegment === "imobiliaria"
+                        ? "bg-[#CCFF00] text-black shadow-lg shadow-[#CCFF00]/25 font-black scale-102"
+                        : "bg-white/[0.04] text-white/70 hover:text-white hover:bg-white/[0.08]"
                     }`}
                   >
-                    Alugar Imóvel
+                    <Building2 className="w-4 h-4" />
+                    <span>Para Imobiliárias & Gestores (PJ)</span>
                   </button>
 
                   <button
                     type="button"
-                    onClick={() => setSearchTab("anunciar")}
-                    className={`px-4 py-2 rounded-full text-xs font-extrabold transition-all ${
-                      searchTab === "anunciar"
-                        ? "bg-[#CCFF00] text-black shadow-md shadow-[#CCFF00]/20 font-black"
-                        : "text-white/60 hover:text-white"
+                    onClick={() => setActiveSegment("enterprise")}
+                    className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-extrabold transition-all ${
+                      activeSegment === "enterprise"
+                        ? "bg-[#CCFF00] text-black shadow-lg shadow-[#CCFF00]/25 font-black scale-102"
+                        : "bg-white/[0.04] text-white/70 hover:text-white hover:bg-white/[0.08]"
                     }`}
                   >
-                    Vender / Anunciar Imóvel
+                    <Crown className="w-4 h-4 text-amber-400" />
+                    <span>Redes & Incorporadoras</span>
                   </button>
                 </div>
 
-                {/* Search Inputs Grid */}
-                {searchTab !== "anunciar" ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-center">
-                    {/* Location input */}
-                    <div className="sm:col-span-5 relative">
-                      <MapPin className="absolute left-3.5 top-3.5 h-4 w-4 text-white/40" />
-                      <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="Onde você quer morar? Ex: Moema, Alphaville, Jardins..."
-                        className="w-full h-11 pl-10 pr-3 rounded-2xl bg-white/[0.05] border border-white/10 text-xs sm:text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#CCFF00] focus:ring-1 focus:ring-[#CCFF00]"
-                      />
+                {/* Tab 1: Corretor Autônomo */}
+                {activeSegment === "corretor" && (
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                    <div className="md:col-span-8 space-y-3">
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[11px] font-bold border border-emerald-500/20">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        A partir de R$ 69/mês • 1 Corretor • Até 50 Imóveis
+                      </div>
+                      <h3 className="text-xl sm:text-2xl font-black text-white">
+                        Sua marca pessoal forte e fechamentos no WhatsApp.
+                      </h3>
+                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        Tenha sua própria Vitrine Digital (<code className="text-[#CCFF00] bg-white/[0.05] px-1.5 py-0.5 rounded">/v/seu-nome</code>) para enviar no WhatsApp e Instagram do cliente sem anúncios concorrentes. Agende visitas com 1 clique sincronizado ao Google Agenda e controle todos os leads no funil Kanban pelo celular.
+                      </p>
+                      <div className="grid grid-cols-2 gap-2 pt-2 text-xs text-slate-300">
+                        <span className="flex items-center gap-1.5">
+                          <Check className="w-4 h-4 text-[#CCFF00]" /> Vitrine Pessoal Própria
+                        </span>
+                        <span className="flex items-center gap-1.5">
+                          <Check className="w-4 h-4 text-[#CCFF00]" /> Google Agenda Integrada
+                        </span>
+                        <span className="flex items-center gap-1.5">
+                          <Check className="w-4 h-4 text-[#CCFF00]" /> Funil Kanban no Celular
+                        </span>
+                        <span className="flex items-center gap-1.5">
+                          <Check className="w-4 h-4 text-[#CCFF00]" /> Notificações Push PWA
+                        </span>
+                      </div>
                     </div>
 
-                    {/* Tipologia */}
-                    <div className="sm:col-span-4">
-                      <select
-                        value={propertyType}
-                        onChange={(e) => setPropertyType(e.target.value)}
-                        className="w-full h-11 px-3.5 rounded-2xl bg-[#141721] border border-white/10 text-xs text-white focus:outline-none focus:border-[#CCFF00]"
-                      >
-                        <option value="todos">Todas as Tipologias</option>
-                        <option value="Apartamento">Apartamento</option>
-                        <option value="Casa">Casa em Condomínio</option>
-                        <option value="Cobertura">Cobertura Duplex</option>
-                        <option value="Studio">Studio de Design</option>
-                        <option value="Comercial">Laje Corporativa</option>
-                      </select>
-                    </div>
-
-                    {/* Search CTA */}
-                    <div className="sm:col-span-3">
+                    <div className="md:col-span-4 flex flex-col gap-2.5">
                       <Link
-                        href={`/imoveis?type=${searchTab === "comprar" ? "Venda" : "Aluguel"}&q=${encodeURIComponent(searchQuery)}`}
-                        className="w-full h-11 rounded-2xl bg-[#CCFF00] hover:bg-[#bbf000] text-black font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg shadow-[#CCFF00]/25 transition-all active:scale-[0.98]"
+                        href="#precos"
+                        className="w-full h-12 rounded-2xl bg-[#CCFF00] hover:bg-[#bbf000] text-black font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg shadow-[#CCFF00]/25 transition-all"
                       >
-                        <Search className="w-4 h-4 stroke-[2.5]" />
-                        <span>Buscar Imóveis</span>
+                        <span>Assinar Plano Corretor</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
+                      <Link
+                        href="/v/tactus"
+                        target="_blank"
+                        className="w-full h-11 rounded-2xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all"
+                      >
+                        <Share2 className="w-3.5 h-3.5 text-[#CCFF00]" />
+                        <span>Ver Vitrine Exemplo</span>
                       </Link>
                     </div>
                   </div>
-                ) : (
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-2 text-xs">
-                    <div>
-                      <span className="font-extrabold text-white block text-sm">
-                        Quer vender ou alugar seu imóvel com rapidez e máxima valorização?
-                      </span>
-                      <span className="text-white/50 text-xs">
-                        Nossos corretores e imobiliárias credenciadas cuidam de fotos HD, avaliação mercadológica e divulgação.
-                      </span>
+                )}
+
+                {/* Tab 2: Imobiliária & Gestores */}
+                {activeSegment === "imobiliaria" && (
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                    <div className="md:col-span-8 space-y-3">
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#CCFF00]/10 text-[#CCFF00] text-[11px] font-bold border border-[#CCFF00]/20">
+                        <Sparkles className="w-3.5 h-3.5" />
+                        Mais Escolhido • Até 10 Corretores • Imóveis Ilimitados
+                      </div>
+                      <h3 className="text-xl sm:text-2xl font-black text-white">
+                        Gestão de equipe, divisão de comissões e carteira de locações.
+                      </h3>
+                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        Coordenador geral com controle de permissões por corretor, carteira de imóveis ilimitada, módulo completo de locações com reajustes por IGP-M/IPCA e repasses a proprietários automatizados.
+                      </p>
+                      <div className="grid grid-cols-2 gap-2 pt-2 text-xs text-slate-300">
+                        <span className="flex items-center gap-1.5">
+                          <Check className="w-4 h-4 text-[#CCFF00]" /> Até 10 Corretores na Equipe
+                        </span>
+                        <span className="flex items-center gap-1.5">
+                          <Check className="w-4 h-4 text-[#CCFF00]" /> Módulo de Locações & Aluguéis
+                        </span>
+                        <span className="flex items-center gap-1.5">
+                          <Check className="w-4 h-4 text-[#CCFF00]" /> Divisão Automática de Comissões
+                        </span>
+                        <span className="flex items-center gap-1.5">
+                          <Check className="w-4 h-4 text-[#CCFF00]" /> Relatórios de VGV Consolidado
+                        </span>
+                      </div>
                     </div>
-                    <Link
-                      href="/v/tactus"
-                      className="h-11 px-6 rounded-2xl bg-[#CCFF00] hover:bg-[#bbf000] text-black font-extrabold text-xs flex items-center justify-center gap-2 whitespace-nowrap shadow-lg shadow-[#CCFF00]/25 transition-all"
-                    >
-                      <span>Falar com um Corretor Credenciado</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </Link>
+
+                    <div className="md:col-span-4 flex flex-col gap-2.5">
+                      <Link
+                        href="#precos"
+                        className="w-full h-12 rounded-2xl bg-[#CCFF00] hover:bg-[#bbf000] text-black font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg shadow-[#CCFF00]/25 transition-all"
+                      >
+                        <span>Assinar Imobiliária Tactus</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
+                      <Link
+                        href="/login"
+                        className="w-full h-11 rounded-2xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all"
+                      >
+                        <Laptop className="w-3.5 h-3.5 text-[#CCFF00]" />
+                        <span>Acessar Painel Demo</span>
+                      </Link>
+                    </div>
                   </div>
                 )}
 
-                {/* Popular Chips */}
-                <div className="flex flex-wrap items-center gap-2 pt-3 px-1 text-[11px] text-white/50">
-                  <span className="font-semibold text-white/70">🔥 Mais procurados:</span>
-                  <button type="button" onClick={() => setSearchQuery("Alphaville")} className="hover:text-[#CCFF00] transition-colors underline-offset-2 hover:underline">Alphaville Residencial</button>
-                  <span>•</span>
-                  <button type="button" onClick={() => setSearchQuery("Vila Nova Conceição")} className="hover:text-[#CCFF00] transition-colors underline-offset-2 hover:underline">Vila Nova Conceição</button>
-                  <span>•</span>
-                  <button type="button" onClick={() => setSearchQuery("Moema")} className="hover:text-[#CCFF00] transition-colors underline-offset-2 hover:underline">Moema Pássaros</button>
-                  <span>•</span>
-                  <button type="button" onClick={() => setSearchQuery("Pinheiros")} className="hover:text-[#CCFF00] transition-colors underline-offset-2 hover:underline">Pinheiros</button>
-                </div>
+                {/* Tab 3: Redes & Incorporadoras */}
+                {activeSegment === "enterprise" && (
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                    <div className="md:col-span-8 space-y-3">
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-[11px] font-bold border border-amber-500/20">
+                        <Crown className="w-3.5 h-3.5" />
+                        Enterprise • Multi-Filiais • Corretores e Imóveis Ilimitados
+                      </div>
+                      <h3 className="text-xl sm:text-2xl font-black text-white">
+                        Escala máxima, multi-tenant e integração com portais.
+                      </h3>
+                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        Estrutura pronta para redes de franquias, grandes imobiliárias e incorporadoras com exportação de feeds para portais (ZAP, VivaReal, OLX), assinatura eletrônica e gerente de contas dedicado.
+                      </p>
+                      <div className="grid grid-cols-2 gap-2 pt-2 text-xs text-slate-300">
+                        <span className="flex items-center gap-1.5">
+                          <Check className="w-4 h-4 text-amber-400" /> Multi-Tenant e Multi-Filiais
+                        </span>
+                        <span className="flex items-center gap-1.5">
+                          <Check className="w-4 h-4 text-amber-400" /> Feeds XML para Portais
+                        </span>
+                        <span className="flex items-center gap-1.5">
+                          <Check className="w-4 h-4 text-amber-400" /> Assinatura Eletrônica
+                        </span>
+                        <span className="flex items-center gap-1.5">
+                          <Check className="w-4 h-4 text-amber-400" /> Onboarding VIP para Equipe
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="md:col-span-4 flex flex-col gap-2.5">
+                      <Link
+                        href="#precos"
+                        className="w-full h-12 rounded-2xl bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-500/25 transition-all"
+                      >
+                        <span>Contratar Master VIP</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
+                      <a
+                        href="https://wa.me/5511987654321?text=Ol%C3%A1!%20Gostaria%20de%20falar%20sobre%20o%20Plano%20Enterprise%20do%20Tactus%20CRM."
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full h-11 rounded-2xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all"
+                      >
+                        <MessageSquare className="w-3.5 h-3.5 text-amber-400" />
+                        <span>Falar com Consultor</span>
+                      </a>
+                    </div>
+                  </div>
+                )}
 
               </div>
             </div>
@@ -463,15 +546,15 @@ export default function CRMLandingPage() {
                 </div>
               </div>
               <div className="text-left text-xs">
-                <span className="font-extrabold text-white block">Mais de 2.300 Corretores & Imobiliárias</span>
-                <span className="text-slate-400 text-[10px]">Conectando milhares de famílias aos seus novos lares</span>
+                <span className="font-extrabold text-white block">Mais de 2.300 Corretores & Imobiliárias Ativas</span>
+                <span className="text-slate-400 text-[10px]">Aumentando o VGV e fechando negócios sem intermediários</span>
               </div>
             </div>
 
           </div>
         </section>
 
-        {/* 3. SHOWCASE MOCKUPS: NOTEBOOK MACBOOK & IPHONE INTERATIVO COM PRINTS DO SISTEMA */}
+        {/* 4. SHOWCASE MOCKUPS: MACBOOK PRO & IPHONE COM PRINTS REAIS DO SISTEMA */}
         <section className="relative px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-10 sm:py-16">
           <div className="relative mx-auto">
             
@@ -502,7 +585,7 @@ export default function CRMLandingPage() {
                 <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl sm:rounded-2xl border border-white/10 bg-black">
                   <Image
                     src="/mockups/dashboard-desktop.jpg"
-                    alt="Painel da Imobiliária Tactus CRM no Notebook"
+                    alt="Painel do Corretor e Gestor Tactus CRM no Notebook"
                     fill
                     priority
                     className="object-cover object-top hover:scale-[1.01] transition-transform duration-700"
@@ -561,7 +644,7 @@ export default function CRMLandingPage() {
                   <span className="text-xs font-black text-white block mt-0.5">
                     10:00 • Dr. Marcelo (Mansão Alphaville)
                   </span>
-                  <span className="text-[10px] text-white/50">Sincronização 1-clique no celular</span>
+                  <span className="text-[10px] text-white/50">Visita sincronizada no celular do corretor</span>
                 </div>
               </div>
 
@@ -596,64 +679,68 @@ export default function CRMLandingPage() {
           </div>
         </section>
 
-        {/* 4. REALTIME ECOSYSTEM TICKER */}
+        {/* 5. TICKER EM TEMPO REAL: ATIVIDADES DA REDE DE CORRETORES */}
         <div className="w-full border-y border-white/[0.08] bg-white/[0.02] py-3.5 overflow-hidden backdrop-blur-md">
           <div className="max-w-7xl mx-auto px-4 flex items-center justify-between text-xs text-white/60">
             <div className="flex items-center gap-2 text-[#CCFF00] font-bold shrink-0 pr-4 border-r border-white/10">
               <span className="w-2 h-2 rounded-full bg-[#CCFF00] animate-pulse" />
-              <span className="text-[11px] font-black tracking-wider uppercase">AO VIVO NA REDE TACTUS</span>
+              <span className="text-[11px] font-black tracking-wider uppercase">ATIVIDADES EM TEMPO REAL NO CRM</span>
             </div>
             <div className="flex items-center gap-8 overflow-x-auto no-scrollbar whitespace-nowrap text-xs pl-4">
               <span className="flex items-center gap-1.5 text-white/80">
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#CCFF00]" />
-                <strong>Mansão Alphaville:</strong> Proposta aceita • R$ 4.900.000
+                <strong>Carlos Silveira:</strong> Proposta aceita • R$ 4.900.000 (Comissão calculada)
               </span>
               <span>•</span>
               <span className="flex items-center gap-1.5 text-white/80">
                 <Calendar className="w-3.5 h-3.5 text-blue-400" />
-                <strong>Ed. Terraço Jardins:</strong> Visita agendada para 16:45 via Google Agenda
+                <strong>Mariana Alencar:</strong> Visita sincronizada às 16:45 via Google Agenda
               </span>
               <span>•</span>
               <span className="flex items-center gap-1.5 text-white/80">
                 <Share2 className="w-3.5 h-3.5 text-purple-400" />
-                <strong>Vitrine Ativa:</strong> tactus.com.br/v/carlos-silveira (12 novos acessos hoje)
+                <strong>Vitrine Ativa:</strong> tactus.com.br/v/carlos-silveira (18 novos leads no WhatsApp)
               </span>
               <span>•</span>
               <span className="flex items-center gap-1.5 text-white/80">
                 <Key className="w-3.5 h-3.5 text-[#CCFF00]" />
-                <strong>Studio Pinheiros:</strong> Locação assinada digitalmente
+                <strong>Imobiliária Modelo:</strong> 3 contratos de locação reajustados pelo IGP-M
               </span>
             </div>
           </div>
         </div>
 
-        {/* 5. SEÇÃO DE IMÓVEIS EM DESTAQUE (VIVA REAL / QUINTOANDAR / ZAP STYLE) */}
-        <section id="imoveis" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        {/* 6. A VITRINE DIGITAL DO CORRETOR (DEMONSTRAÇÃO REAL) */}
+        <section id="vitrine-exemplo" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.05] border border-white/10 text-[11px] font-bold text-[#CCFF00] mb-2">
-                <Sparkles className="w-3 h-3" />
-                CATÁLOGO EXCLUSIVO
+                <Share2 className="w-3 h-3" />
+                SEU LINK EXCLUSIVO NA BIO & WHATSAPP
               </div>
               <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
-                Imóveis em Destaque na Rede Tactus
+                Como seus clientes visualizam sua carteira de imóveis
               </h2>
-              <p className="text-sm text-slate-400 mt-1">
-                Propriedades verificadas com atendimento direto do corretor especialista.
+              <p className="text-sm text-slate-400 mt-1 max-w-2xl">
+                Chega de enviar PDFs pesados de 20MB ou links de portais onde o cliente vê anúncios dos seus concorrentes. 
+                Com o Tactus CRM, você compartilha sua vitrine exclusiva (<code className="text-[#CCFF00]">tactus.com.br/v/seu-nome</code>) 
+                com seu CRECI, sua foto e contato direto no seu WhatsApp.
               </p>
             </div>
 
             <Link
-              href="/imoveis"
+              href="/v/tactus"
+              target="_blank"
               className="inline-flex items-center gap-2 h-11 px-5 rounded-full border border-white/15 bg-white/[0.04] hover:bg-white/[0.08] text-xs font-bold text-white transition-all hover:scale-102 self-start sm:self-auto"
             >
-              <span>Ver Todos os Imóveis</span>
-              <ArrowRight className="w-4 h-4 text-[#CCFF00]" />
+              <span>Abrir Vitrine Modelo ao Vivo</span>
+              <ArrowUpRight className="w-4 h-4 text-[#CCFF00]" />
             </Link>
           </div>
 
+          {/* Cards Demonstrativos de Imóveis da Vitrine */}
           <div className="grid gap-6 md:grid-cols-3">
-            {FEATURED_PROPERTIES.map((prop) => (
+            {SHOWCASE_DEMO_PROPERTIES.map((prop) => (
               <div
                 key={prop.id}
                 className="group rounded-[28px] border border-white/[0.10] bg-white/[0.03] backdrop-blur-xl overflow-hidden hover:border-[#CCFF00]/40 transition-all duration-300 flex flex-col justify-between"
@@ -695,48 +782,39 @@ export default function CRMLandingPage() {
                       {prop.title}
                     </h3>
 
-                    <p className="text-xs text-slate-400 flex items-center gap-1">
-                      <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                      <span className="truncate">{prop.location}</span>
+                    <p className="text-xs text-slate-400">
+                      {prop.location}
                     </p>
 
                     {/* Specs Pills */}
                     <div className="flex items-center gap-3 pt-2 text-[11px] text-slate-300 border-t border-white/[0.06]">
-                      <span className="flex items-center gap-1">
-                        <Bed className="w-3.5 h-3.5 text-slate-400" /> {prop.beds} qts
-                      </span>
+                      <span>{prop.beds} quartos</span>
                       <span>•</span>
-                      <span className="flex items-center gap-1">
-                        <Bath className="w-3.5 h-3.5 text-slate-400" /> {prop.baths} banh
-                      </span>
+                      <span>{prop.baths} banheiros</span>
                       <span>•</span>
-                      <span className="flex items-center gap-1">
-                        <Car className="w-3.5 h-3.5 text-slate-400" /> {prop.parking} vg
-                      </span>
+                      <span>{prop.parking} vagas</span>
                       <span>•</span>
-                      <span className="flex items-center gap-1">
-                        <Maximize className="w-3.5 h-3.5 text-slate-400" /> {prop.area} m²
-                      </span>
+                      <span>{prop.area} m²</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Card Action Buttons */}
+                {/* Card Action Buttons: Direto para o Corretor */}
                 <div className="p-5 pt-0 grid grid-cols-2 gap-2">
                   <Link
                     href={`/imovel/${prop.code}`}
                     className="h-10 rounded-2xl border border-white/10 bg-white/[0.05] hover:bg-white/[0.10] text-xs font-bold text-white flex items-center justify-center transition-all"
                   >
-                    Ver Detalhes
+                    Ver Ficha Completa
                   </Link>
                   <a
-                    href={`https://wa.me/5511987654321?text=${encodeURIComponent(`Olá! Tenho interesse no imóvel ${prop.code} (${prop.title}). Podemos agendar uma visita?`)}`}
+                    href={`https://wa.me/5511987654321?text=${encodeURIComponent(`Olá Carlos! Vi o imóvel ${prop.code} (${prop.title}) na sua Vitrine Tactus e gostaria de agendar uma visita.`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="h-10 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-md transition-all"
                   >
                     <MessageSquare className="w-3.5 h-3.5" />
-                    WhatsApp
+                    Chamar Corretor
                   </a>
                 </div>
 
@@ -745,72 +823,269 @@ export default function CRMLandingPage() {
           </div>
         </section>
 
-        {/* 6. RECURSOS DO TACTUS CRM: DESIGN PRIME & EFICIÊNCIA */}
+        {/* 7. QUADRO COMPARATIVO: TACTUS CRM vs. PORTAIS TRADICIONAIS vs. PLANILHAS */}
+        <section id="comparativo" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto space-y-3 mb-14">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.05] border border-white/10 text-[11px] font-bold text-[#CCFF00]">
+              <Layers className="w-3.5 h-3.5" />
+              POR QUE MUDAR PARA O TACTUS CRM?
+            </div>
+            <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white">
+              Feito para o corretor ganhar dinheiro, não o portal.
+            </h2>
+            <p className="text-sm text-slate-400">
+              Veja por que corretores autônomos e imobiliárias de alta performance estão trocando portais caros e planilhas desorganizadas pelo Tactus CRM.
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-3 items-stretch">
+            
+            {/* Coluna 1: Portais Tradicionais (ZAP / VivaReal) */}
+            <div className="rounded-3xl border border-red-500/20 bg-red-500/[0.03] backdrop-blur-xl p-7 flex flex-col justify-between space-y-6">
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 text-red-400 text-xs font-bold uppercase tracking-wider">
+                  <AlertTriangle className="w-4 h-4" />
+                  Portais de Anúncios (ZAP / VivaReal)
+                </div>
+                <h3 className="text-xl font-bold text-white">Custos abusivos e concorrência desleal</h3>
+                <ul className="space-y-3 text-xs text-slate-400">
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-400 font-bold shrink-0">✕</span>
+                    <span>Cobram mensalidades caras por anúncio ou pacote de destaque.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-400 font-bold shrink-0">✕</span>
+                    <span>Mostram imóveis de outros corretores e imobiliárias na mesma página do seu anúncio.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-400 font-bold shrink-0">✕</span>
+                    <span>O cliente e o lead pertencem ao portal, não à sua carteira.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-red-400 font-bold shrink-0">✕</span>
+                    <span>Zero ferramentas de gestão, sem Google Agenda e sem funil de vendas.</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="p-3 rounded-2xl bg-red-500/10 text-red-300 text-[11px] font-medium border border-red-500/20">
+                Resultado: Alto custo mensal e perda constante de clientes para a concorrência.
+              </div>
+            </div>
+
+            {/* Coluna 2: Planilhas do Excel & WhatsApp Solto */}
+            <div className="rounded-3xl border border-amber-500/20 bg-amber-500/[0.03] backdrop-blur-xl p-7 flex flex-col justify-between space-y-6">
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-wider">
+                  <FileSpreadsheet className="w-4 h-4" />
+                  Planilhas do Excel & WhatsApp
+                </div>
+                <h3 className="text-xl font-bold text-white">Desorganização e perda de negócios</h3>
+                <ul className="space-y-3 text-xs text-slate-400">
+                  <li className="flex items-start gap-2">
+                    <span className="text-amber-400 font-bold shrink-0">✕</span>
+                    <span>Leads esquecidos no WhatsApp sem histórico ou temperatura de compra.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-amber-400 font-bold shrink-0">✕</span>
+                    <span>Visitas marcadas de cabeça, gerando choques de horário e atrasos.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-amber-400 font-bold shrink-0">✕</span>
+                    <span>Envio de fotos soltas e PDFs pesados que travam o celular do cliente.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-amber-400 font-bold shrink-0">✕</span>
+                    <span>Controle manual e propenso a erros de comissões e reajustes de aluguel.</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="p-3 rounded-2xl bg-amber-500/10 text-amber-300 text-[11px] font-medium border border-amber-500/20">
+                Resultado: Imagem amadora e dezenas de horas perdidas em tarefas manuais.
+              </div>
+            </div>
+
+            {/* Coluna 3: TACTUS CRM IMOBILIÁRIO (DESTAQUE) */}
+            <div className="rounded-3xl border-2 border-[#CCFF00] bg-[#CCFF00]/[0.06] backdrop-blur-2xl p-7 flex flex-col justify-between space-y-6 shadow-2xl shadow-[#CCFF00]/15 relative">
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                <span className="rounded-full bg-[#CCFF00] text-black px-4 py-1 text-[10px] font-black tracking-wider uppercase shadow-md">
+                  SOLUÇÃO DEFINITIVA
+                </span>
+              </div>
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 text-[#CCFF00] text-xs font-black uppercase tracking-wider">
+                  <Zap className="w-4 h-4" />
+                  Tactus CRM & Vitrines
+                </div>
+                <h3 className="text-xl font-black text-white">Domínio total da sua carteira e clientes</h3>
+                <ul className="space-y-3 text-xs text-slate-200">
+                  <li className="flex items-start gap-2">
+                    <Check className="w-4 h-4 text-[#CCFF00] shrink-0 font-bold mt-0.5" />
+                    <span><strong>Vitrine 100% sua:</strong> o cliente navega apenas nos seus imóveis e fala direto com você.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check className="w-4 h-4 text-[#CCFF00] shrink-0 font-bold mt-0.5" />
+                    <span><strong>Google Agenda Integrada:</strong> agende visitas com 1 toque no celular sem conflitos de horário.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check className="w-4 h-4 text-[#CCFF00] shrink-0 font-bold mt-0.5" />
+                    <span><strong>Funil Kanban de Vendas:</strong> saiba exatamente quais clientes estão prontos para proposta.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check className="w-4 h-4 text-[#CCFF00] shrink-0 font-bold mt-0.5" />
+                    <span><strong>Gestão de Aluguéis & Comissões:</strong> reajustes automáticos (IGP-M/IPCA) e cálculo exato de honorários.</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="p-3.5 rounded-2xl bg-[#CCFF00] text-black text-xs font-black text-center">
+                Multiplique seus fechamentos a partir de R$ 69/mês.
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* 8. RECURSOS DO TACTUS CRM: DESIGN APPLE PRIME & EFICIÊNCIA */}
         <section id="recursos" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <div className="text-center max-w-xl mx-auto space-y-2 mb-12">
             <span className="text-xs font-bold text-[#CCFF00] uppercase tracking-widest">
-              Tecnologia de Ponta para o Corretor
+              TECNOLOGIA DE PONTA PARA CORRETORES & GESTORES
             </span>
             <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
-              Tudo o que sua imobiliária precisa para vender mais.
+              Tudo o que você precisa para dominar o seu mercado.
             </h2>
           </div>
 
           <div className="grid gap-6 md:grid-cols-3 items-stretch">
-            {/* Card 01 - Apple Dark Glass */}
+            
+            {/* Card 01 - Vitrines Digitais */}
             <div className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-7 flex flex-col justify-between space-y-4 hover:border-white/20 transition-all">
               <div className="space-y-3">
                 <span className="text-xl font-mono font-bold text-slate-500">01.</span>
-                <h3 className="text-xl font-bold text-white">Carteira Inteligente em Alta Resolução</h3>
+                <h3 className="text-xl font-bold text-white">Vitrines Públicas Exclusivas</h3>
                 <p className="text-xs text-slate-400 leading-relaxed">
-                  Cadastre imóveis com preenchimento instantâneo de endereço por CEP (ViaCEP), upload de fotos em alta definição e simulação de financiamento bancário para compradores.
+                  Gere com um único clique o link oficial da sua carteira (ex: <code>/v/seu-nome</code>) com foto de perfil, CRECI e botão direto de WhatsApp para enviar aos clientes ou colocar na sua bio do Instagram.
                 </p>
               </div>
               <div className="pt-4 border-t border-white/[0.08] flex items-center justify-between text-xs font-bold text-white">
-                <Link href="/dashboard/imoveis" className="hover:text-[#CCFF00] transition-colors">
-                  Ver no Sistema
+                <Link href="/v/tactus" target="_blank" className="hover:text-[#CCFF00] transition-colors">
+                  Conhecer Vitrine Modelo
                 </Link>
                 <ArrowUpRight className="h-4 w-4 text-[#CCFF00]" />
               </div>
             </div>
 
-            {/* Card 02 - Electric Lime Highlight */}
+            {/* Card 02 - Google Agenda */}
             <div className="rounded-3xl bg-[#CCFF00] text-black p-7 flex flex-col justify-between space-y-4 shadow-2xl shadow-[#CCFF00]/20 transform md:-translate-y-2 transition-transform">
               <div className="space-y-3">
                 <span className="text-xl font-mono font-black text-black/60">02.</span>
-                <h3 className="text-xl font-black text-black">Vitrines Públicas Personalizadas</h3>
+                <h3 className="text-xl font-black text-black">Google Agenda Integrada em 1 Clique</h3>
                 <p className="text-xs text-black/80 font-medium leading-relaxed">
-                  Gere com um único clique um link exclusivo da sua carteira (ex: <code>/v/tactus</code> ou <code>/v/seu-nome</code>) com sua foto, CRECI e botão direto de WhatsApp para enviar aos clientes ou colocar na sua bio.
+                  Ao agendar uma visita ou vistoria no CRM, envie o evento direto para o Google Agenda do seu celular e do cliente com localização no Google Maps e lembrete automático.
                 </p>
               </div>
               <div className="pt-4 border-t border-black/15 flex items-center justify-between text-xs font-black text-black">
-                <Link href="/v/tactus" target="_blank" className="hover:underline">
-                  Conhecer a Vitrine
+                <Link href="/dashboard" className="hover:underline">
+                  Ver no Dashboard
                 </Link>
                 <ArrowRight className="h-4 w-4" />
               </div>
             </div>
 
-            {/* Card 03 - Apple Dark Glass */}
+            {/* Card 03 - Funil Kanban & Locações */}
             <div className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-7 flex flex-col justify-between space-y-4 hover:border-white/20 transition-all">
               <div className="space-y-3">
                 <span className="text-xl font-mono font-bold text-slate-500">03.</span>
-                <h3 className="text-xl font-bold text-white">Gestão Completa de Leads & Aluguéis</h3>
+                <h3 className="text-xl font-bold text-white">Funil Kanban & Gestão de Locações</h3>
                 <p className="text-xs text-slate-400 leading-relaxed">
-                  Funil Kanban interativo com etiquetas de temperatura, gestão de contratos de locação com reajustes por IGP-M/IPCA e sincronização nativa de visitas com o Google Agenda.
+                  Classifique leads por temperatura (Quente, Morno, Frio), controle contratos de aluguel com reajustes por IGP-M/IPCA e calcule a divisão de comissões da equipe sem erros manuais.
                 </p>
               </div>
               <div className="pt-4 border-t border-white/[0.08] flex items-center justify-between text-xs font-bold text-white">
-                <Link href="/dashboard" className="hover:text-[#CCFF00] transition-colors">
-                  Ver no Sistema
+                <Link href="/dashboard/pipeline" className="hover:text-[#CCFF00] transition-colors">
+                  Ver Funil de Vendas
                 </Link>
                 <ArrowUpRight className="h-4 w-4 text-[#CCFF00]" />
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* 9. DEPOIMENTOS DE CORRETORES & GESTORES */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          <div className="text-center max-w-xl mx-auto space-y-2 mb-12">
+            <span className="text-xs font-bold text-[#CCFF00] uppercase tracking-widest">
+              QUEM USA, APROVA E RECOMENDA
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
+              Resultados reais na rotina imobiliária.
+            </h2>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 space-y-4 backdrop-blur-xl">
+              <div className="flex items-center gap-1 text-[#CCFF00]">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-[#CCFF00]" />
+                ))}
+              </div>
+              <p className="text-xs text-slate-300 leading-relaxed italic">
+                &ldquo;Depois que passei a mandar o link da minha vitrine no WhatsApp em vez de PDFs pesados, minha taxa de resposta triplicou. Os clientes elogiam a facilidade e fechei 2 vendas só este mês.&rdquo;
+              </p>
+              <div className="pt-2 border-t border-white/[0.08] flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-amber-500 font-bold text-xs flex items-center justify-center text-black">
+                  CS
+                </div>
+                <div>
+                  <span className="text-xs font-bold text-white block">Carlos Silveira</span>
+                  <span className="text-[10px] text-slate-400">Corretor de Alto Padrão • CRECI 48.912</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 space-y-4 backdrop-blur-xl">
+              <div className="flex items-center gap-1 text-[#CCFF00]">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-[#CCFF00]" />
+                ))}
+              </div>
+              <p className="text-xs text-slate-300 leading-relaxed italic">
+                &ldquo;A sincronização com a Google Agenda e a gestão de locações com reajustes automáticos economizaram mais de 15 horas da minha equipe por semana. Não troco o Tactus por nada.&rdquo;
+              </p>
+              <div className="pt-2 border-t border-white/[0.08] flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-blue-500 font-bold text-xs flex items-center justify-center text-white">
+                  MA
+                </div>
+                <div>
+                  <span className="text-xs font-bold text-white block">Mariana Alencar</span>
+                  <span className="text-[10px] text-slate-400">Sócia-Diretora • Alencar Imóveis</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 space-y-4 backdrop-blur-xl">
+              <div className="flex items-center gap-1 text-[#CCFF00]">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-[#CCFF00]" />
+                ))}
+              </div>
+              <p className="text-xs text-slate-300 leading-relaxed italic">
+                &ldquo;O cálculo automático de divisão de comissões e o funil kanban acabaram de vez com conflitos internos entre os corretores. A plataforma é elegante, rápida e muito profissional.&rdquo;
+              </p>
+              <div className="pt-2 border-t border-white/[0.08] flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-emerald-500 font-bold text-xs flex items-center justify-center text-black">
+                  RM
+                </div>
+                <div>
+                  <span className="text-xs font-bold text-white block">Roberto Mendes</span>
+                  <span className="text-[10px] text-slate-400">Gestor Comercial • Rede Prime</span>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* 7. PRICING & SUBSCRIPTION SECTION - Apple Prime Glass */}
+        {/* 10. PRICING & SUBSCRIPTION SECTION - Apple Prime Glass */}
         <section id="precos" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-[#CCFF00]/5 blur-[150px] rounded-full pointer-events-none"></div>
 
@@ -823,7 +1098,7 @@ export default function CRMLandingPage() {
               Escolha o plano ideal para a sua escala de vendas.
             </h2>
             <p className="text-sm text-slate-400 leading-relaxed">
-              Do corretor autônomo em ascensão às grandes redes imobiliárias. Ativação imediata, sem taxa de implantação e sem fidelidade obrigatória.
+              Do corretor autônomo independente às imobiliárias e redes. Ativação imediata, sem taxa de implantação e sem fidelidade obrigatória.
             </p>
 
             {/* Monthly vs Annual Toggle */}
@@ -1002,7 +1277,7 @@ export default function CRMLandingPage() {
 
       </main>
 
-      {/* CHECKOUT MODAL */}
+      {/* CHECKOUT MODAL TRANSPARENTE */}
       {selectedPlan && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl animate-in fade-in">
           <div className="relative w-full max-w-lg rounded-3xl border border-white/15 bg-[#0F121B] p-6 sm:p-8 shadow-2xl text-slate-100 overflow-hidden">
@@ -1023,7 +1298,7 @@ export default function CRMLandingPage() {
                     Assinar {selectedPlan.name}
                   </h3>
                   <p className="text-xs text-slate-400 mt-1">
-                    Investimento de R$ {annualBilling ? selectedPlan.priceAnnual : selectedPlan.priceMonthly} {selectedPlan.period}. Cancele quando quiser.
+                    Investimento de R$ {annualBilling ? selectedPlan.priceAnnual : selectedPlan.priceMonthly} {selectedPlan.period}. Sem taxa de implantação.
                   </p>
                 </div>
 
@@ -1043,11 +1318,11 @@ export default function CRMLandingPage() {
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="font-semibold text-slate-300 block mb-1">E-mail</label>
+                      <label className="font-semibold text-slate-300 block mb-1">E-mail Corporativo</label>
                       <input
                         type="email"
                         required
-                        placeholder="seu@email.com"
+                        placeholder="seu@imobiliaria.com"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         className="w-full h-10 px-3.5 rounded-2xl bg-white/[0.05] border border-white/10 text-white focus:outline-none focus:border-[#CCFF00]"
@@ -1065,13 +1340,36 @@ export default function CRMLandingPage() {
                       />
                     </div>
                   </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="font-semibold text-slate-300 block mb-1">CRECI (PF ou PJ)</label>
+                      <input
+                        type="text"
+                        placeholder="Ex: 48.912-F"
+                        value={formData.creci}
+                        onChange={(e) => setFormData({ ...formData, creci: e.target.value })}
+                        className="w-full h-10 px-3.5 rounded-2xl bg-white/[0.05] border border-white/10 text-white focus:outline-none focus:border-[#CCFF00]"
+                      />
+                    </div>
+                    <div>
+                      <label className="font-semibold text-slate-300 block mb-1">CPF ou CNPJ</label>
+                      <input
+                        type="text"
+                        placeholder="000.000.000-00"
+                        value={formData.cpfCnpj}
+                        onChange={(e) => setFormData({ ...formData, cpfCnpj: e.target.value })}
+                        className="w-full h-10 px-3.5 rounded-2xl bg-white/[0.05] border border-white/10 text-white focus:outline-none focus:border-[#CCFF00]"
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 <Button
                   type="submit"
                   className="w-full h-12 rounded-2xl bg-[#CCFF00] hover:bg-[#bbf000] text-black font-extrabold text-xs shadow-lg transition-all"
                 >
-                  Confirmar e Ativar Acesso Agora
+                  Confirmar e Ativar Minha Conta no Tactus CRM
                 </Button>
               </form>
             ) : (
@@ -1096,18 +1394,19 @@ export default function CRMLandingPage() {
         </div>
       )}
 
-      {/* 8. Global Footer */}
+      {/* 11. Global Footer B2B */}
       <footer className="border-t border-white/[0.08] py-8 text-center text-xs text-slate-500 relative z-10">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
             <TactusLogo variant="branco" size="xs" />
-            <p>© {new Date().getFullYear()} Tactus CRM Imobiliário. Conectando Compradores, Vendedores e Corretores de Elite.</p>
+            <p>© {new Date().getFullYear()} Tactus CRM Imobiliário. Plataforma de Gestão e Vendas para Corretores e Imobiliárias.</p>
           </div>
           <div className="flex items-center gap-4">
-            <Link href="#imoveis" className="hover:text-slate-300">Buscar Imóveis</Link>
-            <Link href="#precos" className="hover:text-slate-300">Planos & Assinaturas</Link>
-            <Link href="/v/tactus" className="hover:text-slate-300">Vitrine Exemplo</Link>
-            <Link href="/login" className="hover:text-slate-300 font-bold text-[#CCFF00]">Acessar o Tactus CRM</Link>
+            <Link href="#recursos" className="hover:text-slate-300">Recursos do CRM</Link>
+            <Link href="#comparativo" className="hover:text-slate-300">Por que o Tactus?</Link>
+            <Link href="#precos" className="hover:text-slate-300">Planos & Preços</Link>
+            <Link href="/v/tactus" target="_blank" className="hover:text-slate-300">Vitrine Modelo</Link>
+            <Link href="/login" className="hover:text-slate-300 font-bold text-[#CCFF00]">Acessar o CRM</Link>
           </div>
         </div>
       </footer>

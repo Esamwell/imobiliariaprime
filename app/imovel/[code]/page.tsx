@@ -81,7 +81,7 @@ const PROPERTIES_DB: Record<string, PropertyDetail> = {
     neighborhood: "Vila Nova Conceição",
     city: "São Paulo",
     state: "SP",
-    agency: "Imobiliária Prime",
+    agency: "Tactus Imobiliária",
     images: [
       "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&auto=format&fit=crop&q=80",
@@ -123,7 +123,7 @@ const PROPERTIES_DB: Record<string, PropertyDetail> = {
     neighborhood: "Alphaville",
     city: "Barueri",
     state: "SP",
-    agency: "Imobiliária Prime",
+    agency: "Tactus Imobiliária",
     images: [
       "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&auto=format&fit=crop&q=80",
@@ -165,7 +165,7 @@ const PROPERTIES_DB: Record<string, PropertyDetail> = {
     neighborhood: "Moema Pássaros",
     city: "São Paulo",
     state: "SP",
-    agency: "Imobiliária Prime",
+    agency: "Tactus Imobiliária",
     images: [
       "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&auto=format&fit=crop&q=80",
@@ -204,7 +204,7 @@ const PROPERTIES_DB: Record<string, PropertyDetail> = {
     neighborhood: "Pinheiros",
     city: "São Paulo",
     state: "SP",
-    agency: "Imobiliária Prime",
+    agency: "Tactus Imobiliária",
     images: [
       "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1200&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&auto=format&fit=crop&q=80",
@@ -243,7 +243,7 @@ const PROPERTIES_DB: Record<string, PropertyDetail> = {
     neighborhood: "Itaim Bibi",
     city: "São Paulo",
     state: "SP",
-    agency: "Imobiliária Prime",
+    agency: "Tactus Imobiliária",
     images: [
       "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&auto=format&fit=crop&q=80",
     ],
@@ -280,7 +280,7 @@ const PROPERTIES_DB: Record<string, PropertyDetail> = {
     neighborhood: "Granja Viana",
     city: "Cotia",
     state: "SP",
-    agency: "Imobiliária Prime",
+    agency: "Tactus Imobiliária",
     images: [
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&auto=format&fit=crop&q=80",
@@ -782,7 +782,7 @@ export default function PublicPropertyPage() {
       {/* 5. Rodapé Simples */}
       <footer className="bg-white dark:bg-slate-900 border-t py-8 text-center text-xs text-muted-foreground">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>© {new Date().getFullYear()} Imobiliária Prime • CRECI 29.400-J</p>
+          <p>© {new Date().getFullYear()} Tactus Imobiliária • CRECI 29.400-J</p>
           <div className="flex gap-4">
             <Link href="/" className="hover:text-foreground">Todos os Imóveis</Link>
             <Link href="/login" className="hover:text-foreground font-semibold text-primary">Área do Corretor</Link>

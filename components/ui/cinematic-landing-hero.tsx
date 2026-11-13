@@ -206,20 +206,20 @@ export interface CinematicHeroProps extends React.HTMLAttributes<HTMLDivElement>
 
 export function CinematicHero({ 
   brandName = "TACTUS",
-  tagline1 = "Onde a elite imobiliária,",
-  tagline2 = "fecha grandes negócios.",
-  cardHeading = "Potência, escala e elegância.",
+  tagline1 = "O CRM Definitivo para Corretores,",
+  tagline2 = "e Imobiliárias de Alta Performance.",
+  cardHeading = "Venda mais. Gerencie melhor. Escale sem limites.",
   cardDescription = (
     <>
-      <span className="text-white font-semibold">Tactus CRM</span> conecta corretores, 
-      imobiliárias e clientes de alto padrão com vitrines públicas em tempo real, 
-      Google Agenda integrada e gestão de contratos automatizada.
+      <span className="text-white font-semibold">Tactus CRM</span> conecta corretores autônomos 
+      e imobiliárias diretamente aos seus clientes finais com vitrines públicas exclusivas, 
+      Google Agenda integrada, funil Kanban no celular e gestão automatizada de aluguéis.
     </>
   ),
   metricValue = 4850000,
   metricLabel = "VGV Fechado (Mês)",
-  ctaHeading = "Acelere suas vendas imobiliárias.",
-  ctaDescription = "Junte-se a mais de 2.300 corretores e imobiliárias de alta performance que transformaram sua rotina.",
+  ctaHeading = "Escale o faturamento da sua imobiliária.",
+  ctaDescription = "Junte-se a mais de 2.300 corretores e gestores que aposentaram planilhas e portais caros para fechar mais negócios.",
   className, 
   ...props 
 }: CinematicHeroProps) {
@@ -381,10 +381,10 @@ export function CinematicHero({
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </Link>
           <Link
-            href="#imoveis"
+            href="#precos"
             className="btn-modern-dark flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-bold text-sm"
           >
-            <span>Buscar Imóveis Disponíveis</span>
+            <span>Ver Planos para Corretores</span>
           </Link>
         </div>
       </div>
