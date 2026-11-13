@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react"
 import { useParams } from "next/navigation"
 import Link from "next/link"
+import { TactusLogo } from "@/components/tactus-logo"
 import { 
   Building, 
   MapPin, 
@@ -381,13 +382,13 @@ export default function PublicPropertyPage() {
       {/* 1. Header com Navegação */}
       <header className="sticky top-0 z-30 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="h-9 w-9 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-bold">
-              <Building className="h-5 w-5" />
+          <Link href="/imoveis" className="flex items-center gap-2.5 group">
+            <div className="h-9 w-9 rounded-2xl bg-black/[0.04] dark:bg-white/[0.08] border border-black/[0.06] dark:border-white/[0.10] p-1.5 flex items-center justify-center shadow-sm transition-transform group-hover:scale-105">
+              <TactusLogo variant="auto" size="sm" className="h-full w-full" />
             </div>
             <div>
-              <span className="font-bold text-base leading-none block">Imobiliária Prime</span>
-              <span className="text-[10px] text-muted-foreground uppercase tracking-wider block">Portal de Imóveis</span>
+              <span className="font-extrabold text-base leading-none block text-foreground">Tactus Imóveis</span>
+              <span className="text-[10px] text-muted-foreground uppercase tracking-wider block mt-0.5">Ficha do Imóvel</span>
             </div>
           </Link>
 

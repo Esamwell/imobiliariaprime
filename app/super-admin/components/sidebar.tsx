@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
+import { TactusLogo } from "@/components/tactus-logo"
 import { 
   BarChart3, 
   Building2, 
@@ -74,6 +75,25 @@ export function Sidebar({ open }: SidebarProps) {
         open ? "w-64" : "w-[72px]"
       )}
     >
+      {/* Top Sidebar Logo Brand */}
+      <div className="p-3.5 border-b border-border/40">
+        <Link href="/super-admin" className="flex items-center gap-2.5 group">
+          <div className="h-9 w-9 rounded-2xl bg-black/[0.04] dark:bg-white/[0.06] border border-black/[0.06] dark:border-white/[0.10] p-1.5 flex items-center justify-center shadow-sm transition-transform group-hover:scale-105 shrink-0">
+            <TactusLogo variant="auto" size="xs" />
+          </div>
+          {open && (
+            <div className="overflow-hidden">
+              <span className="font-extrabold text-sm tracking-tight text-foreground block truncate">
+                TACTUS<span className="text-[#CCFF00]">.</span>
+              </span>
+              <span className="text-[9px] font-bold text-purple-600 dark:text-purple-400 uppercase tracking-widest block -mt-0.5">
+                Super Admin
+              </span>
+            </div>
+          )}
+        </Link>
+      </div>
+
       <div className="flex-1 py-4">
         <nav className="grid gap-1.5 px-3">
           {navItems.map((item, index) => {

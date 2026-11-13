@@ -14,8 +14,10 @@ import {
   Lock, 
   Sparkles,
   Calendar,
-  Link2
+  Link2,
+  Image as ImageIcon
 } from "lucide-react"
+import { TactusLogo } from "@/components/tactus-logo"
 
 export default function SettingsPage() {
   const [saved, setSaved] = useState(false)
@@ -109,6 +111,62 @@ export default function SettingsPage() {
                 <option value="America/Manaus">América/Manaus (GMT-4)</option>
                 <option value="America/Fortaleza">América/Fortaleza (GMT-3)</option>
               </select>
+            </div>
+
+            {/* 3 Versões Oficiais da Logo Tactus */}
+            <div className="pt-2 border-t border-black/[0.06] dark:border-white/[0.08] space-y-2">
+              <div className="flex items-center justify-between">
+                <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
+                  <ImageIcon className="w-3.5 h-3.5" /> Logotipos Ativos no Sistema (3 Versões)
+                </label>
+                <span className="text-[9px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
+                  Carregados
+                </span>
+              </div>
+
+              <div className="grid grid-cols-3 gap-2.5 pt-1">
+                {/* 1. Tactus Verde */}
+                <div className="p-3 rounded-2xl bg-black/80 border border-white/10 text-center space-y-1.5 shadow-sm">
+                  <div className="h-12 w-full flex items-center justify-center">
+                    <TactusLogo variant="verde" size="sm" className="h-9 w-9" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-extrabold text-[#CCFF00] block">Verde Neon</span>
+                    <span className="text-[8px] text-white/50 block font-mono">tactus-verde.png</span>
+                  </div>
+                  <span className="inline-block text-[8px] text-white/40 bg-white/10 px-1.5 py-0.2 rounded-md">
+                    Dark & Hero
+                  </span>
+                </div>
+
+                {/* 2. Tactus Branco */}
+                <div className="p-3 rounded-2xl bg-black/80 border border-white/10 text-center space-y-1.5 shadow-sm">
+                  <div className="h-12 w-full flex items-center justify-center">
+                    <TactusLogo variant="branco" size="sm" className="h-9 w-9" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-extrabold text-white block">Branco Apple</span>
+                    <span className="text-[8px] text-white/50 block font-mono">tactus-branco.png</span>
+                  </div>
+                  <span className="inline-block text-[8px] text-white/40 bg-white/10 px-1.5 py-0.2 rounded-md">
+                    Minimalista
+                  </span>
+                </div>
+
+                {/* 3. Tactus Azul */}
+                <div className="p-3 rounded-2xl bg-white border border-black/10 text-center space-y-1.5 shadow-sm">
+                  <div className="h-12 w-full flex items-center justify-center">
+                    <TactusLogo variant="azul" size="sm" className="h-9 w-9" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-extrabold text-[#0B132B] block">Navy / Escuro</span>
+                    <span className="text-[8px] text-slate-500 block font-mono">tactus-azul.png</span>
+                  </div>
+                  <span className="inline-block text-[8px] text-slate-600 bg-slate-100 px-1.5 py-0.2 rounded-md font-bold">
+                    Light & Docs
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

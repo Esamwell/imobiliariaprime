@@ -26,6 +26,7 @@ import {
 import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
 import { NotificationCenter } from "@/components/notification-center"
+import { TactusLogo } from "@/components/tactus-logo"
 import {
   Dialog,
   DialogContent,
@@ -78,9 +79,7 @@ export default function UserDashboardLayout({
 
           {/* Mobile Clean Header Branding (Sem poluição visual) */}
           <Link href="/dashboard" className="flex md:hidden items-center gap-2 group">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-foreground text-background font-bold shadow-sm">
-              <Building className="h-4 w-4" />
-            </div>
+            <TactusLogo variant="auto" size="sm" className="h-8 w-8" />
             <div className="flex items-center gap-1.5">
               <span className="font-extrabold text-sm tracking-tight text-foreground">Tactus CRM</span>
               <span className="h-2 w-2 rounded-full bg-lime-500 animate-pulse"></span>
@@ -89,8 +88,8 @@ export default function UserDashboardLayout({
 
           {/* Desktop Header Branding */}
           <Link href="/dashboard" className="hidden md:flex items-center gap-2.5 group">
-            <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-foreground text-background font-bold shadow-sm transition-transform group-hover:scale-105">
-              <Building className="h-4 w-4" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-black/[0.04] dark:bg-white/[0.06] border border-black/[0.06] dark:border-white/[0.10] p-1.5 shadow-sm transition-transform group-hover:scale-105">
+              <TactusLogo variant="auto" size="sm" className="h-full w-full" />
             </div>
             <div>
               <div className="flex items-center gap-1.5">

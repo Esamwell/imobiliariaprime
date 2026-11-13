@@ -12,6 +12,12 @@ export default function manifest(): MetadataRoute.Manifest {
     orientation: 'portrait',
     icons: [
       {
+        src: '/logos/tactus-verde.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'any'
+      },
+      {
         src: '/icons/icon-192.svg',
         sizes: '192x192',
         type: 'image/svg+xml',

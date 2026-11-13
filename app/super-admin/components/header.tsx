@@ -6,6 +6,7 @@ import { MoonIcon, SunIcon, Building2, LogOut, ShieldCheck, Crown, Bell, Clock }
 import { useTheme } from "next-themes"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { TactusLogo } from "@/components/tactus-logo"
 
 interface HeaderProps {
   sidebarOpen: boolean
@@ -51,18 +52,18 @@ export function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
           </svg>
         </button>
 
-        <div className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-xl bg-purple-600 text-white flex items-center justify-center font-bold text-xs shadow-sm">
-            <Crown className="h-4 w-4" />
+        <div className="flex items-center gap-2.5">
+          <div className="h-9 w-9 rounded-2xl bg-black/[0.04] dark:bg-white/[0.06] border border-black/[0.06] dark:border-white/[0.10] p-1.5 flex items-center justify-center shadow-sm">
+            <TactusLogo variant="auto" size="xs" />
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="font-extrabold text-sm tracking-tight text-foreground">Super Admin</span>
+              <span className="font-extrabold text-sm tracking-tight text-foreground">Tactus</span>
               <span className="rounded-full bg-purple-500/20 text-purple-700 dark:text-purple-300 px-1.5 py-0.2 text-[9px] font-black uppercase">
-                Console
+                Super Admin
               </span>
             </div>
-            <span className="hidden sm:block text-[10px] text-muted-foreground font-medium">Gestão Multi-Empresa & Assinaturas</span>
+            <span className="hidden sm:block text-[10px] text-muted-foreground font-medium">Console Central Multi-Tenant</span>
           </div>
         </div>
       </div>

@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect } from "react"
 import { useParams } from "next/navigation"
 import Link from "next/link"
+import { TactusLogo } from "@/components/tactus-logo"
 import { 
   Building, 
   MapPin, 
@@ -604,11 +605,12 @@ export default function BrokerShowcasePage() {
 
       {/* 5. Footer da Vitrine */}
       <footer className="bg-white dark:bg-slate-900 border-t py-8 text-center text-xs text-muted-foreground">
-        <div className="max-w-5xl mx-auto px-4 space-y-2">
+        <div className="max-w-5xl mx-auto px-4 space-y-3">
           <p className="font-semibold text-foreground">{profile.name} • CRECI {profile.creci}</p>
-          <p className="text-[11px]">
-            Vitrine digital personalizada criada através da plataforma Tactus CRM Imobiliário.
-          </p>
+          <div className="flex items-center justify-center gap-2 text-[11px]">
+            <TactusLogo variant="auto" size="xs" className="h-4 w-4" />
+            <span>Vitrine digital personalizada criada através da plataforma <strong>Tactus CRM Imobiliário</strong>.</span>
+          </div>
         </div>
       </footer>
     </div>

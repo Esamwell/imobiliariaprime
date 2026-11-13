@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
+import { TactusLogo } from "@/components/tactus-logo"
 import { 
   Building2, 
   Lock, 
@@ -132,13 +133,7 @@ export default function LoginPage() {
 
               <div className="flex items-center gap-4">
                 <div className="relative w-14 h-14 rounded-2xl bg-white/[0.06] border border-white/15 p-2 flex items-center justify-center backdrop-blur-xl shadow-lg shadow-black/50">
-                  <Image 
-                    src="/logos/tactus-verde.png" 
-                    alt="Logo Tactus CRM" 
-                    width={48} 
-                    height={48} 
-                    className="w-full h-full object-contain drop-shadow-[0_0_12px_rgba(204,255,0,0.5)]" 
-                  />
+                  <TactusLogo variant="verde" size="lg" className="w-full h-full" priority />
                 </div>
                 <div>
                   <h1 className="text-4xl xl:text-5xl font-black tracking-tight text-white leading-tight">
@@ -243,13 +238,7 @@ export default function LoginPage() {
             {/* Mobile Brand Header */}
             <div className="lg:hidden text-center space-y-2 mb-6">
               <div className="inline-flex p-3 rounded-2xl bg-white/[0.06] border border-white/15 backdrop-blur-xl shadow-lg">
-                <Image 
-                  src="/logos/tactus-verde.png" 
-                  alt="Tactus CRM" 
-                  width={40} 
-                  height={40} 
-                  className="w-10 h-10 object-contain drop-shadow-[0_0_10px_rgba(204,255,0,0.4)]" 
-                />
+                <TactusLogo variant="verde" size="md" className="w-10 h-10" priority />
               </div>
               <h1 className="text-2xl font-black text-white tracking-tight">
                 TACTUS<span className="text-[#CCFF00]">.</span> CRM

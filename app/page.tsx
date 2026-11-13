@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { TactusLogo } from "@/components/tactus-logo"
 import { 
   Building, 
   Share2, 
@@ -153,12 +154,12 @@ export default function CRMLandingPage() {
       <header className="sticky top-0 z-40 bg-[#07090e]/85 backdrop-blur-xl border-b border-white/[0.08]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="h-9 w-9 rounded-2xl bg-white text-black flex items-center justify-center font-black text-lg shadow-sm transition-transform group-hover:scale-105">
-              <Building className="h-4 w-4" />
+            <div className="h-10 w-10 rounded-2xl bg-white/[0.06] border border-white/10 p-1.5 flex items-center justify-center backdrop-blur-xl shadow-sm transition-transform group-hover:scale-105">
+              <TactusLogo variant="verde" size="sm" className="h-full w-full" />
             </div>
             <div>
               <span className="font-extrabold text-base tracking-tight block text-white leading-none">
-                TACTUS CRM.
+                TACTUS<span className="text-lime-400">.</span> CRM
               </span>
               <span className="text-[9px] font-semibold text-lime-400 uppercase tracking-widest block mt-0.5">
                 Portal do Corretor & Gestor
@@ -871,7 +872,10 @@ export default function CRMLandingPage() {
       {/* 7. Footer */}
       <footer className="border-t border-white/[0.08] py-8 text-center text-xs text-slate-500">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>© {new Date().getFullYear()} Tactus CRM Imobiliário. Todos os direitos reservados.</p>
+          <div className="flex items-center gap-2.5">
+            <TactusLogo variant="branco" size="xs" />
+            <p>© {new Date().getFullYear()} Tactus CRM Imobiliário. Todos os direitos reservados.</p>
+          </div>
           <div className="flex items-center gap-4">
             <Link href="#precos" className="hover:text-slate-300">Planos & Assinaturas</Link>
             <Link href="/v/tactus" className="hover:text-slate-300">Vitrine Exemplo</Link>
