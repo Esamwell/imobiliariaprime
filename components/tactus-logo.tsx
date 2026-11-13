@@ -16,12 +16,12 @@ export interface TactusLogoProps {
 }
 
 const SIZE_MAP = {
-  xs: { height: 28, width: 28, defaultClass: "h-7 w-auto" },
-  sm: { height: 36, width: 36, defaultClass: "h-9 w-auto" },
-  md: { height: 44, width: 44, defaultClass: "h-11 w-auto" },
-  lg: { height: 56, width: 56, defaultClass: "h-14 w-auto" },
-  xl: { height: 72, width: 72, defaultClass: "h-18 w-auto" },
-  "2xl": { height: 96, width: 96, defaultClass: "h-24 w-auto" },
+  xs: { height: 36, width: 36, defaultClass: "h-9 w-auto" },
+  sm: { height: 48, width: 48, defaultClass: "h-12 w-auto" },
+  md: { height: 60, width: 60, defaultClass: "h-15 w-auto" },
+  lg: { height: 80, width: 80, defaultClass: "h-20 w-auto" },
+  xl: { height: 104, width: 104, defaultClass: "h-26 w-auto" },
+  "2xl": { height: 136, width: 136, defaultClass: "h-34 w-auto" },
 }
 
 export function TactusLogo({
@@ -43,10 +43,10 @@ export function TactusLogo({
         <Image
           src="/logos/tactus-verde.png"
           alt={alt}
-          width={pixelWidth * 2}
-          height={pixelHeight * 2}
+          width={pixelWidth * 3}
+          height={pixelHeight * 3}
           priority={priority}
-          className="h-full w-auto max-h-full object-contain drop-shadow-[0_0_14px_rgba(204,255,0,0.4)]"
+          className="h-full w-auto max-h-full object-contain drop-shadow-[0_0_18px_rgba(204,255,0,0.5)]"
         />
       </div>
     )
@@ -58,10 +58,10 @@ export function TactusLogo({
         <Image
           src="/logos/tactus-branco.png"
           alt={alt}
-          width={pixelWidth * 2}
-          height={pixelHeight * 2}
+          width={pixelWidth * 3}
+          height={pixelHeight * 3}
           priority={priority}
-          className="h-full w-auto max-h-full object-contain drop-shadow-[0_0_10px_rgba(255,255,255,0.25)]"
+          className="h-full w-auto max-h-full object-contain drop-shadow-[0_0_14px_rgba(255,255,255,0.3)]"
         />
       </div>
     )
@@ -73,10 +73,10 @@ export function TactusLogo({
         <Image
           src="/logos/tactus-azul.png"
           alt={alt}
-          width={pixelWidth * 2}
-          height={pixelHeight * 2}
+          width={pixelWidth * 3}
+          height={pixelHeight * 3}
           priority={priority}
-          className="h-full w-auto max-h-full object-contain"
+          className="h-full w-auto max-h-full object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.08)]"
         />
       </div>
     )
@@ -88,18 +88,18 @@ export function TactusLogo({
       <Image
         src="/logos/tactus-azul.png"
         alt={alt}
-        width={pixelWidth * 2}
-        height={pixelHeight * 2}
+        width={pixelWidth * 3}
+        height={pixelHeight * 3}
         priority={priority}
-        className="h-full w-auto max-h-full object-contain dark:hidden"
+        className="h-full w-auto max-h-full object-contain dark:hidden drop-shadow-[0_2px_8px_rgba(0,0,0,0.08)]"
       />
       <Image
         src="/logos/tactus-verde.png"
         alt={alt}
-        width={pixelWidth * 2}
-        height={pixelHeight * 2}
+        width={pixelWidth * 3}
+        height={pixelHeight * 3}
         priority={priority}
-        className="h-full w-auto max-h-full object-contain hidden dark:block drop-shadow-[0_0_14px_rgba(204,255,0,0.4)]"
+        className="h-full w-auto max-h-full object-contain hidden dark:block drop-shadow-[0_0_18px_rgba(204,255,0,0.5)]"
       />
     </div>
   )

@@ -126,43 +126,43 @@ export default function SettingsPage() {
 
               <div className="grid grid-cols-3 gap-2.5 pt-1">
                 {/* 1. Tactus Verde */}
-                <div className="p-3 rounded-2xl bg-black/80 border border-white/10 text-center space-y-1.5 shadow-sm">
-                  <div className="h-12 w-full flex items-center justify-center">
-                    <TactusLogo variant="verde" className="h-10 w-auto" />
+                <div className="p-3.5 rounded-2xl bg-black/80 border border-white/10 text-center space-y-2 shadow-sm">
+                  <div className="h-16 w-full flex items-center justify-center">
+                    <TactusLogo variant="verde" className="h-14 w-auto" />
                   </div>
                   <div>
-                    <span className="text-[10px] font-extrabold text-[#CCFF00] block">Verde Neon</span>
-                    <span className="text-[8px] text-white/50 block font-mono">tactus-verde.png</span>
+                    <span className="text-[11px] font-extrabold text-[#CCFF00] block">Verde Neon</span>
+                    <span className="text-[9px] text-white/50 block font-mono">tactus-verde.png</span>
                   </div>
-                  <span className="inline-block text-[8px] text-white/40 bg-white/10 px-1.5 py-0.2 rounded-md">
+                  <span className="inline-block text-[8px] text-white/40 bg-white/10 px-2 py-0.5 rounded-md">
                     Dark & Hero
                   </span>
                 </div>
 
                 {/* 2. Tactus Branco */}
-                <div className="p-3 rounded-2xl bg-black/80 border border-white/10 text-center space-y-1.5 shadow-sm">
-                  <div className="h-12 w-full flex items-center justify-center">
-                    <TactusLogo variant="branco" className="h-10 w-auto" />
+                <div className="p-3.5 rounded-2xl bg-black/80 border border-white/10 text-center space-y-2 shadow-sm">
+                  <div className="h-16 w-full flex items-center justify-center">
+                    <TactusLogo variant="branco" className="h-14 w-auto" />
                   </div>
                   <div>
-                    <span className="text-[10px] font-extrabold text-white block">Branco Apple</span>
-                    <span className="text-[8px] text-white/50 block font-mono">tactus-branco.png</span>
+                    <span className="text-[11px] font-extrabold text-white block">Branco Apple</span>
+                    <span className="text-[9px] text-white/50 block font-mono">tactus-branco.png</span>
                   </div>
-                  <span className="inline-block text-[8px] text-white/40 bg-white/10 px-1.5 py-0.2 rounded-md">
+                  <span className="inline-block text-[8px] text-white/40 bg-white/10 px-2 py-0.5 rounded-md">
                     Minimalista
                   </span>
                 </div>
 
                 {/* 3. Tactus Azul */}
-                <div className="p-3 rounded-2xl bg-white border border-black/10 text-center space-y-1.5 shadow-sm">
-                  <div className="h-12 w-full flex items-center justify-center">
-                    <TactusLogo variant="azul" className="h-10 w-auto" />
+                <div className="p-3.5 rounded-2xl bg-white border border-black/10 text-center space-y-2 shadow-sm">
+                  <div className="h-16 w-full flex items-center justify-center">
+                    <TactusLogo variant="azul" className="h-14 w-auto" />
                   </div>
                   <div>
-                    <span className="text-[10px] font-extrabold text-[#0B132B] block">Navy / Escuro</span>
-                    <span className="text-[8px] text-slate-500 block font-mono">tactus-azul.png</span>
+                    <span className="text-[11px] font-extrabold text-[#0B132B] block">Navy / Escuro</span>
+                    <span className="text-[9px] text-slate-500 block font-mono">tactus-azul.png</span>
                   </div>
-                  <span className="inline-block text-[8px] text-slate-600 bg-slate-100 px-1.5 py-0.2 rounded-md font-bold">
+                  <span className="inline-block text-[8px] text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md font-bold">
                     Light & Docs
                   </span>
                 </div>

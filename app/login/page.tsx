@@ -133,7 +133,7 @@ export default function LoginPage() {
 
               <div className="pt-2">
                 <Link href="/" className="inline-block transition-transform hover:scale-105" title="Ir para a página inicial do Tactus CRM">
-                  <TactusLogo variant="verde" className="h-16 xl:h-20 w-auto" priority />
+                  <TactusLogo variant="verde" className="h-22 xl:h-28 w-auto" priority />
                 </Link>
                 <p className="text-sm font-semibold text-white/50 tracking-wide uppercase mt-3">
                   Tecnologia Prime para Gestores e Corretores
@@ -233,7 +233,7 @@ export default function LoginPage() {
             {/* Mobile Brand Header (Logo Limpa e Marcante) */}
             <div className="lg:hidden flex flex-col items-center text-center space-y-2 mb-6">
               <Link href="/" className="transition-transform active:scale-95" title="Ir para a página inicial do Tactus CRM">
-                <TactusLogo variant="verde" className="h-12 w-auto" priority />
+                <TactusLogo variant="verde" className="h-16 w-auto" priority />
               </Link>
               <p className="text-xs text-white/50 font-medium">Gestão Imobiliária & Portal do Corretor</p>
             </div>

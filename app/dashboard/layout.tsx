@@ -90,24 +90,24 @@ export default function UserDashboardLayout({
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-background">
       {/* Top Header - Apple Prime Glass (Desktop & Mobile Optimized) */}
-      <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b border-border/50 bg-background/80 backdrop-blur-xl px-4 sm:px-6">
+      <header className="sticky top-0 z-30 flex h-20 shrink-0 items-center justify-between border-b border-border/50 bg-background/80 backdrop-blur-xl px-4 sm:px-6">
         
         {/* Left Side: Desktop and Mobile Branding */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3.5">
           <Button 
             variant="ghost" 
             size="icon" 
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="hidden md:flex h-9 w-9 rounded-full hover:bg-muted/60"
+            className="hidden md:flex h-10 w-10 rounded-full hover:bg-muted/60"
             title={sidebarOpen ? "Recolher menu" : "Expandir menu"}
           >
             <Menu className="h-4 w-4" />
           </Button>
 
-          {/* Header Branding (Mobile & Desktop - Logo Oficial sem caixinha) */}
-          <Link href="/dashboard" className="flex items-center gap-2.5 group transition-transform hover:scale-105">
-            <TactusLogo variant="auto" className="h-9 sm:h-10 w-auto" priority />
-            <span className="inline-flex items-center rounded-full bg-lime-400/20 text-lime-700 dark:text-lime-300 px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wide">
+          {/* Header Branding (Logo Oficial Grande e com Máximo Destaque) */}
+          <Link href="/dashboard" className="flex items-center gap-3 group transition-transform hover:scale-105">
+            <TactusLogo variant="auto" className="h-13 sm:h-15 md:h-16 w-auto" priority />
+            <span className="inline-flex items-center rounded-full bg-lime-400/20 text-lime-700 dark:text-lime-300 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider">
               PRO
             </span>
           </Link>

@@ -381,10 +381,10 @@ export default function PublicPropertyPage() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col justify-between">
       {/* 1. Header com Navegação */}
       <header className="sticky top-0 z-30 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link href="/imoveis" className="flex items-center gap-3 group transition-transform hover:scale-105">
-            <TactusLogo variant="auto" className="h-9 sm:h-10 w-auto" priority />
-            <span className="text-[11px] font-semibold text-muted-foreground border-l border-border/60 pl-3 hidden sm:inline-block">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+          <Link href="/imoveis" className="flex items-center gap-3.5 group transition-transform hover:scale-105">
+            <TactusLogo variant="auto" className="h-14 sm:h-16 w-auto" priority />
+            <span className="text-xs font-bold text-muted-foreground border-l border-border/60 pl-3.5 hidden sm:inline-block">
               Ficha do Imóvel
             </span>
           </Link>

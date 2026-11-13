@@ -24,11 +24,11 @@ export function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
   }
   
   return (
-    <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b border-border/50 bg-background/80 backdrop-blur-xl px-4 sm:px-6">
-      <div className="flex items-center gap-3">
+    <header className="sticky top-0 z-30 flex h-20 shrink-0 items-center justify-between border-b border-border/50 bg-background/80 backdrop-blur-xl px-4 sm:px-6">
+      <div className="flex items-center gap-3.5">
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="inline-flex h-9 w-9 items-center justify-center rounded-full hover:bg-muted/60 text-muted-foreground hover:text-foreground transition-colors"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full hover:bg-muted/60 text-muted-foreground hover:text-foreground transition-colors"
           title={sidebarOpen ? "Recolher menu" : "Expandir menu"}
         >
           <span className="sr-only">Toggle Menu</span>
@@ -52,9 +52,9 @@ export function Header({ sidebarOpen, setSidebarOpen }: HeaderProps) {
           </svg>
         </button>
 
-        <Link href="/super-admin" className="flex items-center gap-2.5 group transition-transform hover:scale-105">
-          <TactusLogo variant="auto" className="h-8 sm:h-9 w-auto" priority />
-          <span className="rounded-full bg-purple-500/20 text-purple-700 dark:text-purple-300 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider">
+        <Link href="/super-admin" className="flex items-center gap-3 group transition-transform hover:scale-105">
+          <TactusLogo variant="auto" className="h-12 sm:h-14 md:h-15 w-auto" priority />
+          <span className="rounded-full bg-purple-500/20 text-purple-700 dark:text-purple-300 px-2.5 py-0.5 text-[9px] font-black uppercase tracking-wider">
             Super Admin
           </span>
         </Link>

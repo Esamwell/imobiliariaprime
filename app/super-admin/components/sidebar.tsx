@@ -76,11 +76,11 @@ export function Sidebar({ open }: SidebarProps) {
       )}
     >
       {/* Top Sidebar Logo Brand */}
-      <div className="p-3.5 border-b border-border/40">
-        <Link href="/super-admin" className="flex items-center gap-2 group transition-transform hover:scale-105">
-          <TactusLogo variant="auto" className={cn("w-auto transition-all", open ? "h-9" : "h-7")} />
+      <div className="p-4 border-b border-border/40">
+        <Link href="/super-admin" className="flex items-center gap-2.5 group transition-transform hover:scale-105">
+          <TactusLogo variant="auto" className={cn("w-auto transition-all", open ? "h-12" : "h-9")} />
           {open && (
-            <span className="text-[9px] font-black text-purple-600 dark:text-purple-400 uppercase tracking-widest bg-purple-500/10 px-1.5 py-0.5 rounded-full">
+            <span className="text-[9px] font-black text-purple-600 dark:text-purple-400 uppercase tracking-widest bg-purple-500/10 px-2 py-0.5 rounded-full">
               Admin
             </span>
           )}
