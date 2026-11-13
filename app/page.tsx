@@ -1231,7 +1231,7 @@ export default function CRMLandingPage() {
                     </div>
                   )}
 
-                  <div className="space-y-5">
+                  <div className="space-y-5 flex-1 flex flex-col justify-between">
                     {/* Header */}
                     <div>
                       <span
@@ -1249,7 +1249,7 @@ export default function CRMLandingPage() {
                         {plan.name}
                       </h3>
                       <p
-                        className={`text-xs mt-2 leading-relaxed ${
+                        className={`text-xs mt-2 leading-relaxed min-h-[44px] ${
                           isLime ? "text-black/80" : "text-slate-400"
                         }`}
                       >
@@ -1271,11 +1271,11 @@ export default function CRMLandingPage() {
                       </span>
                     </div>
 
-                    {/* Limits Caps */}
+                    {/* Limits Caps - Formatação Impecável sem Quebras */}
                     <div
-                      className={`rounded-2xl p-3 text-xs font-semibold space-y-1 ${
+                      className={`rounded-2xl p-3 text-xs font-semibold ${
                         isLime
-                          ? "bg-black/10 text-black"
+                          ? "bg-black/10 text-black border border-black/10"
                           : isGold
                           ? "bg-amber-500/10 text-amber-200 border border-amber-500/20"
                           : isBlue
@@ -1283,18 +1283,18 @@ export default function CRMLandingPage() {
                           : "bg-white/[0.04] text-slate-300 border border-white/10"
                       }`}
                     >
-                      <div className="flex items-center justify-between text-[11px]">
-                        <span className="opacity-75">Corretores:</span>
-                        <span className="font-bold">{plan.brokerLimit}</span>
+                      <div className="flex items-center justify-between text-[11px] py-0.5">
+                        <span className="opacity-70 whitespace-nowrap">Corretores:</span>
+                        <span className="font-extrabold whitespace-nowrap">{plan.brokerLimit}</span>
                       </div>
-                      <div className="flex items-center justify-between text-[11px]">
-                        <span className="opacity-75">Carteira:</span>
-                        <span className="font-bold">{plan.propertiesLimit}</span>
+                      <div className="flex items-center justify-between text-[11px] py-0.5 border-t border-current/10 mt-1.5 pt-1.5">
+                        <span className="opacity-70 whitespace-nowrap">Carteira:</span>
+                        <span className="font-extrabold whitespace-nowrap">{plan.propertiesLimit}</span>
                       </div>
                     </div>
 
                     {/* Features List */}
-                    <div className="space-y-2 pt-1">
+                    <div className="space-y-2 pt-1 flex-1">
                       <span
                         className={`text-[10px] font-bold uppercase tracking-wider block ${
                           isLime ? "text-black/70" : "text-slate-400"
@@ -1302,7 +1302,7 @@ export default function CRMLandingPage() {
                       >
                         O que está incluído:
                       </span>
-                      <ul className="space-y-1.5 text-xs">
+                      <ul className="space-y-2 text-xs">
                         {plan.features.slice(0, 7).map((feat, idx) => (
                           <li key={idx} className="flex items-start gap-1.5">
                             <Check
@@ -1310,7 +1310,7 @@ export default function CRMLandingPage() {
                                 isLime ? "text-black font-extrabold" : isBlue ? "text-blue-400" : isGold ? "text-amber-400" : "text-[#CCFF00]"
                               }`}
                             />
-                            <span className={`text-[11px] leading-tight ${isLime ? "text-black/90 font-medium" : "text-slate-300"}`}>
+                            <span className={`text-[11px] leading-snug ${isLime ? "text-black/90 font-medium" : "text-slate-300"}`}>
                               {feat}
                             </span>
                           </li>
@@ -1320,7 +1320,7 @@ export default function CRMLandingPage() {
                   </div>
 
                   {/* CTA Button */}
-                  <div className="pt-6">
+                  <div className="pt-6 mt-auto">
                     <button
                       type="button"
                       onClick={() => handleSelectPlan(plan)}
