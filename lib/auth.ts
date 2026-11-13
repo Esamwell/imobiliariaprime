@@ -10,6 +10,9 @@ export interface JWTPayload {
   email: string
   name: string
   role: string
+  tenantType?: string
+  tenantName?: string
+  creci?: string
 }
 
 export function signToken(payload: JWTPayload): string {

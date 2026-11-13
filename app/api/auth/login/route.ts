@@ -3,12 +3,14 @@ import { prisma } from "@/lib/prisma"
 import { comparePassword, signToken } from "@/lib/auth"
 
 const DEMO_USERS: Record<string, any> = {
+  // 1. SUPER ADMIN: Gerencia tudo (SaaS Master Root)
   "admin@sistema.com": {
     id: "admin-super-id",
     name: "Super Administrador",
     email: "admin@sistema.com",
     role: "SUPER_ADMIN",
     status: "Ativo",
+    creci: "CRECI-SP 0001",
     tenantId: null,
     tenant: null,
   },
@@ -18,21 +20,27 @@ const DEMO_USERS: Record<string, any> = {
     email: "admin@tactus.com.br",
     role: "SUPER_ADMIN",
     status: "Ativo",
+    creci: "CRECI-SP 0001",
     tenantId: null,
     tenant: null,
   },
+
+  // 2. IMOBILIÁRIA (CHEFE / LOGIN MASTER): Gerencia a imobiliária e seus corretores ("braços")
   "carlos@tactus.com.br": {
     id: "carlos-gestor-id",
     name: "Carlos Eduardo Silveira",
     email: "carlos@tactus.com.br",
     role: "GESTOR",
     status: "Ativo",
+    creci: "48.912",
+    phone: "(11) 98765-4321",
     tenantId: "tenant-tactus-id",
     tenant: {
       id: "tenant-tactus-id",
       name: "Tactus Imobiliária",
+      type: "IMOBILIARIA",
       cnpj: "12.345.678/0001-90",
-      plan: "Master VIP",
+      plan: "Plano Imobiliária Master VIP",
     },
   },
   "carlos@primeimoveis.com.br": {
@@ -41,26 +49,70 @@ const DEMO_USERS: Record<string, any> = {
     email: "carlos@tactus.com.br",
     role: "GESTOR",
     status: "Ativo",
+    creci: "48.912",
+    phone: "(11) 98765-4321",
     tenantId: "tenant-tactus-id",
     tenant: {
       id: "tenant-tactus-id",
       name: "Tactus Imobiliária",
+      type: "IMOBILIARIA",
       cnpj: "12.345.678/0001-90",
-      plan: "Master VIP",
+      plan: "Plano Imobiliária Master VIP",
     },
   },
+
+  // 3. CORRETOR AUTÔNOMO (1 LOGIN SOLO): Trabalha sozinho, sem equipe, 1 login individual
+  "roberto@autonomo.com.br": {
+    id: "roberto-autonomo-id",
+    name: "Roberto Dias",
+    email: "roberto@autonomo.com.br",
+    role: "AUTONOMO",
+    status: "Ativo",
+    creci: "39.814-F",
+    phone: "(11) 97123-9988",
+    tenantId: "tenant-roberto-id",
+    tenant: {
+      id: "tenant-roberto-id",
+      name: "Roberto Dias Consultoria Solo",
+      type: "AUTONOMO",
+      cnpj: "234.567.890-11",
+      plan: "Plano Corretor Solo (1 Usuário)",
+    },
+  },
+  "corretor@autonomo.com.br": {
+    id: "roberto-autonomo-id",
+    name: "Roberto Dias",
+    email: "roberto@autonomo.com.br",
+    role: "AUTONOMO",
+    status: "Ativo",
+    creci: "39.814-F",
+    phone: "(11) 97123-9988",
+    tenantId: "tenant-roberto-id",
+    tenant: {
+      id: "tenant-roberto-id",
+      name: "Roberto Dias Consultoria Solo",
+      type: "AUTONOMO",
+      cnpj: "234.567.890-11",
+      plan: "Plano Corretor Solo (1 Usuário)",
+    },
+  },
+
+  // 4. CORRETORA DA EQUIPE DA IMOBILIÁRIA (Braço subordinado ao Chefe Carlos)
   "mariana@tactus.com.br": {
     id: "mariana-corretora-id",
     name: "Mariana Alencar",
     email: "mariana@tactus.com.br",
     role: "CORRETOR",
     status: "Ativo",
+    creci: "52.140",
+    phone: "(11) 99888-7766",
     tenantId: "tenant-tactus-id",
     tenant: {
       id: "tenant-tactus-id",
       name: "Tactus Imobiliária",
+      type: "IMOBILIARIA",
       cnpj: "12.345.678/0001-90",
-      plan: "Master VIP",
+      plan: "Plano Imobiliária Master VIP",
     },
   },
   "mariana@primeimoveis.com.br": {
@@ -69,12 +121,15 @@ const DEMO_USERS: Record<string, any> = {
     email: "mariana@tactus.com.br",
     role: "CORRETOR",
     status: "Ativo",
+    creci: "52.140",
+    phone: "(11) 99888-7766",
     tenantId: "tenant-tactus-id",
     tenant: {
       id: "tenant-tactus-id",
       name: "Tactus Imobiliária",
+      type: "IMOBILIARIA",
       cnpj: "12.345.678/0001-90",
-      plan: "Master VIP",
+      plan: "Plano Imobiliária Master VIP",
     },
   },
 }
@@ -142,6 +197,9 @@ export async function POST(request: Request) {
       email: user.email,
       name: user.name,
       role: user.role,
+      tenantType: user.tenant?.type || (user.role === "AUTONOMO" ? "AUTONOMO" : "IMOBILIARIA"),
+      tenantName: user.tenant?.name || null,
+      creci: user.creci || null,
     })
 
     const response = NextResponse.json({
@@ -151,8 +209,12 @@ export async function POST(request: Request) {
         name: user.name,
         email: user.email,
         role: user.role,
+        creci: user.creci || null,
+        phone: user.phone || null,
         tenantId: user.tenantId,
         tenantName: user.tenant?.name || null,
+        tenantType: user.tenant?.type || (user.role === "AUTONOMO" ? "AUTONOMO" : "IMOBILIARIA"),
+        plan: user.tenant?.plan || (user.role === "AUTONOMO" ? "Plano Corretor Solo" : "Plano Imobiliária"),
       },
     })
 

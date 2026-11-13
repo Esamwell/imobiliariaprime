@@ -301,12 +301,12 @@ export default function LoginPage() {
                     Selecione um perfil para entrar instantaneamente:
                   </span>
 
-                  {/* 1. Carlos Silveira (Gestor / Corretor Senior) */}
+                  {/* 1. IMOBILIÁRIA: Chefe / Login Master */}
                   <button
                     type="button"
                     disabled={loading}
                     onClick={() => handleQuickLogin("carlos@tactus.com.br", "123456", "carlos")}
-                    className={`w-full p-3 rounded-2xl border transition-all text-left flex items-center justify-between group ${
+                    className={`w-full p-3.5 rounded-2xl border transition-all text-left flex items-center justify-between group ${
                       activeQuickUser === "carlos"
                         ? "border-[#CCFF00] bg-[#CCFF00]/10 shadow-lg shadow-[#CCFF00]/10"
                         : "border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.07] hover:border-white/25"
@@ -314,7 +314,7 @@ export default function LoginPage() {
                   >
                     <div className="flex items-center gap-3">
                       <div className="relative">
-                        <div className="w-10 h-10 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-400 flex items-center justify-center font-black text-xs">
+                        <div className="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center font-black text-xs">
                           CS
                         </div>
                         <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-[#0E1119]" />
@@ -324,12 +324,12 @@ export default function LoginPage() {
                           <span className="text-xs font-black text-white group-hover:text-[#CCFF00] transition-colors">
                             Carlos Silveira
                           </span>
-                          <span className="px-1.5 py-0.5 rounded-md bg-blue-500/20 text-[9px] font-bold text-blue-300">
-                            Gestor & Corretor
+                          <span className="px-1.5 py-0.5 rounded-md bg-emerald-500/20 text-[9px] font-extrabold text-emerald-300 uppercase tracking-wide">
+                            Chefe da Imobiliária (Master)
                           </span>
                         </div>
-                        <span className="text-[11px] text-white/40 block mt-0.5">
-                          Painel Geral • Imóveis • Vitrine • Google Agenda
+                        <span className="text-[11px] text-white/50 block mt-0.5">
+                          Tactus Imobiliária • Adiciona corretores e gerencia seus braços
                         </span>
                       </div>
                     </div>
@@ -345,41 +345,41 @@ export default function LoginPage() {
                     </div>
                   </button>
 
-                  {/* 2. Mariana Alencar (Corretora Especialista) */}
+                  {/* 2. CORRETOR AUTÔNOMO: 1 Login Solo */}
                   <button
                     type="button"
                     disabled={loading}
-                    onClick={() => handleQuickLogin("mariana@tactus.com.br", "123456", "mariana")}
-                    className={`w-full p-3 rounded-2xl border transition-all text-left flex items-center justify-between group ${
-                      activeQuickUser === "mariana"
+                    onClick={() => handleQuickLogin("roberto@autonomo.com.br", "123456", "roberto")}
+                    className={`w-full p-3.5 rounded-2xl border transition-all text-left flex items-center justify-between group ${
+                      activeQuickUser === "roberto"
                         ? "border-[#CCFF00] bg-[#CCFF00]/10 shadow-lg shadow-[#CCFF00]/10"
                         : "border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.07] hover:border-white/25"
                     }`}
                   >
                     <div className="flex items-center gap-3">
                       <div className="relative">
-                        <div className="w-10 h-10 rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-300 flex items-center justify-center font-black text-xs">
-                          MA
+                        <div className="w-10 h-10 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-400 flex items-center justify-center font-black text-xs">
+                          RD
                         </div>
-                        <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-[#0E1119]" />
+                        <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-blue-400 border-2 border-[#0E1119]" />
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="text-xs font-black text-white group-hover:text-[#CCFF00] transition-colors">
-                            Mariana Alencar
+                            Roberto Dias
                           </span>
-                          <span className="px-1.5 py-0.5 rounded-md bg-purple-500/20 text-[9px] font-bold text-purple-300">
-                            Corretora Senior
+                          <span className="px-1.5 py-0.5 rounded-md bg-blue-500/20 text-[9px] font-extrabold text-blue-300 uppercase tracking-wide">
+                            Corretor Autônomo Solo (1 Login)
                           </span>
                         </div>
-                        <span className="text-[11px] text-white/40 block mt-0.5">
-                          Funil de Leads • Visitas • Comissões
+                        <span className="text-[11px] text-white/50 block mt-0.5">
+                          Operação Individual • Vitrine pessoal, funil direto e 100% comissão
                         </span>
                       </div>
                     </div>
 
                     <div>
-                      {loading && activeQuickUser === "mariana" ? (
+                      {loading && activeQuickUser === "roberto" ? (
                         <Loader2 className="w-4 h-4 animate-spin text-[#CCFF00]" />
                       ) : (
                         <div className="w-7 h-7 rounded-full bg-white/[0.05] group-hover:bg-[#CCFF00] group-hover:text-black text-white/60 flex items-center justify-center transition-all">
@@ -389,12 +389,12 @@ export default function LoginPage() {
                     </div>
                   </button>
 
-                  {/* 3. Super Administrador (Master SaaS) */}
+                  {/* 3. SUPER ADMIN: Gerencia Tudo no SaaS */}
                   <button
                     type="button"
                     disabled={loading}
                     onClick={() => handleQuickLogin("admin@sistema.com", "123456", "admin")}
-                    className={`w-full p-3 rounded-2xl border transition-all text-left flex items-center justify-between group ${
+                    className={`w-full p-3.5 rounded-2xl border transition-all text-left flex items-center justify-between group ${
                       activeQuickUser === "admin"
                         ? "border-[#CCFF00] bg-[#CCFF00]/10 shadow-lg shadow-[#CCFF00]/10"
                         : "border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.07] hover:border-white/25"
@@ -402,22 +402,22 @@ export default function LoginPage() {
                   >
                     <div className="flex items-center gap-3">
                       <div className="relative">
-                        <div className="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 flex items-center justify-center font-black text-xs">
+                        <div className="w-10 h-10 rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-300 flex items-center justify-center font-black text-xs">
                           <ShieldCheck className="w-5 h-5" />
                         </div>
-                        <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-amber-400 border-2 border-[#0E1119]" />
+                        <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-purple-400 border-2 border-[#0E1119]" />
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="text-xs font-black text-white group-hover:text-[#CCFF00] transition-colors">
                             Super Administrador
                           </span>
-                          <span className="px-1.5 py-0.5 rounded-md bg-amber-500/20 text-[9px] font-bold text-amber-300">
-                            SaaS Master
+                          <span className="px-1.5 py-0.5 rounded-md bg-purple-500/20 text-[9px] font-extrabold text-purple-300 uppercase tracking-wide">
+                            Root Geral SaaS
                           </span>
                         </div>
-                        <span className="text-[11px] text-white/40 block mt-0.5">
-                          Imobiliárias • Assinaturas • Servidores
+                        <span className="text-[11px] text-white/50 block mt-0.5">
+                          Gerencia todas as imobiliárias, corretores autônomos e o sistema
                         </span>
                       </div>
                     </div>
@@ -432,6 +432,30 @@ export default function LoginPage() {
                       )}
                     </div>
                   </button>
+
+                  {/* 4. VISÃO DO BRAÇO DA IMOBILIÁRIA (Corretora Mariana Alencar) */}
+                  <div className="pt-1">
+                    <button
+                      type="button"
+                      disabled={loading}
+                      onClick={() => handleQuickLogin("mariana@tactus.com.br", "123456", "mariana")}
+                      className={`w-full p-2.5 rounded-xl border border-dashed transition-all text-left flex items-center justify-between text-xs text-white/50 hover:text-white ${
+                        activeQuickUser === "mariana"
+                          ? "border-[#CCFF00] bg-[#CCFF00]/10 text-white"
+                          : "border-white/10 hover:border-white/30 hover:bg-white/[0.02]"
+                      }`}
+                    >
+                      <span className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-purple-400"></span>
+                        <span>Ou testar como <strong>Mariana Alencar</strong> (Corretora da equipe da imobiliária)</span>
+                      </span>
+                      {loading && activeQuickUser === "mariana" ? (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin text-[#CCFF00]" />
+                      ) : (
+                        <ArrowRight className="w-3 h-3" />
+                      )}
+                    </button>
+                  </div>
 
                   <p className="text-[11px] text-center text-white/40 pt-2 font-medium">
                     ⚡ Autenticação direta sem necessidade de senha para testes

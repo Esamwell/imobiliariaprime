@@ -29,6 +29,7 @@ export async function GET() {
               name: true,
               cnpj: true,
               plan: true,
+              type: true,
             },
           },
         },
@@ -38,22 +39,24 @@ export async function GET() {
     }
 
     if (!user) {
+      const isAutonomo = session.role === "AUTONOMO" || session.tenantType === "AUTONOMO"
       user = {
         id: session.userId,
         name: session.name,
         email: session.email,
         role: session.role,
-        creci: "12345-F",
-        phone: "(11) 98765-4321",
+        creci: session.creci || (isAutonomo ? "39.814-F" : "48.912"),
+        phone: isAutonomo ? "(11) 97123-9988" : "(11) 98765-4321",
         status: "Ativo",
         tenantId: session.tenantId,
         tenant: session.tenantId
           ? {
-              id: session.tenantId,
-              name: "Tactus Imobiliária",
-              cnpj: "12.345.678/0001-90",
-              plan: "Master VIP",
-            }
+            id: session.tenantId,
+            name: session.tenantName || (isAutonomo ? "Roberto Dias Consultoria Solo" : "Tactus Imobiliária"),
+            type: isAutonomo ? "AUTONOMO" : "IMOBILIARIA",
+            cnpj: isAutonomo ? "234.567.890-11" : "12.345.678/0001-90",
+            plan: isAutonomo ? "Plano Corretor Solo (1 Usuário)" : "Plano Imobiliária Master VIP",
+          }
           : null,
       }
     }

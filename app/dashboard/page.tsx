@@ -1,11 +1,12 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { 
   Building, 
   DollarSign, 
   Users, 
+  Users2,
   Calendar, 
   ArrowUpRight, 
   Phone, 
@@ -117,6 +118,22 @@ export default function UserDashboardPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isGcalModalOpen, setIsGcalModalOpen] = useState(false)
   const [syncWithGcal, setSyncWithGcal] = useState(true)
+  const [currentUser, setCurrentUser] = useState<any>(null)
+
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.authenticated && data.user) {
+          setCurrentUser(data.user)
+        }
+      })
+      .catch(() => {})
+  }, [])
+
+  const isChief = currentUser?.role === "GESTOR" || currentUser?.role === "IMOBILIARIA_MASTER"
+  const isAutonomo = currentUser?.role === "AUTONOMO" || currentUser?.tenant?.type === "AUTONOMO"
+  const firstName = currentUser?.name ? currentUser.name.split(" ")[0] : "Carlos"
 
   // Form State
   const [time, setTime] = useState("11:00")
@@ -168,21 +185,36 @@ export default function UserDashboardPage() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-              Painel Geral
+              {isChief ? "Painel da Imobiliária" : isAutonomo ? "Painel do Corretor Autônomo" : "Painel Geral"}
             </h1>
             <span className="rounded-full bg-lime-400/20 text-lime-800 dark:text-lime-300 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wide">
-              Ao Vivo
+              {isChief ? "Gestor Master" : isAutonomo ? "Corretor Solo" : "Ao Vivo"}
             </span>
           </div>
           <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-            Olá, Carlos! Acompanhe suas negociações ativas, visitas e carteira de imóveis hoje.
+            {isChief
+              ? `Olá, ${firstName}! Acompanhe sua equipe de corretores, negociações ativas e métricas globais da ${currentUser?.tenant?.name || "Tactus Imobiliária"}.`
+              : isAutonomo
+              ? `Olá, ${firstName}! Acompanhe suas captações diretas, visitas agendadas e clientes da sua vitrine pessoal.`
+              : `Olá, ${firstName}! Acompanhe suas negociações ativas, visitas e carteira de imóveis hoje.`}
           </p>
         </div>
 
         {/* Action Pills */}
         <div className="flex items-center gap-2 flex-wrap">
+          {isChief && (
+            <Link
+              href="/dashboard/equipe"
+              className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 hover:bg-emerald-500/20 px-3.5 py-2 text-xs font-bold text-emerald-700 dark:text-emerald-300 shadow-sm transition-all hover:scale-102"
+              title="Gerenciar os corretores da sua imobiliária"
+            >
+              <Users2 className="h-3.5 w-3.5" />
+              <span>Gerenciar Equipe</span>
+            </Link>
+          )}
+
           <Link
-            href="/v/tactus"
+            href={isAutonomo ? "/v/roberto-dias" : "/v/tactus"}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.05] hover:bg-black/5 dark:hover:bg-white/10 px-4 py-2 text-xs font-semibold text-foreground shadow-sm transition-all hover:scale-102"

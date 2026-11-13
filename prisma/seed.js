@@ -17,57 +17,92 @@ async function main() {
 
   const passwordHash = await bcrypt.hash("123456", 10)
 
-  // 1. Criar Super Admin
+  // 1. Criar Super Admin (SaaS Master Root)
   const superAdmin = await prisma.user.create({
     data: {
-      name: "Administrador Central",
-      email: "admin@sistema.com",
+      name: "Super Administrador Tactus",
+      email: "admin@tactus.com.br",
       passwordHash: passwordHash,
       role: "SUPER_ADMIN",
+      creci: "0001-SP",
       status: "Ativo",
     },
   })
   console.log("Super Admin criado:", superAdmin.email)
 
-  // 2. Criar Imobiliária Tenant Principal
-  const tenantPrime = await prisma.tenant.create({
+  // 2. Criar Imobiliária PJ (Tenant com Chefe e Corretores vinculados)
+  const tenantImobiliaria = await prisma.tenant.create({
     data: {
-      name: "Imobiliária Prime",
+      name: "Tactus Imobiliária",
       cnpj: "12.345.678/0001-90",
-      email: "contato@primeimoveis.com.br",
+      email: "contato@tactus.com.br",
       phone: "(11) 3456-7890",
-      plan: "Master VIP",
+      type: "IMOBILIARIA",
+      plan: "Plano Imobiliária Master VIP",
       status: "Ativo",
     },
   })
-  console.log("Tenant criado:", tenantPrime.name)
+  console.log("Tenant Imobiliária criado:", tenantImobiliaria.name)
 
-  // 3. Criar Usuários da Imobiliária Prime
+  // 3. Criar o Chefe / Master da Imobiliária (Carlos Silveira)
   const corretorCarlos = await prisma.user.create({
     data: {
-      tenantId: tenantPrime.id,
+      tenantId: tenantImobiliaria.id,
       name: "Carlos Eduardo Silveira",
-      email: "carlos@primeimoveis.com.br",
+      email: "carlos@tactus.com.br",
       passwordHash: passwordHash,
-      role: "GESTOR",
+      role: "GESTOR", // Chefe da Imobiliária
       creci: "48.912",
       phone: "(11) 98765-4321",
       status: "Ativo",
     },
   })
+  console.log("Chefe da Imobiliária criado:", corretorCarlos.email)
 
+  // 4. Criar Braço da Imobiliária: Corretora vinculada (Mariana Alencar)
   const corretoraMariana = await prisma.user.create({
     data: {
-      tenantId: tenantPrime.id,
+      tenantId: tenantImobiliaria.id,
       name: "Mariana Alencar",
-      email: "mariana@primeimoveis.com.br",
+      email: "mariana@tactus.com.br",
       passwordHash: passwordHash,
-      role: "CORRETOR",
+      role: "CORRETOR", // Corretora da equipe
       creci: "52.140",
       phone: "(11) 99888-7766",
       status: "Ativo",
     },
   })
+  console.log("Corretora vinculada criada:", corretoraMariana.email)
+
+  // 5. Criar Corretor Autônomo PF (1 Login Solo - Sem equipe)
+  const tenantAutonomo = await prisma.tenant.create({
+    data: {
+      name: "Roberto Dias Consultoria Solo",
+      cnpj: "234.567.890-11", // CPF/Documento do autônomo
+      email: "roberto@autonomo.com.br",
+      phone: "(11) 97123-9988",
+      type: "AUTONOMO",
+      plan: "Plano Corretor Solo (1 Usuário)",
+      status: "Ativo",
+    },
+  })
+  console.log("Tenant Autônomo criado:", tenantAutonomo.name)
+
+  const corretorRoberto = await prisma.user.create({
+    data: {
+      tenantId: tenantAutonomo.id,
+      name: "Roberto Dias",
+      email: "roberto@autonomo.com.br",
+      passwordHash: passwordHash,
+      role: "AUTONOMO", // Corretor autônomo
+      creci: "39.814-F",
+      phone: "(11) 97123-9988",
+      status: "Ativo",
+    },
+  })
+  console.log("Corretor Autônomo criado:", corretorRoberto.email)
+
+  const tenantPrime = tenantImobiliaria
 
   // 4. Criar Imóveis com Fotos Reais em Alta Definição
   const prop1 = await prisma.property.create({

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { 
@@ -10,6 +10,7 @@ import {
   Key, 
   DollarSign, 
   Users, 
+  Users2,
   ShieldCheck, 
   Menu, 
   Sun, 
@@ -40,6 +41,7 @@ const navItems = [
   { title: "Visão Geral", href: "/dashboard", icon: Home },
   { title: "Meus Imóveis", href: "/dashboard/imoveis", icon: Building },
   { title: "Funil de Vendas", href: "/dashboard/pipeline", icon: Kanban },
+  { title: "Equipe & Corretores", href: "/dashboard/equipe", icon: Users2 },
   { title: "Gestão de Aluguéis", href: "/dashboard/alugueis", icon: Key },
   { title: "Clientes & Leads", href: "/dashboard/clientes", icon: Users },
   { title: "Financeiro & Comissões", href: "/dashboard/financeiro", icon: DollarSign },
@@ -52,13 +54,38 @@ export default function UserDashboardLayout({
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [mobileProfileOpen, setMobileProfileOpen] = useState(false)
+  const [currentUser, setCurrentUser] = useState<any>(null)
   const pathname = usePathname()
   const { setTheme, theme } = useTheme()
+
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.authenticated && data.user) {
+          setCurrentUser(data.user)
+        }
+      })
+      .catch(() => {})
+  }, [])
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" })
     window.location.href = "/login"
   }
+
+  const isAutonomo = currentUser?.role === "AUTONOMO" || currentUser?.tenant?.type === "AUTONOMO"
+  const isChief = currentUser?.role === "GESTOR"
+  const userInitials = currentUser?.name
+    ? currentUser.name.split(" ").filter(Boolean).slice(0, 2).map((n: string) => n[0].toUpperCase()).join("")
+    : "CS"
+  const displayName = currentUser?.name || "Carlos Silveira"
+  const displayCreci = currentUser?.creci ? `CRECI ${currentUser.creci}` : "CRECI 48.912"
+  const roleLabel = isChief
+    ? "Chefe da Imobiliária (Master)"
+    : isAutonomo
+    ? "Corretor Autônomo PF"
+    : "Corretora Sênior"
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-background">
@@ -148,12 +175,18 @@ export default function UserDashboardLayout({
 
           {/* User Profile Pill Capsule */}
           <div className="flex items-center gap-2 rounded-full border border-black/[0.08] dark:border-white/[0.12] bg-white/60 dark:bg-white/[0.04] pl-1.5 pr-2 py-1 backdrop-blur-md shadow-sm">
-            <div className="h-7 w-7 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 flex items-center justify-center font-bold text-xs ring-1 ring-emerald-500/30">
-              CS
+            <div className={`h-7 w-7 rounded-full flex items-center justify-center font-bold text-xs ring-1 ${
+              isChief
+                ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 ring-emerald-500/30"
+                : isAutonomo
+                ? "bg-blue-500/20 text-blue-700 dark:text-blue-300 ring-blue-500/30"
+                : "bg-purple-500/20 text-purple-700 dark:text-purple-300 ring-purple-500/30"
+            }`}>
+              {userInitials}
             </div>
             <div className="hidden xl:block text-left pr-1">
-              <p className="text-xs font-semibold leading-tight text-foreground">Carlos Silveira</p>
-              <p className="text-[9px] text-muted-foreground font-medium">CRECI 48.912</p>
+              <p className="text-xs font-semibold leading-tight text-foreground">{displayName}</p>
+              <p className="text-[9px] text-muted-foreground font-medium">{displayCreci} • {roleLabel}</p>
             </div>
             <Button
               variant="ghost"
@@ -187,23 +220,35 @@ export default function UserDashboardLayout({
           <Dialog open={mobileProfileOpen} onOpenChange={setMobileProfileOpen}>
             <DialogTrigger asChild>
               <button
-                className="h-9 w-9 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 flex items-center justify-center font-bold text-xs ring-2 ring-emerald-500/30 active:scale-95 transition-transform"
+                className={`h-9 w-9 rounded-full flex items-center justify-center font-bold text-xs ring-2 active:scale-95 transition-transform ${
+                  isChief
+                    ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 ring-emerald-500/30"
+                    : isAutonomo
+                    ? "bg-blue-500/20 text-blue-700 dark:text-blue-300 ring-blue-500/30"
+                    : "bg-purple-500/20 text-purple-700 dark:text-purple-300 ring-purple-500/30"
+                }`}
                 title="Meu Perfil e Ações"
               >
-                CS
+                {userInitials}
               </button>
             </DialogTrigger>
 
             <DialogContent className="max-w-xs rounded-3xl p-5">
               <DialogHeader>
                 <div className="flex items-center gap-3">
-                  <div className="h-11 w-11 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 flex items-center justify-center font-bold text-sm ring-2 ring-emerald-500/30">
-                    CS
+                  <div className={`h-11 w-11 rounded-full flex items-center justify-center font-bold text-sm ring-2 ${
+                    isChief
+                      ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 ring-emerald-500/30"
+                      : isAutonomo
+                      ? "bg-blue-500/20 text-blue-700 dark:text-blue-300 ring-blue-500/30"
+                      : "bg-purple-500/20 text-purple-700 dark:text-purple-300 ring-purple-500/30"
+                  }`}>
+                    {userInitials}
                   </div>
                   <div className="text-left">
-                    <DialogTitle className="text-sm font-extrabold text-foreground">Carlos Silveira</DialogTitle>
+                    <DialogTitle className="text-sm font-extrabold text-foreground">{displayName}</DialogTitle>
                     <DialogDescription className="text-xs text-muted-foreground">
-                      Corretor Sênior • CRECI 48.912
+                      {roleLabel} • {displayCreci}
                     </DialogDescription>
                   </div>
                 </div>
@@ -281,28 +326,46 @@ export default function UserDashboardLayout({
             </nav>
           </div>
 
-          {/* Plano Master VIP - Apple Gold Glass Capsule */}
+          {/* Plano Capsule Dinâmico (Imobiliária vs Autônomo) */}
           <div className="p-3 shrink-0">
             {sidebarOpen ? (
-              <div className="rounded-2xl bg-gradient-to-br from-amber-500/15 via-card/80 to-transparent border border-amber-500/30 p-3.5 backdrop-blur-md shadow-sm space-y-1.5">
+              <div className={`rounded-2xl border p-3.5 backdrop-blur-md shadow-sm space-y-1.5 ${
+                isAutonomo
+                  ? "bg-gradient-to-br from-blue-500/15 via-card/80 to-transparent border-blue-500/30"
+                  : "bg-gradient-to-br from-amber-500/15 via-card/80 to-transparent border-amber-500/30"
+              }`}>
                 <div className="flex items-center justify-between">
-                  <p className="font-bold text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
-                    <Crown className="h-3.5 w-3.5" /> Plano Master VIP
+                  <p className={`font-bold text-xs flex items-center gap-1.5 ${
+                    isAutonomo ? "text-blue-600 dark:text-blue-400" : "text-amber-600 dark:text-amber-400"
+                  }`}>
+                    {isAutonomo ? <Sparkles className="h-3.5 w-3.5" /> : <Crown className="h-3.5 w-3.5" />}
+                    {isAutonomo ? "Corretor Solo" : "Imobiliária VIP"}
                   </p>
-                  <span className="text-[9px] bg-amber-500/20 text-amber-700 dark:text-amber-300 px-2 py-0.5 rounded-full font-extrabold uppercase tracking-wider">
-                    Ilimitado
+                  <span className={`text-[9px] px-2 py-0.5 rounded-full font-extrabold uppercase tracking-wider ${
+                    isAutonomo
+                      ? "bg-blue-500/20 text-blue-700 dark:text-blue-300"
+                      : "bg-amber-500/20 text-amber-700 dark:text-amber-300"
+                  }`}>
+                    {isAutonomo ? "1 Usuário" : "Equipe VIP"}
                   </span>
                 </div>
                 <p className="text-muted-foreground text-[10px] leading-tight">
-                  Corretores, imóveis e vitrines ilimitadas ativas.
+                  {isAutonomo
+                    ? "Plano individual: 100% de comissão direta e vitrine exclusiva."
+                    : "Plano Imobiliária: Corretores e imóveis ilimitados gerenciados."}
                 </p>
-                <div className="w-full bg-amber-500/20 rounded-full h-1 mt-2">
-                  <div className="bg-amber-500 h-1 rounded-full w-full"></div>
+                <div className={`w-full rounded-full h-1 mt-2 ${isAutonomo ? "bg-blue-500/20" : "bg-amber-500/20"}`}>
+                  <div className={`h-1 rounded-full w-full ${isAutonomo ? "bg-blue-500" : "bg-amber-500"}`}></div>
                 </div>
               </div>
             ) : (
-              <div className="flex justify-center p-2 rounded-2xl bg-amber-500/10 border border-amber-500/30" title="Plano Master VIP - Ativo">
-                <Crown className="h-4 w-4 text-amber-500" />
+              <div
+                className={`flex justify-center p-2 rounded-2xl border ${
+                  isAutonomo ? "bg-blue-500/10 border-blue-500/30" : "bg-amber-500/10 border-amber-500/30"
+                }`}
+                title={isAutonomo ? "Corretor Solo - Ativo" : "Plano Imobiliária Master VIP - Ativo"}
+              >
+                {isAutonomo ? <Sparkles className="h-4 w-4 text-blue-500" /> : <Crown className="h-4 w-4 text-amber-500" />}
               </div>
             )}
           </div>

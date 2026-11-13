@@ -37,12 +37,12 @@ interface User {
 }
 
 const initialUsers: User[] = [
-  { id: "1", name: "Carlos Eduardo Silveira", email: "carlos@tactus.com.br", role: "Gestor Geral", tenant: "Imobiliária Alencar", status: "Ativo", lastLogin: "Há 12 min" },
-  { id: "2", name: "Mariana Alencar", email: "mariana.alencar@horizonte.com", role: "Corretora Sênior", tenant: "Horizonte Imóveis", status: "Ativo", lastLogin: "Hoje, 14:20" },
-  { id: "3", name: "Lucas Farias", email: "lucas.f@metropole.com.br", role: "Diretor Comercial", tenant: "Metrópole Empreendimentos", status: "Ativo", lastLogin: "Hoje, 09:15" },
-  { id: "4", name: "Beatriz Nogueira", email: "beatriz@litoralsul.com.br", role: "Financeiro", tenant: "Litoral Sul Consultoria", status: "Ativo", lastLogin: "Ontem, 18:30" },
-  { id: "5", name: "Rodrigo Mendes", email: "rodrigo.m@aliancaimoveis.com", role: "Corretor", tenant: "Aliança Imóveis", status: "Inativo", lastLogin: "Há 15 dias" },
-  { id: "6", name: "Administrador Central", email: "admin@sistema.com", role: "Super Admin", tenant: "Plataforma Central", status: "Ativo", lastLogin: "Agora" },
+  { id: "1", name: "Carlos Eduardo Silveira", email: "carlos@tactus.com.br", role: "Chefe da Imobiliária (Master)", tenant: "Tactus Imobiliária", status: "Ativo", lastLogin: "Agora" },
+  { id: "2", name: "Roberto Dias", email: "roberto@autonomo.com.br", role: "Corretor Autônomo (Solo)", tenant: "Roberto Dias Consultoria Solo", status: "Ativo", lastLogin: "Há 5 min" },
+  { id: "3", name: "Super Administrador", email: "admin@tactus.com.br", role: "Super Admin Root", tenant: "Plataforma Central", status: "Ativo", lastLogin: "Online" },
+  { id: "4", name: "Mariana Alencar", email: "mariana@tactus.com.br", role: "Corretora Vinculada (Braço)", tenant: "Tactus Imobiliária", status: "Ativo", lastLogin: "Hoje, 14:20" },
+  { id: "5", name: "Ricardo Albuquerque", email: "ricardo@autonomo.com.br", role: "Corretor Autônomo (Solo)", tenant: "Albuquerque Consultoria Solo", status: "Ativo", lastLogin: "Hoje, 09:15" },
+  { id: "6", name: "Lucas Farias", email: "lucas.farias@tactus.com.br", role: "Corretor Vinculado (Braço)", tenant: "Tactus Imobiliária", status: "Ativo", lastLogin: "Ontem, 18:30" },
 ]
 
 export default function UsersPage() {

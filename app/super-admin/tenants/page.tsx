@@ -43,8 +43,8 @@ interface Account {
 }
 
 const initialAccounts: Account[] = [
-  { id: "1", name: "Alencar Imóveis & Consultoria", accountType: "IMOBILIARIA", document: "12.345.678/0001-90", plan: "Master VIP", brokersCount: 28, propertiesCount: 450, status: "Ativo", joinedAt: "10/01/2024" },
-  { id: "2", name: "Ricardo Albuquerque (CRECI 41.209)", accountType: "AUTONOMO", document: "234.567.890-11", plan: "Master VIP", brokersCount: 1, propertiesCount: 48, status: "Ativo", joinedAt: "18/01/2024" },
+  { id: "1", name: "Tactus Imobiliária (Chefe Carlos Silveira)", accountType: "IMOBILIARIA", document: "12.345.678/0001-90", plan: "Master VIP", brokersCount: 6, propertiesCount: 450, status: "Ativo", joinedAt: "10/01/2024" },
+  { id: "2", name: "Roberto Dias Consultoria Solo (Corretor Autônomo)", accountType: "AUTONOMO", document: "234.567.890-11", plan: "Corretor Solo", brokersCount: 1, propertiesCount: 28, status: "Ativo", joinedAt: "18/01/2024" },
   { id: "3", name: "Horizonte Imóveis", accountType: "IMOBILIARIA", document: "98.765.432/0001-10", plan: "Profissional", brokersCount: 14, propertiesCount: 180, status: "Ativo", joinedAt: "15/02/2024" },
   { id: "4", name: "Dra. Juliana Prado - Corretora", accountType: "AUTONOMO", document: "345.678.901-22", plan: "Autônomo Pro", brokersCount: 1, propertiesCount: 35, status: "Ativo", joinedAt: "28/02/2024" },
   { id: "5", name: "Litoral Sul Consultoria", accountType: "IMOBILIARIA", document: "45.123.789/0001-55", plan: "Profissional", brokersCount: 8, propertiesCount: 95, status: "Ativo", joinedAt: "03/03/2024" },
