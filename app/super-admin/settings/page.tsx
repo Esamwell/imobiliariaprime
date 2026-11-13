@@ -82,7 +82,7 @@ export default function SettingsPage() {
               </label>
               <input
                 type="text"
-                defaultValue="Prime CRM Imobiliário"
+                defaultValue="Tactus CRM Imobiliário"
                 className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] bg-muted/20 px-3.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
               />
             </div>
@@ -93,7 +93,7 @@ export default function SettingsPage() {
               </label>
               <input
                 type="email"
-                defaultValue="suporte@primecrm.com.br"
+                defaultValue="suporte@tactus.com.br"
                 className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] bg-muted/20 px-3.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
               />
             </div>
@@ -164,7 +164,7 @@ export default function SettingsPage() {
               </label>
               <input
                 type="text"
-                defaultValue="Prime CRM <noreply@primecrm.com.br>"
+                defaultValue="Tactus CRM <noreply@tactus.com.br>"
                 className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] bg-muted/20 px-3.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
               />
             </div>

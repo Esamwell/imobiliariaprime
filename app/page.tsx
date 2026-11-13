@@ -72,15 +72,15 @@ const plans: PlanDetail[] = [
     theme: "dark"
   },
   {
-    id: "prime",
-    name: "Imobiliária Prime",
+    id: "tactus",
+    name: "Imobiliária Tactus",
     subtitle: "Pessoa Jurídica (PJ) & Equipes",
     badge: "MAIS ESCOLHIDO",
     popular: true,
     priceMonthly: 249,
     priceAnnual: 199,
     period: "/mês",
-    description: "A ferramenta definitiva para imobiliárias e imobiliárias boutique que coordenam equipe de vendas.",
+    description: "A ferramenta definitiva para imobiliárias que coordenam equipe de corretores e alta demanda.",
     brokerLimit: "Até 10 Corretores Cadastrados",
     propertiesLimit: "Imóveis ILIMITADOS na Carteira",
     features: [
@@ -94,7 +94,7 @@ const plans: PlanDetail[] = [
       "Exportação de relatórios gerenciais e VGV consolidado",
       "Suporte Prioritário VIP via WhatsApp"
     ],
-    ctaText: "Assinar Imobiliária Prime",
+    ctaText: "Assinar Imobiliária Tactus",
     theme: "lime"
   },
   {
@@ -158,7 +158,7 @@ export default function CRMLandingPage() {
             </div>
             <div>
               <span className="font-extrabold text-base tracking-tight block text-white leading-none">
-                PRIME CRM.
+                TACTUS CRM.
               </span>
               <span className="text-[9px] font-semibold text-lime-400 uppercase tracking-widest block mt-0.5">
                 Portal do Corretor & Gestor
@@ -191,7 +191,7 @@ export default function CRMLandingPage() {
             </Link>
 
             <Link
-              href="/v/prime"
+              href="/v/tactus"
               target="_blank"
               rel="noopener noreferrer"
               className="hidden lg:inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-white transition-colors glass-pill px-3.5 py-1.5"
@@ -225,13 +225,13 @@ export default function CRMLandingPage() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-lime-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-lime-500"></span>
               </span>
-              O CRM Mais Inteligente para o Mercado Imobiliário
+              Tactus CRM • O CRM Mais Inteligente para o Mercado Imobiliário
             </div>
 
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.08] text-white">
-              A melhor plataforma imobiliária <br className="hidden sm:block" />
+              Tactus CRM Imobiliário <br className="hidden sm:block" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-lime-300 via-white to-slate-300">
-                para o seu futuro.
+                para fechar mais negócios.
               </span>
             </h1>
 
@@ -257,7 +257,7 @@ export default function CRMLandingPage() {
               </div>
               <div className="text-left text-xs">
                 <span className="font-extrabold text-white block">15.000+ Corretores & Imobiliárias</span>
-                <span className="text-slate-400 text-[10px]">Utilizando ativamente em todo o Brasil</span>
+                <span className="text-slate-400 text-[10px]">Utilizando o ecossistema Tactus em todo o Brasil</span>
               </div>
             </div>
 
@@ -275,7 +275,7 @@ export default function CRMLandingPage() {
                 href="/login"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 h-12 px-7 rounded-full bg-white/[0.06] hover:bg-white/[0.12] text-white border border-white/10 font-bold text-xs backdrop-blur-md transition-all hover:scale-102"
               >
-                <span>Acessar Painel do Corretor</span>
+                <span>Acessar Painel Tactus</span>
                 <ArrowUpRight className="h-4 w-4 text-lime-400" />
               </Link>
             </div>
@@ -286,7 +286,7 @@ export default function CRMLandingPage() {
         <section id="recursos" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <div className="text-center max-w-xl mx-auto space-y-2 mb-12">
             <span className="text-xs font-bold text-lime-400 uppercase tracking-widest">
-              Design Prime & Eficiência
+              Design Tactus Prime & Eficiência
             </span>
             <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
               Seu parceiro de confiança para fechar mais negócios.
@@ -317,11 +317,11 @@ export default function CRMLandingPage() {
                 <span className="text-xl font-mono font-black text-black/60">02.</span>
                 <h3 className="text-xl font-black text-black">Vitrines Públicas Personalizadas</h3>
                 <p className="text-xs text-black/80 font-medium leading-relaxed">
-                  Gere com um único clique um link exclusivo da sua carteira (ex: <code>/v/seu-nome</code>) com sua foto, CRECI e botão direto de WhatsApp para enviar aos clientes ou colocar na sua bio.
+                  Gere com um único clique um link exclusivo da sua carteira (ex: <code>/v/tactus</code> ou <code>/v/seu-nome</code>) com sua foto, CRECI e botão direto de WhatsApp para enviar aos clientes ou colocar na sua bio.
                 </p>
               </div>
               <div className="pt-4 border-t border-black/15 flex items-center justify-between text-xs font-black text-black">
-                <Link href="/v/prime" target="_blank" className="hover:underline">
+                <Link href="/v/tactus" target="_blank" className="hover:underline">
                   Conhecer a Vitrine
                 </Link>
                 <ArrowRight className="h-4 w-4" />
@@ -615,7 +615,7 @@ export default function CRMLandingPage() {
               </div>
               <div className="text-left text-xs">
                 <span className="font-bold text-white block">Ativação Imediata</span>
-                <span className="text-slate-400 text-[11px]">Acesso ao CRM em 2 minutos</span>
+                <span className="text-slate-400 text-[11px]">Acesso ao Tactus CRM em 2 minutos</span>
               </div>
             </div>
           </div>
@@ -626,7 +626,7 @@ export default function CRMLandingPage() {
           <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
             <div className="space-y-1">
               <div className="text-3xl sm:text-4xl font-black text-white tracking-tight">R$ 4.2B+</div>
-              <p className="text-xs text-slate-400">Em VGV Gerenciado na Plataforma</p>
+              <p className="text-xs text-slate-400">Em VGV Gerenciado no Tactus</p>
             </div>
             <div className="space-y-1">
               <div className="text-3xl sm:text-4xl font-black text-lime-400 tracking-tight">450.000+</div>
@@ -659,7 +659,7 @@ export default function CRMLandingPage() {
               <form onSubmit={handleCompleteSubscription} className="space-y-4">
                 <div className="space-y-1">
                   <div className="inline-flex items-center gap-1.5 rounded-full bg-lime-400/20 text-lime-400 px-3 py-0.5 text-[10px] font-black uppercase">
-                    Assinatura Imediata
+                    Assinatura Tactus Imediata
                   </div>
                   <h3 className="text-xl sm:text-2xl font-black text-white">
                     {selectedPlan.name}
@@ -711,7 +711,7 @@ export default function CRMLandingPage() {
                     <input
                       type="text"
                       required
-                      placeholder={clientType === "PJ" ? "Ex: Prime Negócios Imobiliários Ltda" : "Ex: Carlos Eduardo Silveira"}
+                      placeholder={clientType === "PJ" ? "Ex: Tactus Imóveis & Consultoria Ltda" : "Ex: Carlos Eduardo Silveira"}
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       className="w-full h-10 rounded-xl border border-white/10 bg-white/[0.04] px-3 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-lime-400"
@@ -808,7 +808,7 @@ export default function CRMLandingPage() {
                     type="submit"
                     className="w-full h-11 rounded-full bg-lime-400 hover:bg-lime-300 text-black font-extrabold text-xs shadow-xl shadow-lime-400/25 transition-all flex items-center justify-center gap-2"
                   >
-                    <span>Finalizar e Liberar Acesso Imediato</span>
+                    <span>Finalizar e Liberar Acesso ao Tactus CRM</span>
                     <ArrowRight className="h-4 w-4" />
                   </button>
                   <p className="text-[10px] text-center text-slate-500 mt-2">
@@ -851,7 +851,7 @@ export default function CRMLandingPage() {
                     href="/dashboard"
                     className="inline-flex items-center justify-center gap-2 h-11 px-6 rounded-full bg-lime-400 hover:bg-lime-300 text-black font-extrabold text-xs shadow-lg transition-all"
                   >
-                    <span>Entrar no CRM Agora</span>
+                    <span>Entrar no Tactus CRM Agora</span>
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                   <button
@@ -871,11 +871,11 @@ export default function CRMLandingPage() {
       {/* 7. Footer */}
       <footer className="border-t border-white/[0.08] py-8 text-center text-xs text-slate-500">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>© {new Date().getFullYear()} Prime CRM Imobiliário. Todos os direitos reservados.</p>
+          <p>© {new Date().getFullYear()} Tactus CRM Imobiliário. Todos os direitos reservados.</p>
           <div className="flex items-center gap-4">
             <Link href="#precos" className="hover:text-slate-300">Planos & Assinaturas</Link>
-            <Link href="/v/prime" className="hover:text-slate-300">Vitrine Exemplo</Link>
-            <Link href="/login" className="hover:text-slate-300 font-bold text-lime-400">Acessar o CRM</Link>
+            <Link href="/v/tactus" className="hover:text-slate-300">Vitrine Exemplo</Link>
+            <Link href="/login" className="hover:text-slate-300 font-bold text-lime-400">Acessar o Tactus CRM</Link>
           </div>
         </div>
       </footer>

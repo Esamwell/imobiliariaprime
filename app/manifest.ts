@@ -2,8 +2,8 @@ import { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Imobiliária Prime - CRM',
-    short_name: 'Prime CRM',
+    name: 'Tactus - CRM Imobiliário',
+    short_name: 'Tactus CRM',
     description: 'Sistema completo para gestão imobiliária, corretores, vitrines e aluguéis.',
     start_url: '/dashboard',
     display: 'standalone',

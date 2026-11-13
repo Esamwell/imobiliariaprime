@@ -94,8 +94,8 @@ export default function PropertiesPage() {
   const [showcaseCopied, setShowcaseCopied] = useState(false)
   const [showcaseSaved, setShowcaseSaved] = useState(false)
 
-  const [showcaseSlug, setShowcaseSlug] = useState("prime")
-  const [showcaseName, setShowcaseName] = useState("Imobiliária Prime")
+  const [showcaseSlug, setShowcaseSlug] = useState("tactus")
+  const [showcaseName, setShowcaseName] = useState("Tactus Imóveis")
   const [showcaseTitle, setShowcaseTitle] = useState("Consultoria Imobiliária de Alto Padrão")
   const [showcaseCreci, setShowcaseCreci] = useState("29.400-J")
   const [showcasePhone, setShowcasePhone] = useState("(11) 98765-4321")
@@ -119,7 +119,7 @@ export default function PropertiesPage() {
     e.preventDefault()
     try {
       const profileData = {
-        slug: showcaseSlug.trim().toLowerCase() || "prime",
+        slug: showcaseSlug.trim().toLowerCase() || "tactus",
         name: showcaseName,
         title: showcaseTitle,
         type: "IMOBILIARIA",
@@ -1177,7 +1177,7 @@ export default function PropertiesPage() {
                 <input
                   type="text"
                   required
-                  placeholder="Ex: Carlos Silveira ou Imobiliária Prime"
+                  placeholder="Ex: Carlos Silveira ou Tactus Imóveis"
                   value={showcaseName}
                   onChange={(e) => setShowcaseName(e.target.value)}
                   className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.04] px-3.5 text-xs sm:text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground"

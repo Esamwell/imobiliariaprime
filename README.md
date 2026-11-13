@@ -1,4 +1,4 @@
-# 🏢 CRM Imobiliário Multi-Tenant & Portal Imobiliária Prime
+# 🏢 Tactus CRM Imobiliário - Plataforma Multi-Tenant
 
 > Plataforma completa de gestão imobiliária desenvolvida com **Next.js 15**, **React 19**, **Prisma ORM** e **Tailwind CSS**. Atende tanto **Grandes Imobiliárias (PJ)** quanto **Corretores Autônomos (PF)**, contando com portal do corretor, funil de vendas integrado com WhatsApp, gestão de aluguéis e painel Super Admin com controle de planos.
 
@@ -99,8 +99,8 @@ Abra no navegador em **[http://localhost:3000](http://localhost:3000)**.
 | Perfil | E-mail | Senha | Acesso |
 | :--- | :--- | :--- | :--- |
 | **Super Admin** | `admin@sistema.com` | `123456` | `/super-admin` |
-| **Imobiliária Prime (Gestor)** | `carlos@primeimoveis.com.br` | `123456` | `/dashboard` |
-| **Mariana Alencar (Corretora)** | `mariana@primeimoveis.com.br` | `123456` | `/dashboard` |
+| **Tactus Imobiliária (Gestor)** | `carlos@tactus.com.br` | `123456` | `/dashboard` |
+| **Mariana Alencar (Corretora)** | `mariana@tactus.com.br` | `123456` | `/dashboard` |
 
 *(A tela de login conta com botões de **Acesso Rápido em 1 Clique** para alternar entre os perfis sem digitar senha).*
 

@@ -50,7 +50,7 @@ export async function GET() {
         tenant: session.tenantId
           ? {
               id: session.tenantId,
-              name: "Imobiliária Prime",
+              name: "Tactus Imobiliária",
               cnpj: "12.345.678/0001-90",
               plan: "Master VIP",
             }

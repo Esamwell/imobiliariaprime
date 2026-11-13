@@ -82,7 +82,7 @@ export default function UserDashboardLayout({
               <Building className="h-4 w-4" />
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="font-extrabold text-sm tracking-tight text-foreground">Prime CRM</span>
+              <span className="font-extrabold text-sm tracking-tight text-foreground">Tactus CRM</span>
               <span className="h-2 w-2 rounded-full bg-lime-500 animate-pulse"></span>
             </div>
           </Link>
@@ -94,7 +94,7 @@ export default function UserDashboardLayout({
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-bold text-sm tracking-tight text-foreground">Imobiliária Prime</span>
+                <span className="font-bold text-sm tracking-tight text-foreground">Tactus Imobiliária</span>
                 <span className="rounded-full bg-lime-400/20 text-lime-700 dark:text-lime-300 px-1.5 py-0.2 text-[9px] font-extrabold uppercase tracking-wide">
                   CRM
                 </span>
@@ -135,7 +135,7 @@ export default function UserDashboardLayout({
 
           {/* Link para a Vitrine Personalizada da Imobiliária/Corretor */}
           <Link
-            href="/v/prime"
+            href="/v/tactus"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.05] hover:bg-black/5 dark:hover:bg-white/10 px-3.5 py-1.5 text-xs font-semibold text-foreground shadow-sm transition-all hover:scale-102"
@@ -230,7 +230,7 @@ export default function UserDashboardLayout({
               {/* Quick Actions List in Mobile Profile Sheet */}
               <div className="space-y-2 pt-2">
                 <Link
-                  href="/v/prime"
+                  href="/v/tactus"
                   target="_blank"
                   onClick={() => setMobileProfileOpen(false)}
                   className="w-full flex items-center justify-between p-3 rounded-2xl border border-black/[0.06] dark:border-white/[0.08] bg-muted/40 hover:bg-muted text-xs font-bold text-foreground transition-colors"

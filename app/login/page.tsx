@@ -60,7 +60,7 @@ export default function LoginPage() {
           <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/30">
             <Building className="h-6 w-6" />
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">CRM Imobiliário</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-white">Tactus CRM Imobiliário</h1>
           <p className="text-sm text-slate-400">
             Plataforma completa para gestão de imobiliárias, corretores e locações.
           </p>
@@ -140,7 +140,7 @@ export default function LoginPage() {
                 type="button"
                 variant="outline"
                 size="sm"
-                onClick={() => fillAndSubmit("carlos@primeimoveis.com.br", "123456")}
+                onClick={() => fillAndSubmit("carlos@tactus.com.br", "123456")}
                 className="border-slate-700 bg-slate-800/60 hover:bg-slate-700 text-slate-200 text-xs h-9 justify-start gap-2"
               >
                 <UserCheck className="h-3.5 w-3.5 text-blue-400" />

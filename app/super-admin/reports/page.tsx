@@ -25,7 +25,7 @@ export default function ReportsPage() {
 
     let csvContent = "Relatório: " + reportName + "\nData de Geração: " + new Date().toLocaleString("pt-BR") + "\n\n"
     csvContent += "Item;Referencia;Valor;Status\n"
-    csvContent += "1;Assinatura Prime Enterprise;R$ 2.890,00;Pago\n"
+    csvContent += "1;Assinatura Tactus Enterprise;R$ 2.890,00;Pago\n"
     csvContent += "2;Assinatura Horizonte Profissional;R$ 1.250,00;Pago\n"
     csvContent += "3;Assinatura Metropole Enterprise;R$ 2.890,00;Pago\n"
     csvContent += "4;Assinatura Morada Basico;R$ 490,00;Pendente\n"

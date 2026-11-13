@@ -37,7 +37,7 @@ interface User {
 }
 
 const initialUsers: User[] = [
-  { id: "1", name: "Carlos Eduardo Silveira", email: "carlos@primeimoveis.com.br", role: "Gestor Geral", tenant: "Imobiliária Prime", status: "Ativo", lastLogin: "Há 12 min" },
+  { id: "1", name: "Carlos Eduardo Silveira", email: "carlos@tactus.com.br", role: "Gestor Geral", tenant: "Tactus Imobiliária", status: "Ativo", lastLogin: "Há 12 min" },
   { id: "2", name: "Mariana Alencar", email: "mariana.alencar@horizonte.com", role: "Corretora Sênior", tenant: "Horizonte Imóveis", status: "Ativo", lastLogin: "Hoje, 14:20" },
   { id: "3", name: "Lucas Farias", email: "lucas.f@metropole.com.br", role: "Diretor Comercial", tenant: "Metrópole Empreendimentos", status: "Ativo", lastLogin: "Hoje, 09:15" },
   { id: "4", name: "Beatriz Nogueira", email: "beatriz@litoralsul.com.br", role: "Financeiro", tenant: "Litoral Sul Consultoria", status: "Ativo", lastLogin: "Ontem, 18:30" },
@@ -55,7 +55,7 @@ export default function UsersPage() {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [role, setRole] = useState("Corretor")
-  const [tenant, setTenant] = useState("Imobiliária Prime")
+  const [tenant, setTenant] = useState("Tactus Imobiliária")
 
   const handleInviteUser = (e: React.FormEvent) => {
     e.preventDefault()
@@ -186,7 +186,7 @@ export default function UsersPage() {
                     onChange={(e) => setTenant(e.target.value)}
                     className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] bg-muted/20 px-3.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
                   >
-                    <option value="Imobiliária Prime">Imobiliária Prime</option>
+                    <option value="Tactus Imobiliária">Tactus Imobiliária</option>
                     <option value="Horizonte Imóveis">Horizonte Imóveis</option>
                     <option value="Metrópole Empreendimentos">Metrópole</option>
                     <option value="Plataforma Central">Plataforma Central</option>

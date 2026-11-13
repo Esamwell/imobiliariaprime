@@ -19,13 +19,13 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: "Prime CRM - Sistema Imobiliário & Gestão",
+  title: "Tactus - Tactus CRM Imobiliário",
   description: "Sistema completo para gestão de imobiliárias, corretores, vitrines personalizadas e aluguéis.",
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Prime CRM",
+    title: "Tactus CRM",
   },
   icons: {
     icon: "/icons/icon-192.svg",

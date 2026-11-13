@@ -45,17 +45,30 @@ interface ShowcaseProfile {
 }
 
 const DEFAULT_PROFILES: Record<string, ShowcaseProfile> = {
-  prime: {
-    slug: "prime",
-    name: "Imobiliária Prime",
+  tactus: {
+    slug: "tactus",
+    name: "Tactus Imobiliária & Consultoria",
     title: "Consultoria Imobiliária de Alto Padrão",
     type: "IMOBILIARIA",
     creci: "29.400-J",
     phone: "(11) 3456-7890",
     whatsapp: "(11) 98765-4321",
-    email: "contato@primeimoveis.com.br",
-    instagram: "@primeimoveis_sp",
-    bio: "Seleção criteriosa dos melhores imóveis residenciais e comerciais em São Paulo e região metropolitana. Atendimento exclusivo com segurança jurídica e consultoria financeira.",
+    email: "contato@tactus.com.br",
+    instagram: "@tactus.imoveis",
+    bio: "Seleção criteriosa dos melhores imóveis residenciais e comerciais em São Paulo e região metropolitana. Atendimento exclusivo com tecnologia Tactus, segurança jurídica e consultoria financeira.",
+    accentColor: "blue",
+  },
+  prime: {
+    slug: "prime",
+    name: "Tactus Imobiliária & Consultoria",
+    title: "Consultoria Imobiliária de Alto Padrão",
+    type: "IMOBILIARIA",
+    creci: "29.400-J",
+    phone: "(11) 3456-7890",
+    whatsapp: "(11) 98765-4321",
+    email: "contato@tactus.com.br",
+    instagram: "@tactus.imoveis",
+    bio: "Seleção criteriosa dos melhores imóveis residenciais e comerciais em São Paulo e região metropolitana. Atendimento exclusivo com tecnologia Tactus, segurança jurídica e consultoria financeira.",
     accentColor: "blue",
   },
   "carlos-silveira": {
@@ -223,7 +236,7 @@ const ALL_PROPERTIES = [
 
 export default function BrokerShowcasePage() {
   const params = useParams()
-  const rawSlug = (params?.slug as string) || "prime"
+  const rawSlug = (params?.slug as string) || "tactus"
   const slug = rawSlug.toLowerCase()
 
   const [profile, setProfile] = useState<ShowcaseProfile>(() => {
@@ -594,7 +607,7 @@ export default function BrokerShowcasePage() {
         <div className="max-w-5xl mx-auto px-4 space-y-2">
           <p className="font-semibold text-foreground">{profile.name} • CRECI {profile.creci}</p>
           <p className="text-[11px]">
-            Vitrine digital personalizada criada através da plataforma CRM Imobiliário.
+            Vitrine digital personalizada criada através da plataforma Tactus CRM Imobiliário.
           </p>
         </div>
       </footer>

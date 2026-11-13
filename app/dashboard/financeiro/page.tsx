@@ -70,7 +70,7 @@ export default function FinancialPage() {
   const handleExport = () => {
     setDownloading(true)
 
-    let csv = "Extrato Financeiro e Honorários - Imobiliária Prime\n"
+    let csv = "Extrato Financeiro e Honorários - Tactus Imobiliária\n"
     csv += "Data de Emissão: " + new Date().toLocaleString("pt-BR") + "\n\n"
     csv += "Ref;Negociação;Corretor;Valor Negócio;Taxa;Comissão Corretor;Imobiliária;Status;Data\n"
 

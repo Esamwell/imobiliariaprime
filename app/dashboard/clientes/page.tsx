@@ -281,7 +281,7 @@ export default function ClientsPage() {
                 {filtered.map((c) => {
                   const waUrl = getWhatsAppLink(
                     c.phone,
-                    `Olá ${c.name}, tudo bem? Sou o corretor da Imobiliária Prime. Temos novidades no perfil de imóvel que você está buscando (${c.interest}). Gostaria de dar uma olhada?`
+                    `Olá ${c.name}, tudo bem? Sou o corretor da Tactus Imobiliária. Temos novidades no perfil de imóvel que você está buscando (${c.interest}). Gostaria de dar uma olhada?`
                   )
 
                   return (

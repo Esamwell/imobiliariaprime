@@ -35,7 +35,7 @@ interface Ticket {
 const initialTickets: Ticket[] = [
   {
     id: "TKT-1042",
-    tenant: "Imobiliária Prime",
+    tenant: "Tactus Imobiliária",
     subject: "Dúvida sobre integração com portal ZAP Imóveis",
     priority: "Média",
     status: "Em Atendimento",
@@ -67,7 +67,7 @@ export default function SupportPage() {
 
   // Form State
   const [subject, setSubject] = useState("")
-  const [tenant, setTenant] = useState("Imobiliária Prime")
+  const [tenant, setTenant] = useState("Tactus Imobiliária")
   const [priority, setPriority] = useState("Média")
 
   const handleCreateTicket = (e: React.FormEvent) => {
@@ -154,7 +154,7 @@ export default function SupportPage() {
                     onChange={(e) => setTenant(e.target.value)}
                     className="w-full h-10 rounded-2xl border border-black/[0.08] dark:border-white/[0.10] bg-muted/20 px-3.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
                   >
-                    <option value="Imobiliária Prime">Imobiliária Prime</option>
+                    <option value="Tactus Imobiliária">Tactus Imobiliária</option>
                     <option value="Horizonte Imóveis">Horizonte Imóveis</option>
                     <option value="Metrópole Empreendimentos">Metrópole</option>
                   </select>

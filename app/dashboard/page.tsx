@@ -81,7 +81,7 @@ const mockLeads: LeadItem[] = [
     interest: "Mansão Condomínio Alphaville",
     budget: "R$ 4.900.000",
     stage: "Visita Realizada",
-    source: "Portal Prime",
+    source: "Portal Tactus",
     heat: 5,
     urgent: true,
   },
@@ -167,7 +167,7 @@ export default function UserDashboardPage() {
         {/* Action Pills */}
         <div className="flex items-center gap-2 flex-wrap">
           <Link
-            href="/v/prime"
+            href="/v/tactus"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.05] hover:bg-black/5 dark:hover:bg-white/10 px-4 py-2 text-xs font-semibold text-foreground shadow-sm transition-all hover:scale-102"
@@ -364,7 +364,7 @@ export default function UserDashboardPage() {
 
                   <div className="flex items-center gap-1.5">
                     <a
-                      href={`https://wa.me/55${lead.phone}?text=Olá%20${encodeURIComponent(lead.name)},%20sou%20Carlos%20da%20Imobiliária%20Prime.`}
+                      href={`https://wa.me/55${lead.phone}?text=Olá%20${encodeURIComponent(lead.name)},%20sou%20Carlos%20da%20Tactus%20Imobiliária.`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="h-8 w-8 rounded-full border border-black/[0.08] dark:border-white/[0.12] bg-white/70 dark:bg-white/[0.05] hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-600 flex items-center justify-center transition-colors"
