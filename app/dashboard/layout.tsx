@@ -49,9 +49,9 @@ export default function UserDashboardLayout({
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="flex h-screen flex-col overflow-hidden bg-background">
       {/* Top Header */}
-      <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b bg-background px-4 sm:px-6">
+      <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b bg-background px-4 sm:px-6">
         <div className="flex items-center gap-4">
           <Button 
             variant="ghost" 
@@ -125,10 +125,10 @@ export default function UserDashboardLayout({
         </div>
       </header>
 
-      <div className="flex flex-1">
+      <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
         <aside
-          className={`border-r bg-background transition-all duration-300 flex flex-col ${
+          className={`border-r bg-background transition-all duration-300 flex flex-col justify-between shrink-0 overflow-y-auto ${
             sidebarOpen ? "w-64" : "w-[68px]"
           }`}
         >
@@ -154,7 +154,7 @@ export default function UserDashboardLayout({
             </nav>
           </div>
 
-          <div className="border-t p-3">
+          <div className="border-t p-3 shrink-0">
             {sidebarOpen ? (
               <div className="rounded-lg bg-gradient-to-r from-amber-500/10 via-card to-card border border-amber-500/30 p-3 text-xs space-y-1">
                 <div className="flex items-center justify-between">
@@ -180,7 +180,7 @@ export default function UserDashboardLayout({
         </aside>
 
         {/* Content */}
-        <main className="flex-1 overflow-x-hidden p-6 bg-muted/10">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden p-6 bg-muted/10">
           {children}
         </main>
       </div>

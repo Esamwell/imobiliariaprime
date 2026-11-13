@@ -12,11 +12,11 @@ export default function SuperAdminLayout({
   const [sidebarOpen, setSidebarOpen] = useState(true)
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex h-screen flex-col overflow-hidden bg-background">
       <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      <div className="flex flex-1">
+      <div className="flex flex-1 overflow-hidden">
         <Sidebar open={sidebarOpen} />
-        <main className="flex-1 overflow-x-hidden bg-background">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden bg-background">
           {children}
         </main>
       </div>

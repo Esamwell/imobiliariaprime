@@ -66,9 +66,9 @@ export function Sidebar({ open }: SidebarProps) {
   const pathname = usePathname()
 
   return (
-    <div
+    <aside
       className={cn(
-        "fixed inset-y-0 z-20 flex h-full flex-col border-r bg-background transition-all duration-300 md:relative",
+        "flex h-full shrink-0 flex-col border-r bg-background transition-all duration-300 overflow-y-auto",
         open ? "w-64" : "w-[70px]"
       )}
     >
@@ -124,6 +124,6 @@ export function Sidebar({ open }: SidebarProps) {
           )}
         </div>
       </div>
-    </div>
+    </aside>
   )
 }
