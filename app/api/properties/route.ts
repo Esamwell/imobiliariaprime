@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { getSessionUser } from "@/lib/auth"
+import { getPlanLimitsByPlanName } from "@/lib/plans"
 
 const FALLBACK_PROPERTIES = [
   {
@@ -210,6 +211,44 @@ export async function POST(request: Request) {
     if (!tenantId) {
       const defaultTenant = await prisma.tenant.findFirst()
       tenantId = defaultTenant?.id || ""
+    }
+
+    // Validação de limite de imóveis por plano
+    const isAutonomo = session?.role === "AUTONOMO" || session?.tenantType === "AUTONOMO"
+    let tenantPlanName = isAutonomo ? "essencial" : "imobiliaria"
+    if (tenantId) {
+      try {
+        const tenant = await prisma.tenant.findUnique({
+          where: { id: tenantId },
+          select: { plan: true },
+        })
+        if (tenant?.plan) tenantPlanName = tenant.plan
+      } catch {}
+    }
+
+    const planLimits = getPlanLimitsByPlanName(tenantPlanName)
+
+    // Contagem atual de imóveis
+    let currentPropertyCount = 0
+    try {
+      if (tenantId) {
+        currentPropertyCount = await prisma.property.count({
+          where: { tenantId },
+        })
+      }
+    } catch {}
+
+    if (currentPropertyCount >= planLimits.maxProperties) {
+      return NextResponse.json(
+        {
+          error: `Limite de ${planLimits.maxProperties.toLocaleString("pt-BR")} imóveis atingido no seu ${planLimits.name}. Você já possui ${currentPropertyCount} imóveis ativos cadastrados. Para continuar cadastrando, faça upgrade de plano ou contrate o pacote de imóveis adicionais.`,
+          code: "PROPERTY_LIMIT_REACHED",
+          maxProperties: planLimits.maxProperties,
+          currentProperties: currentPropertyCount,
+          planName: planLimits.name,
+        },
+        { status: 403 }
+      )
     }
 
     const code = body.code || `${(body.category || "AP").substring(0, 2).toUpperCase()}${Math.floor(1000 + Math.random() * 9000)}`

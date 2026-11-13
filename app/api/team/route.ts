@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { getSessionUser } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { getPlanLimitsByPlanName, TACTUS_PLANS } from "@/lib/plans"
 
 // Lista padrão de corretores vinculados à Imobiliária Tactus
 let memoryTeam = [
@@ -114,11 +115,19 @@ export async function GET() {
     const isAutonomo = session?.role === "AUTONOMO" || session?.tenantType === "AUTONOMO"
 
     if (isAutonomo) {
+      const planLimits = TACTUS_PLANS.essencial
       return NextResponse.json({
         isAutonomo: true,
         tenantType: "AUTONOMO",
-        plan: "Plano Corretor Solo (1 Usuário)",
-        message: "O plano Corretor Autônomo possui 1 acesso individual e exclusivo.",
+        plan: planLimits.name,
+        planId: planLimits.id,
+        planSubtitle: planLimits.subtitle,
+        maxBrokers: planLimits.maxBrokers,
+        currentBrokers: 1,
+        availableSeats: 0,
+        isLimitReached: true,
+        maxProperties: planLimits.maxProperties,
+        message: "O plano Essencial possui 1 acesso individual e exclusivo.",
         currentBroker: {
           id: session?.userId || "roberto-autonomo-id",
           name: session?.name || "Roberto Dias",
@@ -140,15 +149,40 @@ export async function GET() {
     }
 
     // Se for Imobiliária (Gestor Master ou membro da equipe)
+    // Busca plano do tenant no banco ou infere pelo nome da imobiliária
+    let tenantPlanName = "imobiliaria"
+    if (session?.tenantId) {
+      try {
+        const tenant = await prisma.tenant.findUnique({
+          where: { id: session.tenantId },
+          select: { plan: true },
+        })
+        if (tenant?.plan) tenantPlanName = tenant.plan
+      } catch {}
+    }
+
+    const planLimits = getPlanLimitsByPlanName(tenantPlanName)
+    const currentBrokers = memoryTeam.length
+    const maxBrokers = planLimits.maxBrokers
+    const availableSeats = Math.max(0, maxBrokers - currentBrokers)
+    const isLimitReached = currentBrokers >= maxBrokers
+
     return NextResponse.json({
       isAutonomo: false,
       tenantType: "IMOBILIARIA",
       tenantName: session?.tenantName || "Tactus Imobiliária",
-      plan: "Plano Imobiliária Master VIP",
+      plan: planLimits.name,
+      planId: planLimits.id,
+      planSubtitle: planLimits.subtitle,
+      maxBrokers: maxBrokers,
+      currentBrokers: currentBrokers,
+      availableSeats: availableSeats,
+      isLimitReached: isLimitReached,
+      maxProperties: planLimits.maxProperties,
       isChefe: session?.role === "GESTOR" || !session,
       team: memoryTeam,
       metrics: {
-        totalBrokers: memoryTeam.length,
+        totalBrokers: currentBrokers,
         activeBrokers: memoryTeam.filter((b) => b.status === "Ativo" || b.status === "Em Atendimento").length,
         totalVgv: "R$ 9.750.000",
         assignedProperties: memoryTeam.reduce((acc, curr) => acc + curr.propertiesCount, 0),
@@ -164,9 +198,43 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const session = await getSessionUser()
-    if (session?.role === "AUTONOMO") {
+    const isAutonomo = session?.role === "AUTONOMO" || session?.tenantType === "AUTONOMO"
+
+    if (isAutonomo) {
       return NextResponse.json(
-        { error: "Corretores Autônomos possuem plano de 1 usuário solo. Faça upgrade para o Plano Imobiliária para adicionar corretores." },
+        { 
+          error: "Corretores Autônomos possuem o Plano Essencial de 1 usuário solo. Faça upgrade para o Plano Profissional (até 3 corretores) ou Plano Imobiliária (até 10 corretores) para adicionar membros à equipe.",
+          code: "SOLO_PLAN_RESTRICTION"
+        },
+        { status: 403 }
+      )
+    }
+
+    // Busca o plano do tenant para validação rigorosa de capacidade
+    let tenantPlanName = "imobiliaria"
+    if (session?.tenantId) {
+      try {
+        const tenant = await prisma.tenant.findUnique({
+          where: { id: session.tenantId },
+          select: { plan: true },
+        })
+        if (tenant?.plan) tenantPlanName = tenant.plan
+      } catch {}
+    }
+
+    const planLimits = getPlanLimitsByPlanName(tenantPlanName)
+    const currentBrokers = memoryTeam.length
+
+    // BLOQUEIO RIGOROSO DE CAPACIDADE DE CORRETORES
+    if (currentBrokers >= planLimits.maxBrokers) {
+      return NextResponse.json(
+        {
+          error: `Limite de ${planLimits.maxBrokers} corretores atingido no seu ${planLimits.name}. Você já possui ${currentBrokers} corretores cadastrados. Para adicionar o próximo corretor, faça upgrade de plano ou contrate assentos adicionais.`,
+          code: "PLAN_LIMIT_REACHED",
+          maxBrokers: planLimits.maxBrokers,
+          currentBrokers: currentBrokers,
+          planName: planLimits.name,
+        },
         { status: 403 }
       )
     }
@@ -208,8 +276,13 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
-      message: `Corretor ${name} adicionado à equipe com sucesso!`,
+      message: `Corretor ${name} adicionado à equipe com sucesso! (${memoryTeam.length}/${planLimits.maxBrokers} assentos ocupados)`,
       broker: newBroker,
+      seats: {
+        total: planLimits.maxBrokers,
+        current: memoryTeam.length,
+        available: Math.max(0, planLimits.maxBrokers - memoryTeam.length),
+      }
     })
   } catch (error) {
     console.error("Erro ao adicionar corretor:", error)

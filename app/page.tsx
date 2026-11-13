@@ -156,101 +156,9 @@ const UNIFIED_STYLES = `
   }
 `;
 
-interface PlanDetail {
-  id: string
-  name: string
-  subtitle: string
-  badge?: string
-  popular?: boolean
-  priceMonthly: number
-  priceAnnual: number
-  period: string
-  description: string
-  brokerLimit: string
-  propertiesLimit: string
-  features: string[]
-  ctaText: string
-  theme: "dark" | "lime" | "gold"
-}
+import { TACTUS_PLANS, PLAN_ADDONS, PlanDefinition } from "@/lib/plans"
 
-const plans: PlanDetail[] = [
-  {
-    id: "autonomo",
-    name: "Corretor Autônomo",
-    subtitle: "Pessoa Física (PF / CRECI)",
-    priceMonthly: 89,
-    priceAnnual: 69,
-    period: "/mês",
-    description: "Projetado sob medida para o corretor independente que precisa de presença digital exclusiva e agilidade no fechamento de negócios.",
-    brokerLimit: "1 Corretor Individual",
-    propertiesLimit: "Até 50 Imóveis Ativos",
-    features: [
-      "Sua Vitrine Pública Exclusiva (/v/seu-nome)",
-      "Botão Direto de WhatsApp com mensagem pré-configurada",
-      "Upload de fotos em Alta Resolução (HD)",
-      "Preenchimento automático de endereço por CEP (ViaCEP)",
-      "Funil de Vendas Kanban com etiquetas de temperatura",
-      "Sincronização 1-clique com Google Agenda no celular",
-      "App Mobile PWA com notificações em tempo real",
-      "Sem anúncios de concorrentes na sua vitrine",
-      "Suporte ágil via WhatsApp"
-    ],
-    ctaText: "Assinar Plano Autônomo",
-    theme: "dark"
-  },
-  {
-    id: "tactus",
-    name: "Plano Imobiliária",
-    subtitle: "Pessoa Jurídica (PJ) & Equipes",
-    badge: "MAIS ESCOLHIDO",
-    popular: true,
-    priceMonthly: 249,
-    priceAnnual: 199,
-    period: "/mês",
-    description: "A ferramenta definitiva para imobiliárias que gerenciam equipe de corretores, alta demanda de leads e carteira de locações.",
-    brokerLimit: "Até 10 Corretores Cadastrados",
-    propertiesLimit: "Imóveis ILIMITADOS na Carteira",
-    features: [
-      "Tudo incluído no Plano Autônomo, mais:",
-      "Até 10 Corretores com acessos e permissões individuais",
-      "Carteira com Imóveis ILIMITADOS",
-      "Vitrine Geral da Imobiliária + Vitrines Individuais por Corretor",
-      "Integração Google Workspace & Calendar Corporativo",
-      "Gestão de Locações & Aluguéis com reajuste automático (IGP-M/IPCA)",
-      "Divisão automatizada de comissões por venda e aluguel",
-      "Simulador de financiamento bancário para clientes",
-      "Exportação de relatórios gerenciais e VGV consolidado",
-      "Suporte Prioritário VIP via WhatsApp"
-    ],
-    ctaText: "Assinar Plano Imobiliária",
-    theme: "lime"
-  },
-  {
-    id: "enterprise",
-    name: "Master VIP Enterprise",
-    subtitle: "Redes, Franquias & Incorporadoras",
-    badge: "ESCALA MÁXIMA",
-    priceMonthly: 589,
-    priceAnnual: 489,
-    period: "/mês",
-    description: "Para grandes imobiliárias, redes de franquias e incorporadoras com alta demanda operacional e múltiplas filiais.",
-    brokerLimit: "Corretores e Filiais ILIMITADOS",
-    propertiesLimit: "Imóveis e Armazenamento ILIMITADOS",
-    features: [
-      "Corretores, Gestores e Filiais ILIMITADOS",
-      "Imóveis e Armazenamento em Nuvem ILIMITADOS",
-      "Múltiplas Vitrines Públicas e Domínio Próprio Personalizado",
-      "Google Workspace & Calendar Push Sync em Tempo Real",
-      "Assinatura Eletrônica de Contratos Integrada",
-      "Integração direta com portais (ZAP, VivaReal, OLX)",
-      "Módulo avançado de repasse automatizado a proprietários",
-      "Painel Multi-Tenant Super Admin e relatórios executivos",
-      "Gerente de Contas Dedicado & Onboarding VIP para equipe"
-    ],
-    ctaText: "Contratar Master Enterprise",
-    theme: "gold"
-  }
-]
+const plans: PlanDefinition[] = Object.values(TACTUS_PLANS)
 
 // Exemplo da Vitrine Digital do Corretor para demonstração
 const SHOWCASE_DEMO_PROPERTIES = [
@@ -303,7 +211,7 @@ const SHOWCASE_DEMO_PROPERTIES = [
 
 export default function CRMLandingPage() {
   const [annualBilling, setAnnualBilling] = useState(false)
-  const [selectedPlan, setSelectedPlan] = useState<PlanDetail | null>(null)
+  const [selectedPlan, setSelectedPlan] = useState<PlanDefinition | null>(null)
   const [checkoutStep, setCheckoutStep] = useState<"form" | "success">("form")
   const [clientType, setClientType] = useState<"PF" | "PJ">("PF")
   
@@ -345,9 +253,9 @@ export default function CRMLandingPage() {
     paymentMethod: "pix"
   })
 
-  const handleSelectPlan = (plan: PlanDetail) => {
+  const handleSelectPlan = (plan: PlanDefinition) => {
     setSelectedPlan(plan)
-    setClientType(plan.id === "autonomo" ? "PF" : "PJ")
+    setClientType(plan.id === "essencial" ? "PF" : "PJ")
     setCheckoutStep("form")
   }
 
@@ -1285,21 +1193,24 @@ export default function CRMLandingPage() {
             </div>
           </div>
 
-          {/* Pricing Cards Grid */}
-          <div className="grid gap-8 lg:grid-cols-3 items-stretch relative z-10">
+          {/* Pricing Cards Grid (4 Tiers) */}
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 items-stretch relative z-10">
             {plans.map((plan) => {
               const price = annualBilling ? plan.priceAnnual : plan.priceMonthly
               const isLime = plan.theme === "lime"
               const isGold = plan.theme === "gold"
+              const isBlue = plan.theme === "blue"
 
               return (
                 <div
                   key={plan.id}
-                  className={`rounded-3xl p-8 flex flex-col justify-between transition-all duration-300 relative ${
+                  className={`rounded-3xl p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 relative ${
                     isLime
-                      ? "bg-[#CCFF00] text-black shadow-2xl shadow-[#CCFF00]/25 ring-2 ring-lime-300 lg:-translate-y-3"
+                      ? "bg-[#CCFF00] text-black shadow-2xl shadow-[#CCFF00]/25 ring-2 ring-lime-300 lg:-translate-y-2 z-20"
                       : isGold
                       ? "border border-amber-500/30 bg-gradient-to-b from-amber-500/[0.08] via-white/[0.02] to-white/[0.01] backdrop-blur-2xl hover:border-amber-500/50"
+                      : isBlue
+                      ? "border border-blue-500/30 bg-gradient-to-b from-blue-500/[0.08] via-white/[0.02] to-white/[0.01] backdrop-blur-2xl hover:border-blue-500/50"
                       : "border border-white/10 bg-white/[0.03] backdrop-blur-2xl hover:border-white/20"
                   }`}
                 >
@@ -1307,10 +1218,12 @@ export default function CRMLandingPage() {
                   {plan.badge && (
                     <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
                       <span
-                        className={`rounded-full px-3.5 py-1 text-[10px] font-black tracking-wider uppercase shadow-md ${
+                        className={`rounded-full px-3 py-1 text-[9px] font-black tracking-wider uppercase shadow-md ${
                           isLime
                             ? "bg-black text-white"
-                            : "bg-amber-500 text-black"
+                            : isGold
+                            ? "bg-amber-500 text-black"
+                            : "bg-blue-600 text-white"
                         }`}
                       >
                         {plan.badge}
@@ -1318,18 +1231,18 @@ export default function CRMLandingPage() {
                     </div>
                   )}
 
-                  <div className="space-y-6">
+                  <div className="space-y-5">
                     {/* Header */}
                     <div>
                       <span
-                        className={`text-[11px] font-bold uppercase tracking-wider block ${
-                          isLime ? "text-black/70" : isGold ? "text-amber-400" : "text-slate-400"
+                        className={`text-[10px] font-bold uppercase tracking-wider block ${
+                          isLime ? "text-black/70" : isGold ? "text-amber-400" : isBlue ? "text-blue-400" : "text-slate-400"
                         }`}
                       >
                         {plan.subtitle}
                       </span>
                       <h3
-                        className={`text-2xl font-black mt-1 ${
+                        className={`text-xl font-black mt-1 ${
                           isLime ? "text-black" : "text-white"
                         }`}
                       >
@@ -1348,54 +1261,56 @@ export default function CRMLandingPage() {
                     <div className="pt-2 border-t border-current/10">
                       <div className="flex items-baseline gap-1">
                         <span className="text-xs font-semibold">R$</span>
-                        <span className="text-4xl sm:text-5xl font-black tracking-tight">
+                        <span className="text-3xl sm:text-4xl font-black tracking-tight">
                           {price}
                         </span>
                         <span className="text-xs font-semibold opacity-75">{plan.period}</span>
                       </div>
-                      <span className="text-[10px] opacity-70 block mt-1">
-                        {annualBilling ? "Faturado anualmente com 20% de desconto" : "Faturado mensalmente sem fidelidade"}
+                      <span className="text-[10px] opacity-70 block mt-0.5">
+                        {annualBilling ? "Faturado anualmente (-20% OFF)" : "Faturado mensalmente"}
                       </span>
                     </div>
 
                     {/* Limits Caps */}
                     <div
-                      className={`rounded-2xl p-3.5 text-xs font-semibold space-y-1.5 ${
+                      className={`rounded-2xl p-3 text-xs font-semibold space-y-1 ${
                         isLime
                           ? "bg-black/10 text-black"
                           : isGold
                           ? "bg-amber-500/10 text-amber-200 border border-amber-500/20"
+                          : isBlue
+                          ? "bg-blue-500/10 text-blue-200 border border-blue-500/20"
                           : "bg-white/[0.04] text-slate-300 border border-white/10"
                       }`}
                     >
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between text-[11px]">
                         <span className="opacity-75">Corretores:</span>
                         <span className="font-bold">{plan.brokerLimit}</span>
                       </div>
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between text-[11px]">
                         <span className="opacity-75">Carteira:</span>
                         <span className="font-bold">{plan.propertiesLimit}</span>
                       </div>
                     </div>
 
                     {/* Features List */}
-                    <div className="space-y-2.5 pt-2">
+                    <div className="space-y-2 pt-1">
                       <span
-                        className={`text-[11px] font-bold uppercase tracking-wider block ${
+                        className={`text-[10px] font-bold uppercase tracking-wider block ${
                           isLime ? "text-black/70" : "text-slate-400"
                         }`}
                       >
                         O que está incluído:
                       </span>
-                      <ul className="space-y-2 text-xs">
-                        {plan.features.map((feat, idx) => (
-                          <li key={idx} className="flex items-start gap-2">
+                      <ul className="space-y-1.5 text-xs">
+                        {plan.features.slice(0, 7).map((feat, idx) => (
+                          <li key={idx} className="flex items-start gap-1.5">
                             <Check
-                              className={`h-4 w-4 shrink-0 mt-0.5 ${
-                                isLime ? "text-black font-extrabold" : "text-[#CCFF00]"
+                              className={`h-3.5 w-3.5 shrink-0 mt-0.5 ${
+                                isLime ? "text-black font-extrabold" : isBlue ? "text-blue-400" : isGold ? "text-amber-400" : "text-[#CCFF00]"
                               }`}
                             />
-                            <span className={isLime ? "text-black/90 font-medium" : "text-slate-300"}>
+                            <span className={`text-[11px] leading-tight ${isLime ? "text-black/90 font-medium" : "text-slate-300"}`}>
                               {feat}
                             </span>
                           </li>
@@ -1405,25 +1320,88 @@ export default function CRMLandingPage() {
                   </div>
 
                   {/* CTA Button */}
-                  <div className="pt-8">
+                  <div className="pt-6">
                     <button
                       type="button"
                       onClick={() => handleSelectPlan(plan)}
-                      className={`w-full h-12 rounded-full font-extrabold text-xs shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2 ${
+                      className={`w-full h-11 rounded-full font-extrabold text-xs shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-1.5 ${
                         isLime
                           ? "bg-black hover:bg-neutral-900 text-white shadow-black/30"
                           : isGold
                           ? "bg-amber-500 hover:bg-amber-400 text-black shadow-amber-500/20"
+                          : isBlue
+                          ? "bg-blue-600 hover:bg-blue-500 text-white shadow-blue-600/30"
                           : "bg-[#CCFF00] hover:bg-[#bbf000] text-black shadow-[#CCFF00]/20"
                       }`}
                     >
                       <span>{plan.ctaText}</span>
-                      <ArrowRight className="h-4 w-4" />
+                      <ArrowRight className="h-3.5 w-3.5" />
                     </button>
                   </div>
                 </div>
               )
             })}
+          </div>
+
+          {/* Add-ons & Additional Modules Section */}
+          <div className="mt-16 pt-12 border-t border-white/10 relative z-10">
+            <div className="text-center max-w-xl mx-auto space-y-2 mb-8">
+              <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#CCFF00]">
+                FLEXIBILIDADE TOTAL
+              </span>
+              <h3 className="text-2xl font-black text-white">
+                Módulos & Assentos Adicionais
+              </h3>
+              <p className="text-xs text-slate-400">
+                Escale a operação da sua imobiliária contratando assentos ou pacotes avulsos sob demanda.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {PLAN_ADDONS.map((addon) => (
+                <div
+                  key={addon.id}
+                  className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-xl hover:border-white/20 transition-all flex flex-col justify-between"
+                >
+                  <div>
+                    <h4 className="font-extrabold text-sm text-white">{addon.name}</h4>
+                    <p className="text-xs text-slate-400 mt-1 leading-relaxed">{addon.description}</p>
+                  </div>
+                  <div className="pt-4 mt-4 border-t border-white/5 flex items-center justify-between">
+                    <span className="text-xs font-black text-[#CCFF00]">{addon.price}</span>
+                    <Link
+                      href="/login"
+                      className="text-[11px] font-bold text-slate-300 hover:text-white underline"
+                    >
+                      Contratar
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 14 Days Free Trial Guarantee Banner */}
+          <div className="mt-12 rounded-3xl border border-emerald-500/30 bg-gradient-to-r from-emerald-500/10 via-white/[0.02] to-emerald-500/10 p-6 sm:p-8 backdrop-blur-2xl flex flex-col sm:flex-row items-center justify-between gap-6 relative z-10">
+            <div className="flex items-center gap-4">
+              <div className="h-12 w-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-black text-xl shrink-0 border border-emerald-500/30">
+                <ShieldCheck className="h-6 w-6" />
+              </div>
+              <div>
+                <h4 className="text-base sm:text-lg font-black text-white">
+                  14 dias de teste grátis sem cartão de crédito
+                </h4>
+                <p className="text-xs text-slate-300 mt-0.5">
+                  Crie sua conta agora, cadastre seus imóveis e compartilhe sua vitrine pública no WhatsApp. Ativação imediata.
+                </p>
+              </div>
+            </div>
+            <Link
+              href="/login"
+              className="shrink-0 px-6 py-3 rounded-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs shadow-lg shadow-emerald-500/25 transition-all hover:scale-105"
+            >
+              Criar Minha Conta Grátis
+            </Link>
           </div>
         </section>
 

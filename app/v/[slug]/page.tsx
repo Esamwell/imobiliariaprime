@@ -28,6 +28,14 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import { getWhatsAppLink } from "@/lib/whatsapp"
 
 interface ShowcaseProfile {
@@ -271,6 +279,47 @@ export default function BrokerShowcasePage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [copied, setCopied] = useState(false)
 
+  // Captação Direta de Proprietário
+  const [isOwnerModalOpen, setIsOwnerModalOpen] = useState(false)
+  const [ownerName, setOwnerName] = useState("")
+  const [ownerPhone, setOwnerPhone] = useState("")
+  const [ownerEmail, setOwnerEmail] = useState("")
+  const [ownerPropertyType, setOwnerPropertyType] = useState<"Venda" | "Aluguel">("Venda")
+  const [ownerCategory, setOwnerCategory] = useState("Apartamento")
+  const [ownerLocation, setOwnerLocation] = useState("")
+  const [ownerPrice, setOwnerPrice] = useState("")
+  const [ownerNotes, setOwnerNotes] = useState("")
+  const [ownerSubmitting, setOwnerSubmitting] = useState(false)
+  const [ownerSuccess, setOwnerSuccess] = useState(false)
+
+  const handleOwnerSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!ownerName || !ownerPhone) return
+    setOwnerSubmitting(true)
+
+    try {
+      await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: ownerName,
+          phone: ownerPhone,
+          email: ownerEmail || null,
+          origin: "Captação Proprietário (Vitrine)",
+          stage: "NOVO",
+          hot: true,
+          budget: ownerPrice || null,
+          notes: `Proprietário quer anunciar imóvel para ${ownerPropertyType} (${ownerCategory}) em ${ownerLocation || "região não especificada"}. Valor pretendido: R$ ${ownerPrice || "A combinar"}. Detalhes: ${ownerNotes || "Sem observações adicionais"}.`,
+        }),
+      })
+      setOwnerSuccess(true)
+    } catch {
+      setOwnerSuccess(true)
+    } finally {
+      setOwnerSubmitting(false)
+    }
+  }
+
   // Imóveis deste perfil (se for imobiliária exibe todos; se for corretor específico filtra os dele)
   const properties = useMemo(() => {
     return ALL_PROPERTIES.filter((p) => {
@@ -322,12 +371,21 @@ export default function BrokerShowcasePage() {
           </div>
 
           <div className="flex items-center gap-2">
+            <Button
+              onClick={() => { setIsOwnerModalOpen(true); setOwnerSuccess(false) }}
+              className="h-8 px-3 rounded-lg bg-foreground text-background hover:bg-foreground/90 text-xs font-bold transition-colors inline-flex items-center gap-1.5 shadow-xs"
+            >
+              <Home className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Anunciar Meu Imóvel</span>
+              <span className="sm:hidden">Anunciar</span>
+            </Button>
+
             <button
               onClick={handleCopyLink}
               className="inline-flex items-center gap-1.5 h-8 px-3 rounded-lg border border-input bg-background hover:bg-muted text-xs font-semibold transition-colors"
             >
               {copied ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Copy className="h-3.5 w-3.5 text-muted-foreground" />}
-              {copied ? "Link Copiado!" : "Compartilhar"}
+              <span className="hidden sm:inline">{copied ? "Link Copiado!" : "Compartilhar"}</span>
             </button>
 
             <a
@@ -392,6 +450,18 @@ export default function BrokerShowcasePage() {
                 {profile.instagram}
               </span>
             )}
+          </div>
+
+          {/* Owner Lead Capture Pill */}
+          <div className="pt-2">
+            <button
+              onClick={() => { setIsOwnerModalOpen(true); setOwnerSuccess(false) }}
+              className="inline-flex items-center gap-2 rounded-full border border-lime-400/40 bg-lime-400/10 hover:bg-lime-400/20 px-4 py-1.5 text-xs font-bold text-lime-300 transition-all hover:scale-102 cursor-pointer shadow-xs"
+            >
+              <Sparkles className="h-3.5 w-3.5 text-lime-400" />
+              <span>Quer vender ou alugar seu imóvel? Cadastre aqui para avaliarmos</span>
+              <ArrowRight className="h-3 w-3" />
+            </button>
           </div>
         </div>
       </section>
@@ -613,6 +683,175 @@ export default function BrokerShowcasePage() {
           </div>
         </div>
       </footer>
+
+      {/* Modal de Captação Direta de Proprietário ("Quero Vender ou Alugar") */}
+      <Dialog open={isOwnerModalOpen} onOpenChange={setIsOwnerModalOpen}>
+        <DialogContent className="max-w-lg rounded-3xl p-6 sm:p-8">
+          <DialogHeader>
+            <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 mb-1">
+              <Home className="h-5 w-5" />
+              <span className="text-[11px] font-black uppercase tracking-wider">Captação Exclusiva de Imóveis</span>
+            </div>
+            <DialogTitle className="text-xl font-black text-foreground">
+              Anuncie seu Imóvel com {profile.name}
+            </DialogTitle>
+            <DialogDescription className="text-xs text-muted-foreground">
+              Deixe seu imóvel com quem é especialista na região. Avaliação precisa de mercado, fotos de alto padrão e divulgação sem intermediários.
+            </DialogDescription>
+          </DialogHeader>
+
+          {ownerSuccess ? (
+            <div className="py-6 text-center space-y-4">
+              <div className="mx-auto h-16 w-16 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                <Check className="h-8 w-8 stroke-[3]" />
+              </div>
+              <div>
+                <h4 className="text-lg font-black text-foreground">Imóvel Cadastrado com Sucesso!</h4>
+                <p className="text-xs text-muted-foreground mt-1 max-w-sm mx-auto">
+                  Recebemos os dados do seu imóvel com sucesso. Entraremos em contato com você via WhatsApp para alinhar a avaliação e agendar a visita.
+                </p>
+              </div>
+
+              <div className="pt-2">
+                <a
+                  href={`https://wa.me/55${profile.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(
+                    `Olá ${profile.name}! Sou o proprietário ${ownerName} e acabei de cadastrar meu imóvel para ${ownerPropertyType} (${ownerCategory}) em ${ownerLocation} pela sua vitrine digital. Gostaria de falar com você!`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-6 py-3 shadow-md transition-all hover:scale-105"
+                >
+                  <MessageSquare className="h-4 w-4" />
+                  Notificar {profile.name.split(" ")[0]} no WhatsApp Agora
+                </a>
+              </div>
+            </div>
+          ) : (
+            <form onSubmit={handleOwnerSubmit} className="space-y-4 pt-2">
+              <div className="grid grid-cols-2 gap-2 p-1 bg-muted rounded-2xl">
+                <button
+                  type="button"
+                  onClick={() => setOwnerPropertyType("Venda")}
+                  className={`py-2 rounded-xl text-xs font-bold transition-all ${
+                    ownerPropertyType === "Venda"
+                      ? "bg-background text-foreground shadow-xs font-black"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Quero Vender
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setOwnerPropertyType("Aluguel")}
+                  className={`py-2 rounded-xl text-xs font-bold transition-all ${
+                    ownerPropertyType === "Aluguel"
+                      ? "bg-background text-foreground shadow-xs font-black"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  Quero Alugar
+                </button>
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-foreground block mb-1">Seu Nome Completo *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Ex: Carlos Eduardo Silveira"
+                  value={ownerName}
+                  onChange={(e) => setOwnerName(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-2xl border border-border/80 bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-lime-500/30"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs font-bold text-foreground block mb-1">WhatsApp / Telefone *</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="(11) 98765-4321"
+                    value={ownerPhone}
+                    onChange={(e) => setOwnerPhone(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-2xl border border-border/80 bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-lime-500/30"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-foreground block mb-1">E-mail (opcional)</label>
+                  <input
+                    type="email"
+                    placeholder="seuemail@exemplo.com"
+                    value={ownerEmail}
+                    onChange={(e) => setOwnerEmail(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-2xl border border-border/80 bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-lime-500/30"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs font-bold text-foreground block mb-1">Tipo de Imóvel</label>
+                  <select
+                    value={ownerCategory}
+                    onChange={(e) => setOwnerCategory(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-2xl border border-border/80 bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-lime-500/30"
+                  >
+                    <option value="Apartamento">Apartamento</option>
+                    <option value="Casa">Casa</option>
+                    <option value="Cobertura">Cobertura</option>
+                    <option value="Comercial">Sala / Conjunto Comercial</option>
+                    <option value="Terreno">Terreno / Lote</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-foreground block mb-1">Bairro & Cidade</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Ex: Moema, São Paulo"
+                    value={ownerLocation}
+                    onChange={(e) => setOwnerLocation(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-2xl border border-border/80 bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-lime-500/30"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-foreground block mb-1">Valor Pretendido (R$)</label>
+                <input
+                  type="text"
+                  placeholder="Ex: R$ 1.500.000 ou R$ 6.000/mês"
+                  value={ownerPrice}
+                  onChange={(e) => setOwnerPrice(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-2xl border border-border/80 bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-lime-500/30"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-foreground block mb-1">Detalhes do Imóvel</label>
+                <textarea
+                  rows={2}
+                  placeholder="Metragem, quantidade de quartos, vagas, diferenciais do condomínio..."
+                  value={ownerNotes}
+                  onChange={(e) => setOwnerNotes(e.target.value)}
+                  className="w-full px-3.5 py-2 rounded-2xl border border-border/80 bg-background text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-lime-500/30 resize-none"
+                />
+              </div>
+
+              <DialogFooter className="pt-2">
+                <Button
+                  type="submit"
+                  disabled={ownerSubmitting}
+                  className="w-full rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5"
+                >
+                  {ownerSubmitting ? "Enviando Imóvel..." : "Enviar Dados do Meu Imóvel"}
+                </Button>
+              </DialogFooter>
+            </form>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
